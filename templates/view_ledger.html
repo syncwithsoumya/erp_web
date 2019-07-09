@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Add Ledger
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">View Ledger Details</h1>
+    <table id="example" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ledger_Name</th>
+                <th>Date_Time</th>
+                <th>Added_By</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+
+                    <td>{{items.id}}</td>
+                    <td>{{items.ledger_name}}</td>
+                    <td>{{items.date_time}}</td>
+                    <td>{{items.added_by}}</td>
+                    <td>{{items.comments}}</td>
+
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+
+{% endblock %}

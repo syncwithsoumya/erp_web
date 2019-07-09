@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Add Ledger
+{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Delete Ledger</h1>
+<form action="/delete_ledger" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputState">Ledger Name</label>
+      <select id="inputState" name="ledgers" class="form-control">
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+  </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Cancel</button>
+</form>
+{% endblock %}

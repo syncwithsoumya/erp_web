@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Add Ledger
+{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Add Ledger</h1>
+<form action="/new_ledger_add" method="post">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+         <label>Ledger Name</label>
+      <input type="text" name="ledgername" class="form-control" placeholder="Rahul Enterprise">
+    </div>
+      </div>
+      <div class="form-row">
+      <div class="form-group col-md-4">
+          <label>Ledger Comments</label>
+      <input type="text" class="form-control" name="comments" placeholder="some texts...">
+      </div>
+      </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Cancel</button>
+</form>
+{% endblock %}

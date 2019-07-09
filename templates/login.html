@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Login</title>
+  <title>Star ERP - Login</title>
 
   <!-- Custom fonts for this template-->
  <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -39,12 +39,12 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form action='/authenticate_login' method='POST' class="user">
+                  <form action='/authenticate_login' method="POST" class="user">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" class="form-control form-control-user" name="username" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                      <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password">
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -52,18 +52,34 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                    <!--<a href="index.html" class="btn btn-primary btn-user btn-block">
                       Login
-                    </a>
-                    <hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
+                    </a>-->
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                    <br>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                          {% for message in messages %}
+                           {% if 'Invalid Credentials' in message %}
+                          <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                            </div>
+                      {% else %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                          {% endfor %}
+                           {% endif %}
+                          {% endwith %}
+                    <!--<a href="index.html" class="btn btn-google btn-user btn-block">
                       <i class="fab fa-google fa-fw"></i> Login with Google
                     </a>
                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
+                    </a>-->
                   </form>
-                  <hr>
+
                   <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                   </div>
