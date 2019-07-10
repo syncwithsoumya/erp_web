@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Purchased
+{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Add Purchase</h1>
+<form action="/new_purchased" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+         <label>Ledger Name</label>
+      <select id="inputState" name="ledgers_dat" class="form-control">
+        {% if not ledger_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in ledger_data %}
+        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+      <div class="form-group col-md-2">
+         <label>Purchase Date</label>
+        <input type="text"  name="pdate" class="form-control" data-date-format="dd-mm-yy" id="dp2">
+     </div>
+      </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+        <label>Quantity in KG</label>
+        <input type="text" class="form-control" name="qtykg">
+     </div>
+        <div class="form-group col-md-2">
+         <label>Total Amount(Rs)</label>
+        <input type="text" class="form-control" name="totamt">
+     </div>
+        <div class="form-group col-md-2">
+         <label>Received Amount(Rs)</label>
+        <input type="text" class="form-control" name="recamt">
+     </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+         <label>Material Name</label>
+      <select id="inputState2" name="materials_dat" class="form-control">
+        {% if not material_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in material_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+        </div>
+        <div class="form-group col-md-2">
+         <label>No. Of Pieces</label>
+        <input type="text" class="form-control" name="piece">
+     </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Reset</button>
+</form>
+
+{% endblock %}

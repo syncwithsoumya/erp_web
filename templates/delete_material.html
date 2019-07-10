@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% block title %}
-Star ERP -- Delete Ledger
+Star ERP -- Delete Material
 {% endblock %}
 {% block content %}
-<h1 class="h3 mb-4 text-gray-800">Delete Ledger</h1>
-<form action="/delete_ledger" method="POST">
+<h1 class="h3 mb-4 text-gray-800">Delete Material</h1>
+<form action="/delete_material" method="POST">
   <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputState">Ledger Name</label>
-      <select id="inputState" name="ledgers" class="form-control">
+      <label for="inputState">Material Name</label>
+      <select id="inputState" name="materials" class="form-control">
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
       {% else %}
         {% for items in items_data %}
-        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
         {% endfor %}
       {% endif %}
       </select>

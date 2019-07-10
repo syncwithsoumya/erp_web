@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}
-Star ERP -- Add Ledger
+Star ERP -- View Ledger
 {% endblock %}
 {% block content %}
 
@@ -10,7 +10,7 @@ Star ERP -- Add Ledger
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Ledger_Name</th>
+                <th>Material_Name</th>
                 <th>Date_Time</th>
                 <th>Added_By</th>
                 <th>Comments</th>
@@ -22,11 +22,10 @@ Star ERP -- Add Ledger
             <tr>
 
                     <td>{{items.id}}</td>
-                    <td>{{items.ledger_name}}</td>
+                    <td>{{items.material_name}}</td>
                     <td>{{items.date_time}}</td>
                     <td>{{items.added_by}}</td>
                     <td>{{items.comments}}</td>
-
             </tr>
          {% endfor %}
         </tbody>

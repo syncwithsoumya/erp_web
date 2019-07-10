@@ -17,6 +17,7 @@
   <!-- Custom styles for this template-->
   <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
 
 
 </head>
@@ -71,10 +72,10 @@
         <div id="collapseMaterial" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="utilities-color.html">New Material</a>
-            <a class="collapse-item" href="utilities-border.html">Alter Material</a>
-            <a class="collapse-item" href="utilities-animation.html">Delete Material</a>
-              <a class="collapse-item" href="utilities-animation.html">View Material</a>
+            <a class="collapse-item" href="/new_material">New Material</a>
+            <a class="collapse-item" href="/alter_material_db">Alter Material</a>
+            <a class="collapse-item" href="/del_material_db">Delete Material</a>
+              <a class="collapse-item" href="/view_material_db">View Material</a>
           </div>
         </div>
       </li>
@@ -88,10 +89,9 @@
         <div id="collapsePurchase" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="utilities-color.html">New Purchase</a>
+            <a class="collapse-item" href="/new_purchased_db">New Purchase</a>
             <a class="collapse-item" href="utilities-border.html">Delete Purchase</a>
-            <a class="collapse-item" href="utilities-animation.html">Alter Purchase</a>
-            <a class="collapse-item" href="utilities-other.html">View Purchase</a>
+            <a class="collapse-item" href="/view_purchased_db">View Purchase</a>
           </div>
         </div>
       </li>
@@ -482,11 +482,15 @@
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
 		<script type="text/javascript">
 		$(document).ready(function() {
     $('#example').DataTable();
 } );
+
 		</script>
+  <script>$('#dp2').datepicker();</script>
+
 </body>
 
 </html>
