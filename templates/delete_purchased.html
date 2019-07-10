@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Delete Purchased
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Delete Purchased Details</h1>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Purchased_ID</th>
+                <th>Purchased_Date</th>
+                <th>Ledger Name</th>
+                <th>Quantity(KG)</th>
+                <th>Total Amount</th>
+                <th>Pieces</th>
+                <th>Material Name</th>
+                <th>Added By</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+
+                    <td>{{items.purchased_id}}</td>
+                    <td>{{items.purchased_date}}</td>
+                    <td>{{items.ledger_name}}</td>
+                    <td>{{items.quantity_KG}}</td>
+                    <td>{{items.total_amount}}</td>
+                    <td>{{items.no_of_piece}}</td>
+                    <td>{{items.material_name}}</td>
+                    <td>{{items.added_by}}</td>
+                <td><a href="/del_purchased_data/{{items.purchased_id}}" id="del"><button class="btn btn-primary">Delete</button></a></td>
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}

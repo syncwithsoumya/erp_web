@@ -440,5 +440,46 @@ def view_purchased_db():
             return 'Exception'
 
 
+@app.route('/delete_purchased_db')
+def delete_purchased_db():
+    connection = connect_to_db()
+    if connection.open == 1:
+        # Populate material names from table
+        try:
+            with connection.cursor() as cursor:
+                get_items = "SELECT purchased_id, purchased_date, l.ledger_name, quantity_KG, total_amount, receive_amount, no_of_piece, m.material_name, p.added_by  FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
+                cursor.execute(get_items)
+                items_data = cursor.fetchall()
+                connection.close()
+                return render_template('delete_purchased.html', items_data=items_data)
+        except Exception as e:
+            return 'Exception'
+
+
+@app.route('/del_purchased_data/<int:p_id>')
+def del_purchased_data(p_id):
+    connection = connect_to_db()
+    if connection.open == 1:
+        # Populate ledger names from table
+        try:
+            with connection.cursor() as cursor:
+                get_material_qty = "SELECT material_id, no_of_piece FROM purchased WHERE purchased_id=%s"
+                cursor.execute(get_material_qty, p_id)
+                data = cursor.fetchone()
+                qty = data['no_of_piece']
+                mat_id = data['material_id']
+                sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
+                cursor.execute(sql_quantity, (qty, mat_id))
+                connection.commit()
+                del_items = "DELETE FROM purchased WHERE purchased_id=%s"
+                cursor.execute(del_items, p_id)
+                connection.commit()
+                connection.close()
+                return redirect(url_for('delete_purchased_db'))
+        except Exception as e:
+            return 'Exception'
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
