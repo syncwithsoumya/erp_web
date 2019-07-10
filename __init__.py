@@ -480,6 +480,21 @@ def del_purchased_data(p_id):
             return 'Exception'
 
 
+@app.route('/show_material_inventory')
+def show_material_inventory():
+    connection = connect_to_db()
+    if connection.open == 1:
+        # Populate material names from table
+        try:
+            with connection.cursor() as cursor:
+                get_items = "select m.material_name, q.quantity from material_qty q INNER JOIN material m ON q.material_id = m.id;"
+                cursor.execute(get_items)
+                items_data = cursor.fetchall()
+                connection.close()
+                return render_template('show_material_inventory.html', items_data=items_data)
+        except Exception as e:
+            return 'Exception'
+
 
 if __name__ == '__main__':
     app.run(debug=True)

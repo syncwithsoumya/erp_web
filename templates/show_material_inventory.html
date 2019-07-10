@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- View Inventory
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">View Material Stock</h1>
+<div class="dropdown show">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Download
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Excel</a>
+    <a class="dropdown-item" href="#">Pdf</a>
+    <a class="dropdown-item" href="#">CSV</a>
+  </div>
+</div>
+<br>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr class="table-info">
+                <th>Material Name</th>
+                <th>Available Quantity</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr class="table-info">
+                    <td>{{items.material_name}}</td>
+                    <td>{{items.quantity}}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
