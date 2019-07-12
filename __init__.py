@@ -742,7 +742,7 @@ def view_product_details():
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            get_product_data = "SELECT id, product_name,date_time,comments,product_color,build_date,added_by,product_rate,product_spec FROM product"
+            get_product_data = "SELECT id, product_name,comments,product_color,build_date,added_by,product_rate,product_spec FROM product"
             cursor.execute(get_product_data)
             data = cursor.fetchall()
             temp = data
@@ -762,11 +762,10 @@ def view_product_details():
                 # print(c)
                 temp[i]['product_spec'] = c
             # print(temp)
-            return render_template('show_material_inventory.html', items_data=temp)
+            return render_template('show_product_details.html', items_data=temp)
     except Exception as e:
         return 'Exception'
-    finally:
-        connection.close()
+
 
 
 if __name__ == '__main__':
