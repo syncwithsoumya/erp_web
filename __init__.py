@@ -1,11 +1,11 @@
-from flask import Flask, render_template,redirect, url_for, request, flash, session
+from flask import Flask, render_template,redirect, url_for, request, flash, session, jsonify
 import pymysql.cursors
 from datetime import datetime
 import utilities
 import collections
 import ast
 app = Flask(__name__)
-app.secret_key = 'dont tell me again'
+app.secret_key = 'dot tell me again'
 
 
 def connect_to_db():
@@ -757,7 +757,7 @@ def view_product_details():
                     material_name = cursor.fetchone()
                     name = material_name['material_name']
                     tempo[j] = name
-                print(tempo)
+                # print(tempo)
                 c = {tempo[key]: value for key, value in a.items()}
                 # print(c)
                 temp[i]['product_spec'] = c
@@ -766,6 +766,20 @@ def view_product_details():
     except Exception as e:
         return 'Exception'
 
+
+@app.route('/process/<int:p_id>', methods=['GET'])
+def process(p_id):
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_mat_comments = "SELECT comments FROM ledger where id=%s"
+            cursor.execute(get_mat_comments, p_id)
+            dat = cursor.fetchall()
+            connection.close()
+            return jsonify({'data': dat[0]['comments']})
+    except Exception as e:
+        return str(e)
 
 
 if __name__ == '__main__':

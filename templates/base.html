@@ -490,7 +490,21 @@
 
 		</script>
   <script>$('#dp2').datepicker();</script>
+<script>
+    $('select#inputState').change(function(){
+    var nodeList = $(this).children("option:selected").val();
+$.ajax({
+	url: "/process/"+nodeList,
+	type: "GET",
+	dataType: "json",
+	success: function(resp){
 
+		$('input#popname').val(resp.data);
+
+	}
+      });
+});
+</script>
 </body>
 
 </html>
