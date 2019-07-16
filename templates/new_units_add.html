@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Add Unit Master
+{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Add Unit</h1>
+<form action="/new_unit_add" method="post">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+         <label>Unit</label>
+      <input type="text" name="unitname" class="form-control">
+    </div>
+      </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Cancel</button>
+</form>
+{% endblock %}

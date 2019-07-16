@@ -4,7 +4,7 @@ Star ERP -- Delete Ledger
 {% endblock %}
 {% block content %}
 <h1 class="h3 mb-4 text-gray-800">Delete Ledger</h1>
-<form action="/delete_ledger" method="POST">
+<form action="/ledger_deletion" method="POST">
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputState">Ledger Name</label>
@@ -13,7 +13,7 @@ Star ERP -- Delete Ledger
         <option value="no_items">No Items to display</option>
       {% else %}
         {% for items in items_data %}
-        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        <option value="{{ items.ledger_name }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
         {% endfor %}
       {% endif %}
       </select>

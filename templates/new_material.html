@@ -10,6 +10,30 @@ Star ERP -- Add Material
          <label>Material Name</label>
       <input type="text" name="materialname" class="form-control">
     </div>
+    <div class="form-group col-md-2">
+      <label for="inputState1">Unit</label>
+      <select id="inputState1" name="units" class="form-control">
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.unit }}" name="{{ items.unit }}">{{ items.unit }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+      <div class="form-group col-md-2">
+      <label for="inputState2">Sub-Unit</label>
+      <select id="inputState2" name="sub_units" class="form-control">
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.unit }}" name="{{ items.unit }}">{{ items.unit }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
       </div>
       <div class="form-row">
       <div class="form-group col-md-4">

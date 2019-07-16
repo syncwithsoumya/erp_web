@@ -12,11 +12,12 @@ Star ERP -- View Purchased
                 <th>Purchased_ID</th>
                 <th>Purchased_Date</th>
                 <th>Ledger Name</th>
-                <th>Quantity(KG)</th>
+                <th>Quantity_Unit</th>
+                <th>Unit</th>
                 <th>Total Amount</th>
-                <th>Pieces</th>
+                <th>Quantity_Sub_unit</th>
+                <th>Sub_Unit</th>
                 <th>Material Name</th>
-                <th>Added By</th>
             </tr>
         </thead>
 
@@ -27,11 +28,12 @@ Star ERP -- View Purchased
                     <td>{{items.purchased_id}}</td>
                     <td>{{items.purchased_date}}</td>
                     <td>{{items.ledger_name}}</td>
-                    <td>{{items.quantity_KG}}</td>
+                    <td>{{items.quantity_unit}}</td>
+                    <td>{{items.unit}}</td>
                     <td>{{items.total_amount}}</td>
-                    <td>{{items.no_of_piece}}</td>
+                    <td>{{items.quantity_sub_unit}}</td>
+                    <td>{{items.sub_unit}}</td>
                     <td>{{items.material_name}}</td>
-                    <td>{{items.added_by}}</td>
             </tr>
          {% endfor %}
         </tbody>
