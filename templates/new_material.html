@@ -4,7 +4,7 @@ Star ERP -- Add Material
 {% endblock %}
 {% block content %}
 <h1 class="h3 mb-4 text-gray-800">Add Material</h1>
-<form action="/new_material_add" method="post">
+<form action="/material_creation" method="post">
   <div class="form-row">
     <div class="form-group col-md-4">
          <label>Material Name</label>
@@ -13,6 +13,7 @@ Star ERP -- Add Material
     <div class="form-group col-md-2">
       <label for="inputState1">Unit</label>
       <select id="inputState1" name="units" class="form-control">
+            <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
       {% else %}
@@ -25,6 +26,7 @@ Star ERP -- Add Material
       <div class="form-group col-md-2">
       <label for="inputState2">Sub-Unit</label>
       <select id="inputState2" name="sub_units" class="form-control">
+            <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
       {% else %}

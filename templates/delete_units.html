@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 {% block title %}
-Star ERP -- Delete Material
+Star ERP -- Delete Unit
 {% endblock %}
 {% block content %}
-<h1 class="h3 mb-4 text-gray-800">Delete Material</h1>
-<form action="/material_deletion" method="POST">
+<h1 class="h3 mb-4 text-gray-800">Delete Unit</h1>
+<form action="/unit_deletion" method="POST">
   <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputState">Material Name</label>
-      <select id="inputState" name="materials" class="form-control">
+      <label for="inputState">Unit Name</label>
+      <select id="inputState" name="unit" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
       {% else %}
         {% for items in items_data %}
-        <option value="{{ items.material_name }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        <option value="{{ items.unit }}" name="{{ items.unit }}">{{ items.unit }}</option>
         {% endfor %}
       {% endif %}
       </select>

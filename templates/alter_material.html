@@ -4,11 +4,12 @@ Star ERP -- Alter Material
 {% endblock %}
 {% block content %}
 <h1 class="h3 mb-4 text-gray-800">Alter Material</h1>
-<form action="/alter_material" method="POST">
+<form action="/material_modification" method="POST">
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputState1">Old Material Name</label>
       <select id="inputState1" name="materials_list" class="form-control">
+            <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
       {% else %}

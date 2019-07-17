@@ -72,10 +72,10 @@
         <div id="collapseMaterial" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_material">New Material</a>
-            <a class="collapse-item" href="/alter_material_db">Alter Material</a>
-            <a class="collapse-item" href="/del_material_db">Delete Material</a>
-              <a class="collapse-item" href="/view_material_db">View Material</a>
+            <a class="collapse-item" href="/create_material">New Material</a>
+            <a class="collapse-item" href="/modify_material">Alter Material</a>
+            <a class="collapse-item" href="/delete_material">Delete Material</a>
+              <a class="collapse-item" href="/view_material">View Material</a>
           </div>
         </div>
       </li>
@@ -84,15 +84,15 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true" aria-controls="collapseUnit">
           <i class="fas fa-fw fa-atom"></i>
-          <span>Unit Masters</span>
+          <span>Units Master</span>
         </a>
         <div id="collapseUnit" class="collapse" aria-labelledby="headingUnit" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_units_add">New Unit Entry</a>
-            <a class="collapse-item" href="/alter_material_db">Alter Unit Entry</a>
-            <a class="collapse-item" href="/del_material_db">Delete Unit Entry</a>
-              <a class="collapse-item" href="/view_material_db">View all Entries</a>
+            <a class="collapse-item" href="/create_units">Add New Unit</a>
+            <a class="collapse-item" href="/modify_units">Alter Existing Unit </a>
+            <a class="collapse-item" href="/delete_units">Delete Existing Unit</a>
+              <a class="collapse-item" href="/view_units">View Units</a>
           </div>
         </div>
       </li>
@@ -101,7 +101,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePurchase" aria-expanded="true" aria-controls="collapsePurchase">
           <i class="fas fa-fw fa-shopping-cart"></i>
-          <span>Purchase Process</span>
+          <span>Purchase</span>
         </a>
         <div id="collapsePurchase" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -113,12 +113,27 @@
           </div>
         </div>
       </li>
+          <!-- Nav Item - Build-out Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBuild" aria-expanded="true" aria-controls="collapseBuild">
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>Manufacturing</span>
+        </a>
+        <div id="collapseBuild" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
+            <a class="collapse-item" href="/new_buildout">New Product</a>
+            <a class="collapse-item" href="utilities-animation.html">Alter Product</a>
+            <a class="collapse-item" href="/view_product_details">View Product Details</a>
+          </div>
+        </div>
+      </li>
 
           <!-- Nav Item - Sell Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="true" aria-controls="collapseSell">
           <i class="fas fa-fw fa-shipping-fast"></i>
-          <span>Billing Process</span>
+          <span>Billing</span>
         </a>
         <div id="collapseSell" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -131,40 +146,27 @@
         </div>
       </li>
 
-           <!-- Nav Item - Build-out Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBuild" aria-expanded="true" aria-controls="collapseBuild">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Manufacture</span>
-        </a>
-        <div id="collapseBuild" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_buildout">New Product</a>
-            <a class="collapse-item" href="utilities-animation.html">Alter Product</a>
-            <a class="collapse-item" href="/view_product_details">View Product Details</a>
-          </div>
-        </div>
-      </li>
+
       <!-- Divider
       <hr class="sidebar-divider">-->
-<hr class="sidebar-divider d-none d-md-block">
+<!--<hr class="sidebar-divider d-none d-md-block">
       <!-- Heading -->
-      <div class="sidebar-heading">
+      <!--<div class="sidebar-heading">
         Addons
-      </div>
+      </div>-->
      <!-- Nav Item - Build-out Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCash" aria-expanded="true" aria-controls="collapseCash">
           <i class="fas fa-fw fa-rupee-sign"></i>
-          <span>Cash</span>
+          <span>Payment</span>
         </a>
         <div id="collapseCash" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="utilities-color.html">New Product</a>
-            <a class="collapse-item" href="utilities-animation.html">Alter Product</a>
-            <a class="collapse-item" href="utilities-other.html">View Product Details</a>
+            <a class="collapse-item" href="utilities-color.html">Cash Out to Ledger</a>
+            <a class="collapse-item" href="utilities-animation.html">Cash In from Ledger</a>
+            <a class="collapse-item" href="utilities-other.html">View Cash Outs</a>
+              <a class="collapse-item" href="utilities-other.html">View Cash Ins</a>
           </div>
         </div>
       </li>

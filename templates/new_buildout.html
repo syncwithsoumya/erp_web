@@ -6,6 +6,13 @@ Star ERP -- Add Buildout
 <h1 class="h3 mb-4 text-gray-800">Add Buildout</h1>
 <form action="/new_buildout_add" method="POST">
     <div class="form-row">
+    <div class="form-group col-md-2">
+    <label class="radio-inline"><input type="radio" name="optradio" checked> New Finished Item</label>
+    <label class="radio-inline"><input type="radio" name="optradio"> Already Existing Item</label>
+    </div>
+    </div>
+    <div class="form-row" id="new_product">
+    <div class="form-row">
     <div class="form-group col-md-4">
          <label>Product Name</label>
         <input type="text" class="form-control" name="pname">
@@ -183,5 +190,6 @@ Star ERP -- Add Buildout
       </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     <button type="reset" class="btn btn-danger">Reset</button>
+        </div>
 </form>
 {% endblock %}

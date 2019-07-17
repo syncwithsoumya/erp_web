@@ -41,8 +41,8 @@ def create_ledger():
         return render_template('new_ledger.html')
 
 
-@app.route('/new_material')
-def new_material():
+@app.route('/create_material')
+def create_material():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -231,8 +231,8 @@ def view_ledger():
 '''
 
 
-@app.route('/new_material_add', methods =['POST', 'GET'])
-def new_material_add():
+@app.route('/material_creation', methods=['POST', 'GET'])
+def material_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -247,7 +247,7 @@ def new_material_add():
             if material_name == "":
                 flag = "Invalid Data"
                 flash(flag)
-                return redirect(url_for('new_material'))
+                return redirect(url_for('create_material'))
             else:
                 connection = connect_to_db()
                 with connection.cursor() as cursor:
@@ -257,17 +257,17 @@ def new_material_add():
                         connection.commit()
                         flag = 'Successfully Added Material - {} at {}' .format(material_name, date_time)
                         flash(flag)
-                        return redirect(url_for('new_material'))
+                        return redirect(url_for('create_material'))
                     except Exception as e:
                         flag = "Failure with %s" % e
                         flash(flag)
-                        return redirect(url_for('new_material'))
+                        return redirect(url_for('create_material'))
                     finally:
                         connection.close()
 
 
-@app.route('/del_material_db')
-def del_material_db():
+@app.route('/delete_material')
+def delete_material():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -285,37 +285,37 @@ def del_material_db():
                 return 'Exception'
 
 
-@app.route('/delete_material',  methods=['POST', 'GET'])
-def delete_material():
+@app.route('/material_deletion',  methods=['POST', 'GET'])
+def material_deletion():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        material_id = None
+        material_name = None
         connection = connect_to_db()
         if request.method == 'POST':
-            material_id = request.form['materials']
-            if material_id == "":
+            material_name = request.form['materials']
+            if material_name == "":
                 flag = "Invalid Data"
                 flash(flag)
-                return redirect(url_for('del_material_db'))
+                return redirect(url_for('delete_material'))
         if connection.open == 1:
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    del_items = "DELETE FROM material WHERE id=%s"
-                    cursor.execute(del_items, material_id)
+                    del_items = "DELETE FROM material WHERE material_name=%s"
+                    cursor.execute(del_items, material_name)
                     connection.commit()
                     connection.close()
-                    flag = "Successfully deleted - {} at - {}" .format(material_id, datetime.now())
+                    flag = "Successfully deleted - {} at - {}" .format(material_name, datetime.now())
                     flash(flag)
-                    return redirect(url_for('del_material_db'))
+                    return redirect(url_for('delete_material'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
                 return 'Exception'
 
 
-@app.route('/alter_material', methods=['POST', 'GET'])
-def alter_material():
+@app.route('/material_modification', methods=['POST', 'GET'])
+def material_modification():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -329,30 +329,33 @@ def alter_material():
             mat_comments = request.form['new_comments']
         if material_name == "" and mat_comments == "":
             flash('Invalid Data. Please try again.')
-            return redirect(url_for('alter_material_db'))
+            return redirect(url_for('modify_material'))
         if connection.open == 1:
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    if mat_comments and material_id:
-                        del_items = 'UPDATE material SET comments="%s" WHERE id=%s' % (mat_comments, material_id)
+                    select_item = 'SELECT material_name FROM material WHERE id=%s'
+                    cursor.execute(select_item, material_id)
+                    item = cursor.fetchone()
+                    if mat_comments and material_id and material_name == "":
+                        upd_items = 'UPDATE material SET comments="%s" WHERE id=%s' % (mat_comments, material_id)
                     elif material_name and material_id:
-                        del_items = 'UPDATE material SET material_name="%s" WHERE id=%s' % (material_name, material_id)
+                        upd_items = 'UPDATE material SET material_name="%s" WHERE id=%s' % (material_name, material_id)
                     else:
-                        del_items = 'UPDATE material SET material_name="%s", comments="%s" WHERE id=%s' % (material_name, mat_comments, material_id)
-                    cursor.execute(del_items)
+                        upd_items = 'UPDATE material SET material_name="%s", comments="%s" WHERE id=%s' % (material_name, mat_comments, material_id)
+                    cursor.execute(upd_items)
                     connection.commit()
                     connection.close()
-                    flag = "Successfully Updated - {} to - {} at {}".format(material_id, material_name, datetime.now())
+                    flag = "Successfully Updated - {} to {} at {}".format(item['material_name'], material_name, datetime.now())
                     flash(flag)
-                    return redirect(url_for('alter_material_db'))
+                    return redirect(url_for('modify_material'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
-@app.route('/alter_material_db')
-def alter_material_db():
+@app.route('/modify_material')
+def modify_material():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -370,8 +373,8 @@ def alter_material_db():
                 return 'Exception'
 
 
-@app.route('/view_material_db')
-def view_material_db():
+@app.route('/view_material')
+def view_material():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -874,16 +877,16 @@ def process_alter_product(p_id):
         return str(e)
 
 
-@app.route('/new_units_add')
-def new_units_add():
+@app.route('/create_units')
+def create_units():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
         return render_template('new_units_add.html')
 
 
-@app.route('/new_unit_add', methods=['POST', 'GET'])
-def new_unit_add():
+@app.route('/unit_creation', methods=['POST', 'GET'])
+def unit_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -899,9 +902,110 @@ def new_unit_add():
                         connection.commit()
                         flag = 'Successfully Added the new {} unit'.format(unit)
                         flash(flag)
-                        return redirect(url_for('new_units_add'))
+                        return redirect(url_for('create_units'))
                 except Exception as e:
-                    return 'Exception'
+                    return str(e)
+
+
+@app.route('/modify_units')
+def modify_units():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT id, unit FROM units"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('alter_unit.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/unit_modification', methods=['POST', 'GET'])
+def unit_modification():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        unit_name = None
+        unit_id = None
+        connection = connect_to_db()
+        if request.method == 'POST':
+            unit_id = request.form['units_list']
+            unit_name = request.form['new_name']
+        if unit_id == "0" and unit_name == "":
+            flash('Invalid Data. Please try again.')
+            return redirect(url_for('modify_units'))
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    select_item = 'SELECT unit FROM units WHERE id=%s'
+                    cursor.execute(select_item, unit_id)
+                    item = cursor.fetchone()
+                    if unit_name and unit_id != "0":
+                        upd_items = 'UPDATE units SET unit="%s" WHERE id=%s' % (unit_name, unit_id)
+                        cursor.execute(upd_items)
+                        connection.commit()
+                        connection.close()
+                        flag = "Successfully Updated - {} to {} at {}".format(item['unit'], unit_name, datetime.now())
+                        flash(flag)
+                        return redirect(url_for('modify_units'))
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/delete_units')
+def delete_units():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate unit names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT unit FROM units"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    return render_template('delete_units.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
+            finally:
+                connection.close()
+
+
+@app.route('/unit_deletion', methods=['POST', 'GET'])
+def unit_deletion():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        unit = None
+        connection = connect_to_db()
+        if request.method == 'POST':
+            unit = request.form['unit']
+            if unit == "0":
+                flag = "Invalid Data"
+                flash(flag)
+                return redirect(url_for('delete_units'))
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    del_items = "DELETE FROM units WHERE unit=%s"
+                    cursor.execute(del_items, unit)
+                    connection.commit()
+                    connection.close()
+                    flag = "Successfully deleted - {} at - {}".format(unit, datetime.now())
+                    flash(flag)
+                    return redirect(url_for('delete_units'))
+                    # return render_template('delete_ledger.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
 
 
 if __name__ == '__main__':
