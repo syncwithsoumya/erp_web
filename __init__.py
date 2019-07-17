@@ -1008,5 +1008,24 @@ def unit_deletion():
                 return str(e)
 
 
+@app.route('/view_units')
+def view_units():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT id, unit FROM units"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('view_units.html', items_data=items_data)
+            except Exception as e:
+                return 'Exception'
+
+
 if __name__ == '__main__':
     app.run(debug=True)

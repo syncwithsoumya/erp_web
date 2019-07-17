@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- View Units
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">View Units</h1>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Unit Type</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+                    <td>{{items.id}}</td>
+                    <td>{{items.unit}}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
