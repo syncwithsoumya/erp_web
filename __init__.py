@@ -633,7 +633,7 @@ def check_buildout():
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id, material_name, comments FROM material"
+                    get_items = "SELECT id, product_name, comments FROM product"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
