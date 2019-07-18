@@ -18,7 +18,7 @@
   <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -122,7 +122,7 @@
         <div id="collapseBuild" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_buildout">New Product</a>
+            <a class="collapse-item" href="/check_buildout">New Product</a>
             <a class="collapse-item" href="utilities-animation.html">Alter Product</a>
             <a class="collapse-item" href="/view_product_details">View Product Details</a>
           </div>
@@ -333,6 +333,9 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+
 		<script type="text/javascript">
 		$(document).ready(function() {
     $('#example').DataTable();
@@ -409,7 +412,21 @@ $.ajax({
      $('input#amount').val(amt);
 });
 </script>
-
+<script>
+    $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+</script>
+<script>
+    $(function() {
+    $("#ext_product").hide();
+     $("#select_field").on("change", function(){
+    //$("#search_product").hide();
+    $("#ext_product").show();
+    //$("#new_item").hide();
+    });
+    });
+</script>
 </body>
 
 </html>

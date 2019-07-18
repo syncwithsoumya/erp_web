@@ -623,8 +623,8 @@ def show_material_inventory():
 '''
 
 
-@app.route('/new_buildout')
-def new_buildout():
+@app.route('/check_buildout')
+def check_buildout():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -637,13 +637,32 @@ def new_buildout():
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('new_buildout.html', items_data=items_data)
+                    return render_template('check_buildout.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
-@app.route('/new_buildout_add', methods=['POST', 'GET'])
-def new_buildout_add():
+@app.route('/buildout')
+def buildout():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT id, material_name, comments FROM material"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('buildout.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/new_buildout_creation', methods=['POST', 'GET'])
+def new_buildout_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -678,14 +697,14 @@ def new_buildout_add():
             if item1==0 or item2==0: #  or item3==0 or item4==0 or item5==0 or item6==0 or item7==0 or item8==0:
                 flag = "Items missing ..."
                 flash(flag)
-                return redirect(url_for('new_buildout'))
+                return redirect(url_for('buildout'))
             else:
                 data = dict()
                 list_handler = list()
                 if product_name == "" or product_color == "" or product_qty == "" or product_rate == "" or product_comments == "" or product_date == "":
                     flag = "Invalid Data"
                     flash(flag)
-                    return redirect(url_for('new_buildout'))
+                    return redirect(url_for('buildout'))
                 if item1 > 0 and item1_combo !=0:
                     list_handler.append(item1_combo)
                 if item2 > 0 and item2_combo !=0:
@@ -724,8 +743,8 @@ def new_buildout_add():
                         connection.close()
                     except Exception as e:
                         flash('Exception %s' %(e))
-                        redirect(url_for('new_buildout'))
-                    return redirect(url_for('new_buildout'))
+                        redirect(url_for('buildout'))
+                    return redirect(url_for('buildout'))
                 else:
                     concat_errors = ''
                     counter = 0
@@ -774,17 +793,17 @@ def new_buildout_add():
                                         connection.commit()
                                     flag = 'Successfully Added the new product {}'.format(product_name)
                                     flash(flag)
-                                    return redirect(url_for('new_buildout'))
+                                    return redirect(url_for('buildout'))
                         except Exception as e:
                             flag = "Failure with %s" % e
                             flash(flag)
-                            return redirect(url_for('new_buildout'))
+                            return redirect(url_for('buildout'))
                         finally:
                             connection.close()
                         if any(list_of_ofs_items):
                             flag = "Insufficient Materials - %s " % str(list_of_ofs_items)
                             flash(flag)
-                            return redirect(url_for('new_buildout'))
+                            return redirect(url_for('buildout'))
 
 
 @app.route('/view_product_details')
