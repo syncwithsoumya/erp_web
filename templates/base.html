@@ -259,16 +259,20 @@
         {% with messages = get_flashed_messages() %}
                       {% if messages %}
                           {% for message in messages %}
-                           {% if not 'Successfully' in message %}
-                          <div class="alert alert-danger" role="alert">
-                            {{ message }}
-                            </div>
-                      {% else %}
-                    <div class="alert alert-success" role="alert">
-                        {{ message }}
-                    </div>
-                    {% endif %}
-                          {% endfor %}
+                           {% if 'Successfully' in message %}
+                              <div class="alert alert-success" role="alert">
+                                 {{ message }}
+                              </div>
+                           {% elif 'Insufficient' in message %}
+                              <div class="alert alert-info" role="alert">
+                                {{ message }}
+                              </div>
+                           {% else %}
+                              <div class="alert alert-danger" role="alert">
+                                {{ message }}
+                              </div>
+                            {% endif %}
+                            {% endfor %}
                            {% endif %}
                           {% endwith %}
 
@@ -404,6 +408,30 @@ $.ajax({
       });
 });
 </script>
+  <script>
+    $('select#select_field').change(function(){
+    var nodeList = $(this).children("option:selected").val();
+$.ajax({
+	url: "/show_finished_products/"+nodeList,
+	type: "GET",
+	dataType: "json",
+	success: function(resp){
+		//$('select#inputState').val(resp.ledger_id);
+		$('input#pname').val(resp.product_name);
+		$('input#pdate').val(resp.build_date);
+		$('input#pcomments').val(resp.comments);
+		$('input#prate').val(resp.product_rate);
+		$('input#pcolor').val(resp.product_color);
+		  $.each(resp.spec, function (index) {
+		$('input#item'+(index+1)).val(this.quantity);
+		$('input#hidden_item'+(index+1)).val(this.quantity);
+		$('input#item_cm'+(index+1)).val(this.material_name);
+
+    });
+	}
+      });
+});
+</script>
 <script>
     $('input#rate').keyup(function(){
     var qty = $('input#qty').val();
@@ -411,6 +439,73 @@ $.ajax({
     var amt = qty * rate;
      $('input#amount').val(amt);
 });
+</script>
+  <script>
+    $('input#pqty').keyup(function(){
+var qty = $('input#pqty').val();
+var temp_item1 = $('input#item1').val();
+var hidden_qty1 = $('input#hidden_item1').val();
+var hidden_qty2 = $('input#hidden_item2').val();
+var hidden_qty3 = $('input#hidden_item3').val();
+var hidden_qty4 = $('input#hidden_item4').val();
+var hidden_qty5 = $('input#hidden_item5').val();
+var hidden_qty6 = $('input#hidden_item6').val();
+var hidden_qty7 = $('input#hidden_item7').val();
+var hidden_qty8 = $('input#hidden_item8').val();
+    var temp_item2 = $('input#item2').val();
+    var temp_item3 = $('input#item3').val();
+    var temp_item4 = $('input#item4').val();
+    var temp_item5 = $('input#item5').val();
+    var temp_item6 = $('input#item6').val();
+    var temp_item7 = $('input#item7').val();
+    var temp_item8 = $('input#item8').val();
+    var item1 = jQuery("#item1").text();
+    //alert(parseInt(temp_item1));
+    var item2 = jQuery("#item2").text();
+    var item3 = jQuery("#item3").text();
+    var item4 = jQuery("#item4").text();
+    var item5 = jQuery("#item5").text();
+    var item6 = jQuery("#item6").text();
+    var item7 = jQuery("#item7").text();
+    var item8 = jQuery("#item8").text();
+    if (parseInt($('input#pqty').val()) < 1)
+    {
+    qty = 1;
+    $('input#item1').val(temp_item1 * qty);
+    $('input#item2').val(temp_item2 * qty);
+    $('input#item3').val(temp_item3 * qty);
+    $('input#item4').val(temp_item4 * qty);
+    $('input#item5').val(temp_item5 * qty);
+    $('input#item6').val(temp_item6 * qty);
+    $('input#item7').val(temp_item7 * qty);
+    $('input#item8').val(temp_item8 * qty);
+    }
+    if (parseInt($('input#pqty').val()) >= 1)
+    {
+    $('input#item1').val(hidden_qty1 * qty);
+    $('input#item2').val(hidden_qty2 * qty);
+    $('input#item3').val(hidden_qty3 * qty);
+    $('input#item4').val(hidden_qty4 * qty);
+    $('input#item5').val(hidden_qty5 * qty);
+    $('input#item6').val(hidden_qty6 * qty);
+    $('input#item7').val(hidden_qty7 * qty);
+    $('input#item8').val(hidden_qty8 * qty);
+    }
+    else
+    {
+    //alert("Null");
+    //alert(item1);
+    $('input#item1').val(hidden_qty1);
+    $('input#item2').val(hidden_qty2);
+    $('input#item3').val(hidden_qty3);
+    $('input#item4').val(hidden_qty4);
+    $('input#item5').val(hidden_qty5);
+    $('input#item6').val(hidden_qty6);
+    $('input#item7').val(hidden_qty7);
+    $('input#item8').val(hidden_qty8);
+    }
+});
+
 </script>
 <script>
     $(document).ready(function() {

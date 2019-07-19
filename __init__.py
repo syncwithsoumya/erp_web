@@ -2,7 +2,7 @@ from flask import Flask, render_template,redirect, url_for, request, flash, sess
 import pymysql.cursors
 from datetime import datetime
 import utilities
-import collections
+from collections import Counter
 import ast
 app = Flask(__name__)
 app.secret_key = 'dot tell me again'
@@ -661,8 +661,8 @@ def buildout():
                 return str(e)
 
 
-@app.route('/new_buildout_creation', methods=['POST', 'GET'])
-def new_buildout_creation():
+@app.route('/buildout_creation', methods=['POST', 'GET'])
+def buildout_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -677,14 +677,14 @@ def new_buildout_creation():
             product_date = request.form['pdate']
             product_qty = request.form['pqty']
 
-            item1_combo = int(request.form['item_cm1'])
-            item2_combo = int(request.form['item_cm2'])
-            item3_combo = int(request.form['item_cm3'])
-            item4_combo = int(request.form['item_cm4'])
-            item5_combo = int(request.form['item_cm5'])
-            item6_combo = int(request.form['item_cm6'])
-            item7_combo = int(request.form['item_cm7'])
-            item8_combo = int(request.form['item_cm8'])
+            item1_combo = int(request.form['item_text1'])
+            item2_combo = int(request.form['item_text2'])
+            item3_combo = int(request.form['item_text3'])
+            item4_combo = int(request.form['item_text4'])
+            item5_combo = int(request.form['item_text5'])
+            item6_combo = int(request.form['item_text6'])
+            item7_combo = int(request.form['item_text7'])
+            item8_combo = int(request.form['item_text8'])
 
             item1 = int(request.form['item1'])
             item2 = int(request.form['item2'])
@@ -723,7 +723,7 @@ def new_buildout_creation():
                     list_handler.append(item8_combo)
                 else:
                     pass
-                dupes = [item for item, count in collections.Counter(list_handler).items() if count > 1]
+                dupes = [item for item, count in Counter(list_handler).items() if count > 1]
                 if any(dupes):
                     sum_of_dupes = ''
                     counter = 0
@@ -755,55 +755,179 @@ def new_buildout_creation():
                             for i in range(1,9):
                                 exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
                             print(data)
-                            del data[0]
-                            all_keys = data.keys()
+                            if data.values() == 0:
+                                del data[0]
+                            else:
+                                pass
+                            all_keys = list(data.keys())
                             for item in all_keys:
                                 check_material = "SELECT quantity FROM material_qty WHERE material_id=%s"
                                 cursor.execute(check_material, item)
                                 data_checked = cursor.fetchone()
-                                if int(data_checked['quantity']) <= int(data[item]):
+                                # get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
+                                # cursor.execute(get_material_purchased, item)
+                                # get_data = cursor.fetchone()
+                                sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
+                                      "product_color,build_date, product_spec, product_rate,ip_address,mac_id) " \
+                                      "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                                cursor.execute(sql,
+                                               (product_name, date_time, str(session['username']), product_comments,
+                                                product_color, product_date, str(data), product_rate, ip, mac))
+                                connection.commit()
+                                get_product_data = "SELECT quantity FROM product_qty WHERE product_name=%s AND product_color=%s"
+                                cursor.execute(get_product_data, (product_name, product_color))
+                                product_data = cursor.fetchone()
+                                if product_data is None:
+                                    sql_quantity = "INSERT INTO product_qty(product_name, product_color, quantity) VALUES(%s,%s,%s)"
+                                    cursor.execute(sql_quantity, (product_name, product_color, product_qty))
+                                    connection.commit()
+                                else:
+                                    sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s AND product_color=%s"
+                                    cursor.execute(sql_quantity, (product_qty, product_name, product_color))
+                                    connection.commit()
+                                for item in all_keys:
+                                    print(item)
                                     get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
                                     cursor.execute(get_material_purchased, item)
                                     get_data = cursor.fetchone()
-                                    list_of_ofs_items.append(get_data['material_name'])
-                                else:
-
-                                    sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
-                                          "product_color,build_date, product_spec, product_rate,ip_address,mac_id) " \
-                                          "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                                    cursor.execute(sql,
-                                                   (product_name, date_time, str(session['username']), product_comments,
-                                                    product_color, product_date, str(data), product_rate, ip, mac))
+                                    if data_checked is None:
+                                        flash("Material - {} not in inventory. Purchase Material.".format(
+                                            get_data['material_name']))
+                                        return redirect(url_for('buildout'))
+                                    if int(data_checked['quantity']) <= int(data[item]):
+                                        list_of_ofs_items.append(get_data['material_name'])
+                                    # get_mat_data = "SELECT quantity FROM material_qty WHERE material_id=%s"
+                                    # cursor.execute(get_mat_data, item)
+                                    # qty_exist = cursor.fetchone()
+                                    sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
+                                    cursor.execute(sql_quantity, (data[item], item))
                                     connection.commit()
-                                    get_product_data = "SELECT quantity FROM product_qty WHERE product_name=%s AND product_color=%s"
-                                    cursor.execute(get_product_data, (product_name, product_color))
-                                    product_data = cursor.fetchone()
-                                    if product_data is None:
-                                        sql_quantity = "INSERT INTO product_qty(product_name, product_color, quantity) VALUES(%s,%s,%s)"
-                                        cursor.execute(sql_quantity, (product_name, product_color, product_qty))
-                                        connection.commit()
-                                    else:
-                                        sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s AND product_color=%s"
-                                        cursor.execute(sql_quantity, (product_qty, product_name, product_color))
-                                        connection.commit()
-                                    for item in all_keys:
-                                        print(item)
-                                        sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
-                                        cursor.execute(sql_quantity, (data[item], item))
-                                        connection.commit()
-                                    flag = 'Successfully Added the new product {}'.format(product_name)
-                                    flash(flag)
-                                    return redirect(url_for('buildout'))
+                                flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
+                                flash(flag)
+                                return redirect(url_for('buildout'))
                         except Exception as e:
                             flag = "Failure with %s" % e
                             flash(flag)
                             return redirect(url_for('buildout'))
                         finally:
                             connection.close()
-                        if any(list_of_ofs_items):
-                            flag = "Insufficient Materials - %s " % str(list_of_ofs_items)
-                            flash(flag)
-                            return redirect(url_for('buildout'))
+                        # if any(list_of_ofs_items):
+                        #     flag = "Insufficient Materials - %s " % str(list_of_ofs_items)
+                        #     flash(flag)
+                        #     return redirect(url_for('buildout'))
+
+
+@app.route('/buildout_addition', methods=['POST', 'GET'])
+def buildout_addition():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        mac = utilities.get_mac()
+        ip = utilities.get_ip()
+        if request.method == 'POST':
+            product_name = request.form['pname']
+            product_rate = request.form['prate']
+            product_comments = request.form['pcomments']
+            product_color = request.form['pcolor']
+            product_date = request.form['pdate']
+            product_qty = request.form['pqty']
+
+            item1_combo = request.form['item_cm1']
+            item2_combo = request.form['item_cm2']
+            item3_combo = request.form['item_cm3']
+            item4_combo = request.form['item_cm4']
+            item5_combo = request.form['item_cm5']
+            item6_combo = request.form['item_cm6']
+            item7_combo = request.form['item_cm7']
+            item8_combo = request.form['item_cm8']
+
+            item1 = int(request.form['item1'])
+            item2 = int(request.form['item2'])
+            item3 = int(request.form['item3'])
+            item4 = int(request.form['item4'])
+            item5 = int(request.form['item5'])
+            item6 = int(request.form['item6'])
+            item7 = int(request.form['item7'])
+            item8 = int(request.form['item8'])
+
+            data = dict()
+            list_handler = list()
+            if item1 > 0 and item1_combo != "":
+                list_handler.append(item1_combo)
+            if item2 > 0 and item2_combo != "":
+                list_handler.append(item2_combo)
+            if item3 > 0 and item3_combo != "":
+                list_handler.append(item3_combo)
+            if item4 > 0 and item4_combo != "":
+                list_handler.append(item4_combo)
+            if item5 > 0 and item5_combo != "":
+                list_handler.append(item5_combo)
+            if item6 > 0 and item6_combo != "":
+                list_handler.append(item6_combo)
+            if item7 > 0 and item7_combo != "":
+                list_handler.append(item7_combo)
+            if item8 > 0 and item8_combo != "":
+                list_handler.append(item8_combo)
+            else:
+                pass
+            dupes = [item for item, count in Counter(list_handler).items() if count > 1]
+            if any(dupes):
+                sum_of_dupes = ''
+                counter = 0
+                try:
+                    connection = connect_to_db()
+                    with connection.cursor() as cursor:
+                        for i in dupes:
+                            get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
+                            cursor.execute(get_material_purchased, int(i))
+                            data = cursor.fetchone()
+                            if counter == 0:
+                                sum_of_dupes = data['material_name']
+                            else:
+                                sum_of_dupes = sum_of_dupes + " and " + data['material_name']
+                            counter += 1
+                    flash('Duplicate material - %s' %(sum_of_dupes))
+                    connection.close()
+                except Exception as e:
+                    flash('Exception %s' %(e))
+                    redirect(url_for('check_buildout'))
+                return redirect(url_for('check_buildout'))
+            else:
+                list_of_ofs_items = list()
+                connection = connect_to_db()
+                with connection.cursor() as cursor:
+                    try:
+                        for i in range(1,9):
+                            exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
+                        print(data)
+                        new = {k: v for k, v in data.items() if v}
+                        data = new
+                        all_keys = data.keys()
+                        sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s AND product_color=%s"
+                        cursor.execute(sql_quantity, (product_qty, product_name, product_color))
+                        connection.commit()
+                        for item in all_keys:
+                            check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
+                            cursor.execute(check_material, item)
+                            data_checked = cursor.fetchone()
+                            if data_checked is None:
+                                flash("Material - {} not in inventory. Purchase Material.".format(item))
+                                return redirect(url_for('check_buildout'))
+                            if int(data_checked['quantity']) <= int(data[item]):
+                                list_of_ofs_items.append(item)
+                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
+                            cursor.execute(sql_quantity, (data[item], item))
+                            connection.commit()
+                        flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
+                        flash(flag)
+                        return redirect(url_for('check_buildout'))
+                    except Exception as e:
+                        flag = "Failure with %s" % e
+                        flash(flag)
+                        return redirect(url_for('check_buildout'))
+                    finally:
+                        connection.close()
 
 
 @app.route('/view_product_details')
@@ -1044,6 +1168,32 @@ def view_units():
                     return render_template('view_units.html', items_data=items_data)
             except Exception as e:
                 return 'Exception'
+
+
+@app.route('/show_finished_products/<int:p_id>', methods=['GET'])
+def show_finished_products(p_id):
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_unit_comments = "SELECT  product_name, comments, product_color, build_date, product_rate , product_spec FROM product where id=%s"
+            cursor.execute(get_unit_comments, p_id)
+            dat = cursor.fetchone()
+            materials_used = dat['product_spec']
+            materials_used = ast.literal_eval(materials_used)
+            count = str(len(list(materials_used.keys())) * '%s,')[:-1]
+            get_material_name = "SELECT id, material_name FROM material WHERE id IN " + "("+count+")"
+            cursor.execute(get_material_name, tuple(materials_used.keys()))
+            get_all = cursor.fetchall()
+            connection.close()
+            leng = len(get_all)
+            for i in range(0, leng):
+                id = get_all[i]['id']
+                mat_quantity = materials_used[id]
+                get_all[i]['quantity'] = mat_quantity
+            return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_color': dat['product_color'], 'build_date': dat['build_date'], 'product_rate': dat['product_rate'], 'spec': get_all})
+    except Exception as e:
+        return str(e)
 
 
 if __name__ == '__main__':

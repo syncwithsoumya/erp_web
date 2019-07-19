@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}
-Star ERP -- New Buildout
+Star ERP -- Create Buildout
 {% endblock %}
 {% block content %}
-<h3 class="h3 mb-4 text-gray-800">New Buildout</h3>
+<h3 class="h3 mb-4 text-gray-800">Create Buildout</h3>
 <div class="form-row" id="new_product">
 
-        <form action="/new_buildout_creation" method="POST">
+        <form action="/buildout_creation" method="POST">
             <div class="form-row">
             <div class="form-group col-md-4">
                 <label>Product Name</label>
@@ -36,7 +36,7 @@ Star ERP -- New Buildout
   <div class="form-row">
     <div class="form-group col-md-2">
          <label>Item-1</label>
-      <select id="inputState1" name="item_cm1" class="form-control">
+      <select id="inputStates1" name="item_text1" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
@@ -53,7 +53,7 @@ Star ERP -- New Buildout
       </div>
       <div class="form-group col-md-2">
          <label>Item-2</label>
-          <select id="inputState2" name="item_cm2" class="form-control">
+          <select id="inputStates2" name="item_text2" class="form-control">
           <option value="0" selected> -- Choose --</option>
             {% if not items_data %}
               <option value="no_items">No Items to display</option>
@@ -71,7 +71,7 @@ Star ERP -- New Buildout
 
         <div class="form-group col-md-2">
          <label>Item-3</label>
-      <select id="inputState3" name="item_cm3" class="form-control">
+      <select id="inputStates3" name="item_text3" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
@@ -92,7 +92,7 @@ Star ERP -- New Buildout
     <div class="form-row">
     <div class="form-group col-md-2">
          <label>Item-4</label>
-      <select id="inputState4" name="item_cm4" class="form-control">
+      <select id="inputStates4" name="item_text4" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
@@ -110,7 +110,7 @@ Star ERP -- New Buildout
       </div>
         <div class="form-group col-md-2">
          <label>Item-5</label>
-      <select id="inputState5" name="item_cm5" class="form-control">
+      <select id="inputStates5" name="item_text5" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
@@ -128,7 +128,7 @@ Star ERP -- New Buildout
       </div>
         <div class="form-group col-md-2">
          <label>Item-6</label>
-      <select id="inputState6" name="item_cm6" class="form-control">
+      <select id="inputStates6" name="item_text6" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
@@ -146,7 +146,7 @@ Star ERP -- New Buildout
       </div>
         <div class="form-group col-md-2">
          <label>Item-7</label>
-      <select id="inputState7" name="item_cm7" class="form-control">
+      <select id="inputStates7" name="item_text7" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
@@ -166,7 +166,7 @@ Star ERP -- New Buildout
 
         <div class="form-group col-md-2">
          <label>Item-8</label>
-      <select id="inputState8" name="item_cm8" class="form-control">
+      <select id="inputStates8" name="item_text8" class="form-control">
           <option value="0" selected> -- Choose --</option>
         {% if not items_data %}
         <option value="no_items">No Items to display</option>
