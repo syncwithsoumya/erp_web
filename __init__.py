@@ -453,7 +453,6 @@ def new_purchased_db():
             connection.close()
 
 
-
 @app.route('/alter_purchased_db')
 def alter_purchased_db():
     connection = ''
@@ -497,10 +496,10 @@ def new_purchased():
             subunit = request.form['subunit']
             material = request.form['materials_dat']
             qty_sub_unit = int(request.form['piece'])
-            totamt = int(request.form['totamt'])
-            rate = int(request.form['recamt'])
+            totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
+            rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
 
-            if qty_unit == "" or pdate == "" or material == "" or qty_sub_unit == "" or rate == "":
+            if qty_unit == "" or pdate == "" or material == "" or qty_sub_unit == "":
                 flag = "Invalid Data"
                 flash(flag)
                 return redirect(url_for('new_purchased_db'))
@@ -1194,6 +1193,125 @@ def show_finished_products(p_id):
             return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_color': dat['product_color'], 'build_date': dat['build_date'], 'product_rate': dat['product_rate'], 'spec': get_all})
     except Exception as e:
         return str(e)
+
+
+@app.route('/show_sell_products/<int:p_id>', methods=['GET'])
+def show_sell_products(p_id):
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_product_rate = "SELECT id, product_rate,product_name FROM product where id=%s"
+            cursor.execute(get_product_rate, p_id)
+            dat = cursor.fetchone()
+            get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
+            cursor.execute(get_product_qty, dat['product_name'])
+            get_all = cursor.fetchone()
+            connection.close()
+            return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
+    except Exception as e:
+        return str(e)
+
+
+@app.route('/add_billing')
+def add_billing():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        cursor = None
+        connection = None
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_items = "SELECT id,ledger_name FROM ledger"
+                cursor.execute(get_items)
+                ledger_data = cursor.fetchall()
+            with connection.cursor() as cursor:
+                get_products = "SELECT id,product_name FROM product"
+                cursor.execute(get_products)
+                product_data = cursor.fetchall()
+                return render_template('add_billing.html', ledger_data=ledger_data, product_data=product_data)
+        except Exception as e:
+            return str(e)
+        finally:
+            cursor.close()
+            connection.close()
+
+
+@app.route('/billing_creation', methods =['POST', 'GET'])
+def billing_creation():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        mac = utilities.get_mac()
+        ip = utilities.get_ip()
+        if request.method == 'POST':
+            ledger_id = int(request.form['ledgers_dat'])
+            pdate = request.form['pdate']
+            qty_unit = int(request.form['qtykg'])
+            product_id = request.form['products_dat']
+            totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
+            rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
+
+            if qty_unit == "" or pdate == "" or product_id == "" or totamt == "":
+                flag = "Invalid Data"
+                flash(flag)
+                return redirect(url_for('add_billing'))
+            else:
+                connection = connect_to_db()
+                with connection.cursor() as cursor:
+                    try:
+                        get_product_name = "SELECT product_name FROM product WHERE id=%s"
+                        cursor.execute(get_product_name, product_id)
+                        names = cursor.fetchone()
+                        get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
+                        cursor.execute(get_ledger_name, ledger_id)
+                        ledger_name = cursor.fetchone()
+                        sql = "INSERT INTO sell(sell_date,ledger_id,product_id,quantity," \
+                              "rate, amount,added_by,ip_address,mac_id) " \
+                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        cursor.execute(sql, (pdate, ledger_id, product_id, qty_unit, rate, totamt, str(session['username']), ip, mac))
+                        connection.commit()
+                        check_products = "SELECT id,quantity FROM product_qty WHERE product_name=%s"
+                        cursor.execute(check_products, names['product_name'])
+                        data = cursor.fetchone()
+                        if int(data['quantity']) < qty_unit:
+                            flag = "Insufficient Quantity. Please manufacture..."
+                            flash(flag)
+                            return redirect(url_for('add_billing'))
+                        else:
+                            sql_quantity = "UPDATE product_qty SET quantity = quantity - %s WHERE product_name=%s and id=%s"
+                            cursor.execute(sql_quantity, (qty_unit, names['product_name'], str(data['id'])))
+                            connection.commit()
+                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time)
+                        flash(flag)
+                        return redirect(url_for('add_billing'))
+                    except Exception as e:
+                        flag = "Failure with %s" % str(e)
+                        flash(flag)
+                        return redirect(url_for('add_billing'))
+                    finally:
+                        connection.close()
+
+
+@app.route('/view_billings')
+def view_billings():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate billing from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product p ON s.product_id=p.id"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('view_billings.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
 
 
 if __name__ == '__main__':

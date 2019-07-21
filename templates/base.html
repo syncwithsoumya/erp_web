@@ -123,7 +123,6 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
             <a class="collapse-item" href="/check_buildout">New Product</a>
-            <a class="collapse-item" href="utilities-animation.html">Alter Product</a>
             <a class="collapse-item" href="/view_product_details">View Product Details</a>
           </div>
         </div>
@@ -138,10 +137,8 @@
         <div id="collapseSell" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="utilities-color.html">Billing</a>
-            <a class="collapse-item" href="utilities-border.html">Delete Billing</a>
-            <a class="collapse-item" href="utilities-animation.html">Alter Billing</a>
-            <a class="collapse-item" href="utilities-other.html">View all Billings</a>
+            <a class="collapse-item" href="/add_billing">Billing</a>
+            <a class="collapse-item" href="/view_billings">View all Billings</a>
           </div>
         </div>
       </li>
@@ -163,10 +160,10 @@
         <div id="collapseCash" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="utilities-color.html">Cash Out to Ledger</a>
-            <a class="collapse-item" href="utilities-animation.html">Cash In from Ledger</a>
-            <a class="collapse-item" href="utilities-other.html">View Cash Outs</a>
-              <a class="collapse-item" href="utilities-other.html">View Cash Ins</a>
+            <a class="collapse-item" href="utilities-color.html">Pay to Ledger</a>
+            <a class="collapse-item" href="utilities-animation.html">Receive from Ledger</a>
+            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>
+              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>
           </div>
         </div>
       </li>
@@ -264,7 +261,7 @@
                                  {{ message }}
                               </div>
                            {% elif 'Insufficient' in message %}
-                              <div class="alert alert-info" role="alert">
+                              <div class="alert alert-warning" role="alert">
                                 {{ message }}
                               </div>
                            {% else %}
@@ -432,8 +429,30 @@ $.ajax({
       });
 });
 </script>
+  <script>
+    $('select#select_product').change(function(){
+    var nodeList = $(this).children("option:selected").val();
+$.ajax({
+	url: "/show_sell_products/"+nodeList,
+	type: "GET",
+	dataType: "json",
+	success: function(resp){
+		$('input#aqty').val(resp.quantity);
+		$('input#rate').val(resp.product_rate);
+	}
+      });
+});
+</script>
 <script>
     $('input#rate').keyup(function(){
+    var qty = $('input#qty').val();
+    var rate = $('input#rate').val();
+    var amt = qty * rate;
+     $('input#amount').val(amt);
+});
+</script>
+  <script>
+    $('input#qty').keyup(function(){
     var qty = $('input#qty').val();
     var rate = $('input#rate').val();
     var amt = qty * rate;
