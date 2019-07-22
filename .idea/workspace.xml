@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/add_billing.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/view_billings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,25 +13,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="165" column="81" lean-forward="true" selection-start-line="165" selection-start-column="81" selection-end-line="165" selection-end-column="81" />
+            <state relative-caret-position="571">
+              <caret line="165" column="91" lean-forward="true" selection-start-line="165" selection-start-column="91" selection-end-line="165" selection-end-column="91" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="1310" column="38" lean-forward="true" selection-start-line="1310" selection-start-column="38" selection-end-line="1310" selection-end-column="38" />
+            <state relative-caret-position="176">
+              <caret line="956" column="35" selection-start-line="956" selection-start-column="35" selection-end-line="956" selection-end-column="35" />
               <folding>
                 <element signature="e#0#92#0" expanded="true" />
-                <marker date="1563701990077" expanded="true" signature="17467:17468" ph="..." />
-                <marker date="1563701990077" expanded="true" signature="45733:45738" ph="..." />
-                <marker date="1563701990077" expanded="true" signature="45879:45881" ph="..." />
+                <marker date="1563821877934" expanded="true" signature="17467:17468" ph="..." />
+                <marker date="1563821877934" expanded="true" signature="45728:45733" ph="..." />
+                <marker date="1563821877934" expanded="true" signature="45874:45876" ph="..." />
               </folding>
             </state>
           </provider>
@@ -155,8 +152,8 @@
       <find>new_purchased_db</find>
       <find>inputState</find>
       <find>aqty</find>
-      <find>bill</find>
       <find>new_p</find>
+      <find>bill</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -205,8 +202,8 @@
         <option value="$PROJECT_DIR$/templates/buildout.html" />
         <option value="$PROJECT_DIR$/templates/add_billing.html" />
         <option value="$PROJECT_DIR$/templates/view_billings.html" />
-        <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/__init__.py" />
       </list>
     </option>
   </component>
@@ -1222,19 +1219,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="1310" column="38" lean-forward="true" selection-start-line="1310" selection-start-column="38" selection-end-line="1310" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#92#0" expanded="true" />
-            <marker date="1563701990077" expanded="true" signature="17467:17468" ph="..." />
-            <marker date="1563701990077" expanded="true" signature="45733:45738" ph="..." />
-            <marker date="1563701990077" expanded="true" signature="45879:45881" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/view_billings.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -1244,8 +1228,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="165" column="81" lean-forward="true" selection-start-line="165" selection-start-column="81" selection-end-line="165" selection-end-column="81" />
+        <state relative-caret-position="571">
+          <caret line="165" column="91" lean-forward="true" selection-start-line="165" selection-start-column="91" selection-end-line="165" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="956" column="35" selection-start-line="956" selection-start-column="35" selection-end-line="956" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#92#0" expanded="true" />
+            <marker date="1563821877934" expanded="true" signature="17467:17468" ph="..." />
+            <marker date="1563821877934" expanded="true" signature="45728:45733" ph="..." />
+            <marker date="1563821877934" expanded="true" signature="45874:45876" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -956,7 +956,7 @@ def view_product_details():
             # print(temp)
             return render_template('show_product_details.html', items_data=temp)
     except Exception as e:
-        return 'Exception'
+        return str(e)
 
 
 @app.route('/process_ledger/<int:p_id>', methods=['GET'])
