@@ -363,11 +363,14 @@ $.ajax({
 <script>
     $('select#inputState1').change(function(){
     var nodeList = $(this).children("option:selected").val();
+    var nodeListname = $(this).children("option:selected").text();
+    alert(nodeListname);
 $.ajax({
 	url: "/process_material/"+nodeList,
 	type: "GET",
 	dataType: "json",
 	success: function(resp){
+	  $('input#new_name').val(nodeListname);
 		$('input#popcomments').val(resp.comments);
 		$('select#Unit').val(resp.unit);
 		$('select#subUnit').val(resp.sub_unit);
