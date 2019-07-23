@@ -895,7 +895,7 @@ def manufacture_process_creation():
                                 list_of_ofs_items.append(item)
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (data[item], item))
-                            connection.commit()
+                        connection.commit()
                         flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
                         flash(flag)
                         return redirect(url_for('manufacture_process'))
@@ -1217,7 +1217,7 @@ def add_billing():
             connection.close()
 
 
-@app.route('/billing_creation', methods =['POST', 'GET'])
+@app.route('/billing_creation', methods=['POST', 'GET'])
 def billing_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
@@ -1228,12 +1228,15 @@ def billing_creation():
         if request.method == 'POST':
             ledger_id = int(request.form['ledgers_dat'])
             pdate = request.form['pdate']
-            qty_unit = int(request.form['qtykg'])
+            qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
             product_id = request.form['products_dat']
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
-
-            if qty_unit == "" or pdate == "" or product_id == "" or totamt == "":
+            if ledger_id == 0:
+                flag = "Ledger not selected."
+                flash(flag)
+                return redirect(url_for('add_billing'))
+            elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
                 flag = "Invalid Data"
                 flash(flag)
                 return redirect(url_for('add_billing'))
