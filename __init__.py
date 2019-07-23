@@ -245,7 +245,11 @@ def material_creation():
             subunit = request.form['sub_units']
             comments = request.form['matcomments']
             if material_name == "":
-                flag = "Invalid Data"
+                flag = "Please provide Material Name.."
+                flash(flag)
+                return redirect(url_for('create_material'))
+            elif unit == "0"  or subunit == "0":
+                flag = "Please provide Unit and Subunit.."
                 flash(flag)
                 return redirect(url_for('create_material'))
             else:
