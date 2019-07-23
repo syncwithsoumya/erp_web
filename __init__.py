@@ -327,22 +327,26 @@ def material_modification():
             material_id = request.form['materials_list']
             material_name = request.form['new_name']
             mat_comments = request.form['new_comments']
+            unit_list = request.form['unit_list']
+            sub_unit_list = request.form['sub_unit_list']
         if material_name == "" and mat_comments == "":
             flash('Invalid Data. Please try again.')
             return redirect(url_for('modify_material'))
-        if connection.open == 1:
-            # Populate ledger names from table
+        elif unit_list == "0" or sub_unit_list == "0":
+            flash('Please select the unit or sub-unit')
+            return redirect(url_for('modify_material'))
+        else:
             try:
                 with connection.cursor() as cursor:
                     select_item = 'SELECT material_name FROM material WHERE id=%s'
                     cursor.execute(select_item, material_id)
                     item = cursor.fetchone()
                     if mat_comments and material_id and material_name == "":
-                        upd_items = 'UPDATE material SET comments="%s" WHERE id=%s' % (mat_comments, material_id)
+                        upd_items = 'UPDATE material SET comments="%s",unit="%s", sub_unit="%s" WHERE id=%s' % (mat_comments,unit_list, sub_unit_list, material_id)
                     elif material_name and material_id:
-                        upd_items = 'UPDATE material SET material_name="%s" WHERE id=%s' % (material_name, material_id)
+                        upd_items = 'UPDATE material SET material_name="%s",unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, material_id)
                     else:
-                        upd_items = 'UPDATE material SET material_name="%s", comments="%s" WHERE id=%s' % (material_name, mat_comments, material_id)
+                        upd_items = 'UPDATE material SET material_name="%s", comments="%s", unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, mat_comments, material_id)
                     cursor.execute(upd_items)
                     connection.commit()
                     connection.close()
@@ -364,13 +368,16 @@ def modify_material():
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
+                    get_units = "SELECT unit FROM units"
+                    cursor.execute(get_units)
+                    units_data = cursor.fetchall()
                     get_items = "SELECT id, material_name, comments FROM material"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('alter_material.html', items_data=items_data)
+                    return render_template('alter_material.html', items_data=items_data, units_data=units_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
 @app.route('/view_material')
@@ -959,11 +966,11 @@ def process_material(p_id):
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            get_mat_comments = "SELECT comments FROM material where id=%s"
+            get_mat_comments = "SELECT unit, sub_unit, comments FROM material where id=%s"
             cursor.execute(get_mat_comments, p_id)
             dat = cursor.fetchall()
             connection.close()
-            return jsonify({'data': dat[0]['comments']})
+            return jsonify({'comments': dat[0]['comments'], 'unit': dat[0]['unit'], 'sub_unit': dat[0]['sub_unit']})
     except Exception as e:
         return str(e)
 

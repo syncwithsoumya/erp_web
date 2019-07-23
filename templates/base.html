@@ -368,7 +368,9 @@ $.ajax({
 	type: "GET",
 	dataType: "json",
 	success: function(resp){
-		$('input#popcomments').val(resp.data);
+		$('input#popcomments').val(resp.comments);
+		$('select#Unit').val(resp.unit);
+		$('select#subUnit').val(resp.sub_unit);
 	}
       });
 });
