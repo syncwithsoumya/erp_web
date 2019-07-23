@@ -102,7 +102,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+.idea/workspace.xml
 # mypy
 .mypy_cache/
 >>>>>>> fe9e6c99daa0afc5e98df7a2bc2e6b788392a0a2

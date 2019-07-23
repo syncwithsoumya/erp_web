@@ -622,8 +622,8 @@ def show_material_inventory():
 '''
 
 
-@app.route('/check_buildout')
-def check_buildout():
+@app.route('/manufacture_process')
+def manufacture_process():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -636,13 +636,13 @@ def check_buildout():
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('check_buildout.html', items_data=items_data)
+                    return render_template('manufacture_process.html', items_data=items_data)
             except Exception as e:
                 return str(e)
 
 
-@app.route('/buildout')
-def buildout():
+@app.route('/component_master')
+def component_master():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -655,13 +655,13 @@ def buildout():
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('buildout.html', items_data=items_data)
+                    return render_template('component_master.html', items_data=items_data)
             except Exception as e:
                 return str(e)
 
 
-@app.route('/buildout_creation', methods=['POST', 'GET'])
-def buildout_creation():
+@app.route('/component_master_creation', methods=['POST'])
+def component_master_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -672,9 +672,9 @@ def buildout_creation():
             product_name = request.form['pname']
             product_rate = request.form['prate']
             product_comments = request.form['pcomments']
-            product_color = request.form['pcolor']
-            product_date = request.form['pdate']
-            product_qty = request.form['pqty']
+            product_color = ''
+            # product_date = request.form['pdate']
+            product_qty = '0'
 
             item1_combo = int(request.form['item_text1'])
             item2_combo = int(request.form['item_text2'])
@@ -684,6 +684,8 @@ def buildout_creation():
             item6_combo = int(request.form['item_text6'])
             item7_combo = int(request.form['item_text7'])
             item8_combo = int(request.form['item_text8'])
+            item9_combo = int(request.form['item_text9'])
+            item10_combo = int(request.form['item_text10'])
 
             item1 = int(request.form['item1'])
             item2 = int(request.form['item2'])
@@ -693,33 +695,39 @@ def buildout_creation():
             item6 = int(request.form['item6'])
             item7 = int(request.form['item7'])
             item8 = int(request.form['item8'])
-            if item1==0 or item2==0: #  or item3==0 or item4==0 or item5==0 or item6==0 or item7==0 or item8==0:
-                flag = "Items missing ..."
+            item9 = int(request.form['item9'])
+            item10 = int(request.form['item10'])
+            if item1 == 0 or item2 == 0: #  or item3==0 or item4==0 or item5==0 or item6==0 or item7==0 or item8==0:
+                flag = "Minimum 2 Item's quantity is expected ..."
                 flash(flag)
-                return redirect(url_for('buildout'))
+                return redirect(url_for('component_master'))
             else:
                 data = dict()
                 list_handler = list()
-                if product_name == "" or product_color == "" or product_qty == "" or product_rate == "" or product_comments == "" or product_date == "":
-                    flag = "Invalid Data"
+                if product_name == "":
+                    flag = "Product Name is expected."
                     flash(flag)
-                    return redirect(url_for('buildout'))
-                if item1 > 0 and item1_combo !=0:
+                    return redirect(url_for('component_master'))
+                if item1 > 0 and item1_combo != 0:
                     list_handler.append(item1_combo)
-                if item2 > 0 and item2_combo !=0:
+                if item2 > 0 and item2_combo != 0:
                     list_handler.append(item2_combo)
-                if item3 > 0 and item3_combo !=0:
+                if item3 > 0 and item3_combo != 0:
                     list_handler.append(item3_combo)
-                if item4 > 0 and item4_combo !=0:
+                if item4 > 0 and item4_combo != 0:
                     list_handler.append(item4_combo)
-                if item5 > 0 and item5_combo !=0:
+                if item5 > 0 and item5_combo != 0:
                     list_handler.append(item5_combo)
-                if item6 > 0 and item6_combo !=0:
+                if item6 > 0 and item6_combo != 0:
                     list_handler.append(item6_combo)
-                if item7 > 0 and item7_combo !=0:
+                if item7 > 0 and item7_combo != 0:
                     list_handler.append(item7_combo)
-                if item8 > 0 and item8_combo !=0:
+                if item8 > 0 and item8_combo != 0:
                     list_handler.append(item8_combo)
+                if item9 > 0 and item9_combo != 0:
+                    list_handler.append(item9_combo)
+                if item10 > 0 and item10_combo != 0:
+                    list_handler.append(item10_combo)
                 else:
                     pass
                 dupes = [item for item, count in Counter(list_handler).items() if count > 1]
@@ -738,86 +746,49 @@ def buildout_creation():
                                 else:
                                     sum_of_dupes = sum_of_dupes + " and " + data['material_name']
                                 counter += 1
-                        flash('Duplicate material - %s' %(sum_of_dupes))
+                        flash('You have provided duplicate item names - %s' % sum_of_dupes)
                         connection.close()
                     except Exception as e:
-                        flash('Exception %s' %(e))
-                        redirect(url_for('buildout'))
-                    return redirect(url_for('buildout'))
+                        flash('Exception %s' % e)
+                        redirect(url_for('component_master'))
+                    return redirect(url_for('component_master'))
                 else:
-                    concat_errors = ''
-                    counter = 0
-                    list_of_ofs_items = list()
+                    # list_of_ofs_items = list()
                     connection = connect_to_db()
                     with connection.cursor() as cursor:
                         try:
                             for i in range(1,9):
                                 exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
                             print(data)
-                            if data.values() == 0:
-                                del data[0]
+                            del data[0]
+                            if not any(data):
+                                flag = 'Items not provided'.format(product_name)
+                                flash(flag)
+                                return redirect(url_for('component_master'))
                             else:
-                                pass
-                            all_keys = list(data.keys())
-                            for item in all_keys:
-                                check_material = "SELECT quantity FROM material_qty WHERE material_id=%s"
-                                cursor.execute(check_material, item)
-                                data_checked = cursor.fetchone()
-                                # get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
-                                # cursor.execute(get_material_purchased, item)
-                                # get_data = cursor.fetchone()
                                 sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
-                                      "product_color,build_date, product_spec, product_rate,ip_address,mac_id) " \
-                                      "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                                      "product_spec, product_rate,ip_address,mac_id) " \
+                                      "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
                                 cursor.execute(sql,
                                                (product_name, date_time, str(session['username']), product_comments,
-                                                product_color, product_date, str(data), product_rate, ip, mac))
+                                                str(data), product_rate, ip, mac))
+                                sql_product_qty = "INSERT INTO product_qty(product_name,quantity) VALUES (%s,%s)"
+                                cursor.execute(sql_product_qty,
+                                               (product_name, product_qty))
                                 connection.commit()
-                                get_product_data = "SELECT quantity FROM product_qty WHERE product_name=%s AND product_color=%s"
-                                cursor.execute(get_product_data, (product_name, product_color))
-                                product_data = cursor.fetchone()
-                                if product_data is None:
-                                    sql_quantity = "INSERT INTO product_qty(product_name, product_color, quantity) VALUES(%s,%s,%s)"
-                                    cursor.execute(sql_quantity, (product_name, product_color, product_qty))
-                                    connection.commit()
-                                else:
-                                    sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s AND product_color=%s"
-                                    cursor.execute(sql_quantity, (product_qty, product_name, product_color))
-                                    connection.commit()
-                                for item in all_keys:
-                                    print(item)
-                                    get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
-                                    cursor.execute(get_material_purchased, item)
-                                    get_data = cursor.fetchone()
-                                    if data_checked is None:
-                                        flash("Material - {} not in inventory. Purchase Material.".format(
-                                            get_data['material_name']))
-                                        return redirect(url_for('buildout'))
-                                    if int(data_checked['quantity']) <= int(data[item]):
-                                        list_of_ofs_items.append(get_data['material_name'])
-                                    # get_mat_data = "SELECT quantity FROM material_qty WHERE material_id=%s"
-                                    # cursor.execute(get_mat_data, item)
-                                    # qty_exist = cursor.fetchone()
-                                    sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
-                                    cursor.execute(sql_quantity, (data[item], item))
-                                    connection.commit()
-                                flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
+                                flag = 'Successfully added the new component {}'.format(product_name)
                                 flash(flag)
-                                return redirect(url_for('buildout'))
+                                return redirect(url_for('component_master'))
                         except Exception as e:
                             flag = "Failure with %s" % e
                             flash(flag)
-                            return redirect(url_for('buildout'))
+                            return redirect(url_for('component_master'))
                         finally:
                             connection.close()
-                        # if any(list_of_ofs_items):
-                        #     flag = "Insufficient Materials - %s " % str(list_of_ofs_items)
-                        #     flash(flag)
-                        #     return redirect(url_for('buildout'))
 
 
-@app.route('/buildout_addition', methods=['POST', 'GET'])
-def buildout_addition():
+@app.route('/manufacture_process_creation', methods=['POST', 'GET'])
+def manufacture_process_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -827,9 +798,8 @@ def buildout_addition():
         if request.method == 'POST':
             product_name = request.form['pname']
             product_rate = request.form['prate']
-            product_comments = request.form['pcomments']
-            product_color = request.form['pcolor']
-            product_date = request.form['pdate']
+            # product_color = request.form['pcolor']
+            # product_date = request.form['pdate']
             product_qty = request.form['pqty']
 
             item1_combo = request.form['item_cm1']
@@ -840,6 +810,8 @@ def buildout_addition():
             item6_combo = request.form['item_cm6']
             item7_combo = request.form['item_cm7']
             item8_combo = request.form['item_cm8']
+            item9_combo = request.form['item_cm9']
+            item10_combo = request.form['item_cm10']
 
             item1 = int(request.form['item1'])
             item2 = int(request.form['item2'])
@@ -849,6 +821,8 @@ def buildout_addition():
             item6 = int(request.form['item6'])
             item7 = int(request.form['item7'])
             item8 = int(request.form['item8'])
+            item9 = int(request.form['item9'])
+            item10 = int(request.form['item10'])
 
             data = dict()
             list_handler = list()
@@ -868,6 +842,10 @@ def buildout_addition():
                 list_handler.append(item7_combo)
             if item8 > 0 and item8_combo != "":
                 list_handler.append(item8_combo)
+            if item9 > 0 and item9_combo != "":
+                list_handler.append(item9_combo)
+            if item10 > 0 and item10_combo != "":
+                list_handler.append(item10_combo)
             else:
                 pass
             dupes = [item for item, count in Counter(list_handler).items() if count > 1]
@@ -886,25 +864,25 @@ def buildout_addition():
                             else:
                                 sum_of_dupes = sum_of_dupes + " and " + data['material_name']
                             counter += 1
-                    flash('Duplicate material - %s' %(sum_of_dupes))
+                    flash('Duplicate material - %s' % sum_of_dupes)
                     connection.close()
                 except Exception as e:
-                    flash('Exception %s' %(e))
-                    redirect(url_for('check_buildout'))
-                return redirect(url_for('check_buildout'))
+                    flash('Exception %s' % e)
+                    redirect(url_for('manufacture_process'))
+                return redirect(url_for('manufacture_process'))
             else:
                 list_of_ofs_items = list()
                 connection = connect_to_db()
                 with connection.cursor() as cursor:
                     try:
-                        for i in range(1,9):
+                        for i in range(1, 9):
                             exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
                         print(data)
                         new = {k: v for k, v in data.items() if v}
                         data = new
                         all_keys = data.keys()
-                        sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s AND product_color=%s"
-                        cursor.execute(sql_quantity, (product_qty, product_name, product_color))
+                        sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s"
+                        cursor.execute(sql_quantity, (product_qty, product_name))
                         connection.commit()
                         for item in all_keys:
                             check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
@@ -912,7 +890,7 @@ def buildout_addition():
                             data_checked = cursor.fetchone()
                             if data_checked is None:
                                 flash("Material - {} not in inventory. Purchase Material.".format(item))
-                                return redirect(url_for('check_buildout'))
+                                return redirect(url_for('manufacture_process'))
                             if int(data_checked['quantity']) <= int(data[item]):
                                 list_of_ofs_items.append(item)
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
@@ -920,11 +898,11 @@ def buildout_addition():
                             connection.commit()
                         flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
                         flash(flag)
-                        return redirect(url_for('check_buildout'))
+                        return redirect(url_for('manufacture_process'))
                     except Exception as e:
                         flag = "Failure with %s" % e
                         flash(flag)
-                        return redirect(url_for('check_buildout'))
+                        return redirect(url_for('manufacture_process'))
                     finally:
                         connection.close()
 
@@ -940,6 +918,7 @@ def view_product_details():
             temp = data
             for i in range(0,len(data)):
                 a = ast.literal_eval(data[i]['product_spec'])
+                del a[0]
                 b = a
                 all_keys = a.keys()
                 tempo = dict()
@@ -1175,7 +1154,7 @@ def show_finished_products(p_id):
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            get_unit_comments = "SELECT  product_name, comments, product_color, build_date, product_rate , product_spec FROM product where id=%s"
+            get_unit_comments = "SELECT  product_name, comments, product_rate , product_spec FROM product where id=%s"
             cursor.execute(get_unit_comments, p_id)
             dat = cursor.fetchone()
             materials_used = dat['product_spec']
@@ -1190,7 +1169,7 @@ def show_finished_products(p_id):
                 id = get_all[i]['id']
                 mat_quantity = materials_used[id]
                 get_all[i]['quantity'] = mat_quantity
-            return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_color': dat['product_color'], 'build_date': dat['build_date'], 'product_rate': dat['product_rate'], 'spec': get_all})
+            return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_rate': dat['product_rate'], 'spec': get_all})
     except Exception as e:
         return str(e)
 

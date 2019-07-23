@@ -122,8 +122,11 @@
         <div id="collapseBuild" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/check_buildout">New Product</a>
-            <a class="collapse-item" href="/view_product_details">View Product Details</a>
+            <a class="collapse-item" href="/component_master">Component Master</a>
+            <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>
+<!--            <a class="collapse-item" href="/check_buildout">Alter Component Master</a>-->
+<!--            <a class="collapse-item" href="/view_product_details">Alter Manufacture Details</a>-->
+
           </div>
         </div>
       </li>
@@ -415,8 +418,7 @@ $.ajax({
 	success: function(resp){
 		//$('select#inputState').val(resp.ledger_id);
 		$('input#pname').val(resp.product_name);
-		$('input#pdate').val(resp.build_date);
-		$('input#pcomments').val(resp.comments);
+		//$('input#pcomments').val(resp.comments);
 		$('input#prate').val(resp.product_rate);
 		$('input#pcolor').val(resp.product_color);
 		  $.each(resp.spec, function (index) {

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Manufacture Process
+{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Manufacture Process</h1>
+    <div class="form-row" id="search_product">
+    <div class="form-group col-md-6">
+        <label>Select Existing Finished Material</label>
+        <select class="form-control js-example-basic-single" id="select_field" name="state">
+            <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.product_name }}">{{ items.product_name }}</option>
+        {% endfor %}
+      {% endif %}
+        </select>
+    </div>
+<!--        <div class="form-group col-md-4">-->
+<!--           <a href="/buildout"><button id="new_item" style="margin-top:25px" class="btn btn-info">Create New Product</button></a>-->
+<!--    </div>-->
+    </div>
+
+
+<div class="form-row" id="ext_product">
+
+        <form action="/manufacture_process_creation" method="POST">
+            <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Product Name</label>
+                <input type="text" readonly class="form-control" id="pname" name="pname">
+            </div>
+<!--            <div class="form-group col-md-4">-->
+<!--                <label>Product Color</label>-->
+<!--                <input type="text" readonly class="form-control" id="pcolor" name="pcolor">-->
+<!--            </div>-->
+            <div class="form-group col-md-4">
+                <label>Product Quantity</label>
+                <input type="number" oninput="validity.valid||(value='');" id="pqty" value="1" class="form-control" name="pqty">
+            </div>
+<!--            <div class="form-group col-md-4">-->
+<!--                <label>Product Comments</label>-->
+<!--                <input type="text" readonly class="form-control" id="pcomments" name="pcomments">-->
+<!--            </div>-->
+            <div class="form-group col-md-4">
+                <label>Product Rate</label>
+                <input type="text" readonly class="form-control"  id="prate" name="prate">
+            </div>
+                <div class="form-group col-md-2">
+         <label>Item-1</label>
+         <input type="text" class="form-control" readonly id="item_cm1" name="item_cm1">
+    </div>
+      <div class="form-group col-md-2">
+          <label>Item-1 - Quantity</label>
+            <input type="text" class="form-control" value="0" readonly id="item1" name="item1">
+          <input type="hidden" class="form-control" id="hidden_item1" name="item1">
+      </div>
+      <div class="form-group col-md-2">
+         <label>Item-2</label>
+          <input type="text" class="form-control" readonly id="item_cm2" name="item_cm2">
+        </div>
+                <div class="form-group col-md-2">
+          <label>Item-2 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item2" name="item2">
+          <input type="hidden" id="hidden_item2" name="item2">
+      </div>
+                <div class="form-group col-md-2">
+         <label>Item-3</label>
+        <input type="text" class="form-control"  readonly id="item_cm3" name="item_cm3">
+    </div>
+
+      <div class="form-group col-md-2">
+          <label>Item-3 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item3" name="item3">
+           <input type="hidden" id="hidden_item3" name="item3">
+      </div>
+<!--            <div class="form-group col-md-4">-->
+<!--                <label>Build Date</label>-->
+<!--                <input type="text" id="pdate" name="pdate" readonly class="form-control">-->
+<!--            </div>-->
+        </div>
+    <div class="form-row">
+    <div class="form-group col-md-2">
+         <label>Item-4</label>
+        <input type="text" class="form-control"  readonly id="item_cm4" name="item_cm4">
+    </div>
+
+      <div class="form-group col-md-2">
+          <label>Item-4 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item4" name="item4">
+           <input type="hidden" id="hidden_item4" name="item4">
+      </div>
+        <div class="form-group col-md-2">
+         <label>Item-5</label>
+            <input type="text" class="form-control"  readonly id="item_cm5" name="item_cm5">
+    </div>
+
+      <div class="form-group col-md-2">
+          <label>Item-5 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item5" name="item5">
+           <input type="hidden" id="hidden_item5" name="item5">
+      </div>
+        <div class="form-group col-md-2">
+         <label>Item-6</label>
+            <input type="text" class="form-control"  readonly id="item_cm6" name="item_cm6">
+    </div>
+
+      <div class="form-group col-md-2">
+          <label>Item-6 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item6" name="item6">
+           <input type="hidden" id="hidden_item6" name="item6">
+      </div>
+        <div class="form-group col-md-2">
+         <label>Item-7</label>
+            <input type="text" class="form-control"  readonly id="item_cm7" name="item_cm7">
+    </div>
+
+      <div class="form-group col-md-2">
+          <label>Item-7 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item7" name="item7">
+           <input type="hidden" id="hidden_item7" name="item7">
+      </div>
+    <br>
+
+        <div class="form-group col-md-2">
+         <label>Item-8</label>
+            <input type="text" class="form-control"  readonly id="item_cm8" name="item_cm8">
+
+    </div>
+        <div class="form-group col-md-2">
+          <label>Item-8 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item8" name="item8" >
+             <input type="hidden" id="hidden_item8" name="item8">
+      </div>
+
+            <div class="form-group col-md-2">
+         <label>Item-9</label>
+            <input type="text" class="form-control"  readonly id="item_cm9" name="item_cm9">
+
+    </div>
+        <div class="form-group col-md-2">
+          <label>Item-9 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item9" name="item9" >
+             <input type="hidden" id="hidden_item9" name="item8">
+      </div>
+             <div class="form-group col-md-2">
+         <label>Item-10</label>
+            <input type="text" class="form-control"  readonly id="item_cm10" name="item_cm10">
+
+    </div>
+        <div class="form-group col-md-2">
+          <label>Item-10 - Quantity</label>
+      <input type="text" class="form-control" value="0" readonly id="item10" name="item10" >
+             <input type="hidden" id="hidden_item10" name="item10">
+      </div>
+ </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Reset</button>
+
+</form>
+    </div>
+{% endblock %}

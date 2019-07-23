@@ -3,38 +3,32 @@
 Star ERP -- Create Buildout
 {% endblock %}
 {% block content %}
-<h3 class="h3 mb-4 text-gray-800">Create Buildout</h3>
+<h3 class="h3 mb-4 text-gray-800">Component Master</h3>
 <div class="form-row" id="new_product">
 
-        <form action="/buildout_creation" method="POST">
+        <form action="/component_master_creation" method="POST">
             <div class="form-row">
             <div class="form-group col-md-4">
                 <label>Product Name</label>
                 <input type="text" class="form-control" name="pname">
             </div>
-            <div class="form-group col-md-4">
-                <label>Product Color</label>
-                <input type="text" class="form-control" name="pcolor">
-            </div>
-            <div class="form-group col-md-4">
-                <label>Product Quantity</label>
-                <input type="text" readonly class="form-control" value="1" name="pqty">
-            </div>
-            <div class="form-group col-md-4">
-                <label>Product Comments</label>
-                <input type="text" class="form-control" name="pcomments">
-            </div>
-            <div class="form-group col-md-4">
+<!--            <div class="form-group col-md-2">-->
+<!--                <label>Product Color</label>-->
+<!--                <input type="text" class="form-control" name="pcolor">-->
+<!--            </div>-->
+<!--            <div class="form-group col-md-4">-->
+<!--                <label>Product Quantity</label>-->
+<!--                <input type="text" readonly class="form-control" value="0" name="pqty">-->
+<!--            </div>-->
+            <div class="form-group col-md-2">
                 <label>Product Rate</label>
                 <input type="text" class="form-control" name="prate">
             </div>
-            <div class="form-group col-md-4">
-                <label>Build Date</label>
-                <input type="text"  name="pdate" class="form-control" data-date-format="dd-mm-yy" id="dp2">
+                <div class="form-group col-md-2">
+                <label>Product Comments</label>
+                <input type="text" class="form-control" name="pcomments">
             </div>
-        </div>
-  <div class="form-row">
-    <div class="form-group col-md-2">
+                 <div class="form-group col-md-2">
          <label>Item-1</label>
       <select id="inputStates1" name="item_text1" class="form-control">
           <option value="0" selected> -- Choose --</option>
@@ -46,11 +40,18 @@ Star ERP -- Create Buildout
         {% endfor %}
       {% endif %}
       </select>
-    </div>
-      <div class="form-group col-md-2">
+      </div><div class="form-group col-md-2">
           <label>Item-1 - Quantity</label>
             <input type="text" class="form-control" value="0" name="item1">
-      </div>
+    </div>
+<!--            <div class="form-group col-md-4">-->
+<!--                <label>Build Date</label>-->
+<!--                <input type="text"  name="pdate" class="form-control" data-date-format="dd-mm-yy" id="dp2">-->
+<!--            </div>-->
+        </div>
+  <div class="form-row">
+
+
       <div class="form-group col-md-2">
          <label>Item-2</label>
           <select id="inputStates2" name="item_text2" class="form-control">
@@ -81,16 +82,14 @@ Star ERP -- Create Buildout
         {% endfor %}
       {% endif %}
       </select>
+
     </div>
 
       <div class="form-group col-md-2">
           <label>Item-3 - Quantity</label>
       <input type="text" class="form-control" value="0" name="item3">
       </div>
-    <br>
-      </div>
-    <div class="form-row">
-    <div class="form-group col-md-2">
+      <div class="form-group col-md-2">
          <label>Item-4</label>
       <select id="inputStates4" name="item_text4" class="form-control">
           <option value="0" selected> -- Choose --</option>
@@ -103,11 +102,13 @@ Star ERP -- Create Buildout
       {% endif %}
       </select>
     </div>
-
       <div class="form-group col-md-2">
           <label>Item-4 - Quantity</label>
       <input type="text" class="form-control" value="0" name="item4">
       </div>
+    <br>
+      </div>
+    <div class="form-row">
         <div class="form-group col-md-2">
          <label>Item-5</label>
       <select id="inputStates5" name="item_text5" class="form-control">
@@ -180,6 +181,40 @@ Star ERP -- Create Buildout
         <div class="form-group col-md-2">
           <label>Item-8 - Quantity</label>
       <input type="text" class="form-control" value="0" name="item8">
+      </div>
+        <div class="form-group col-md-2">
+         <label>Item-9</label>
+      <select id="inputStates9" name="item_text9" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+        <div class="form-group col-md-2">
+          <label>Item-9 - Quantity</label>
+      <input type="text" class="form-control" value="0" name="item9">
+      </div>
+        <div class="form-group col-md-2">
+         <label>Item-10</label>
+      <select id="inputStates10" name="item_text10" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+        <div class="form-group col-md-2">
+          <label>Item-10 - Quantity</label>
+      <input type="text" class="form-control" value="0" name="item10">
       </div>
  </div>
 
