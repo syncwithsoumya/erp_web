@@ -187,20 +187,20 @@
           </div>
         </div>
       </li>
-        <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">
-          <i class="fas fa-fw fa-book"></i>
-          <span>Reports</span>
-        </a>
-        <div id="collapseReports" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/show_material_inventory">Check Material Inventory</a>
-            <a class="collapse-item" href="utilities-animation.html">Alter Product</a>
-            <a class="collapse-item" href="utilities-other.html">View Product Details</a>
-          </div>
-        </div>
-      </li>
+<!--        <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">-->
+<!--          <i class="fas fa-fw fa-book"></i>-->
+<!--          <span>Reports</span>-->
+<!--        </a>-->
+<!--        <div id="collapseReports" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
+<!--          <div class="bg-white py-2 collapse-inner rounded">-->
+<!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
+<!--            <a class="collapse-item" href="#">Report 1</a>-->
+<!--            <a class="collapse-item" href="utilities-animation.html">Alter Product</a>-->
+<!--            <a class="collapse-item" href="utilities-other.html">View Product Details</a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </li>-->
       <!-- Divider -->
 
 
@@ -225,8 +225,29 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <h5 class="font-weight-normal">Logged in as <b>{{ session['username']}}</b>  </h5>
+<!--          <h5 class="font-weight-normal">Logged in as <b>{{ session['username']}}</b>  </h5>-->
           <!-- Topbar Navbar -->
+          <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-home"></i>
+    Inventory
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/show_material_inventory">Material Stock</a>
+    <a class="dropdown-item" href="/show_product_inventory">Finished Products</a>
+  </div>
+</div>
+          <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle2"></button>
+      </div>
+           <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-book"></i>
+   Reports
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <a class="dropdown-item" href="#">1</a>
+    <a class="dropdown-item" href="#">2</a>
+  </div>
+</div>
           <ul class="navbar-nav ml-auto">
 
 

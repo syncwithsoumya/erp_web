@@ -903,7 +903,7 @@ def manufacture_process_creation():
                             if data_checked is None:
                                 flash("Material - {} not in inventory. Purchase Material.".format(item))
                                 return redirect(url_for('manufacture_process'))
-                            if int(data_checked['quantity']) <= int(data[item]):
+                            if int(data_checked['quantity']) < int(data[item]):
                                 list_of_ofs_items.append(item)
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (data[item], item))
@@ -1258,8 +1258,8 @@ def add_billing():
                 cursor.execute(get_items)
                 ledger_data = cursor.fetchall()
             with connection.cursor() as cursor:
-                get_products = "SELECT id,product_name FROM product"
-                cursor.execute(get_products)
+                get_products = "SELECT id,product_name FROM product where component_flag=%s"
+                cursor.execute(get_products,'Y')
                 product_data = cursor.fetchall()
                 return render_template('add_billing.html', ledger_data=ledger_data, product_data=product_data)
         except Exception as e:
@@ -1344,6 +1344,25 @@ def view_billings():
                     items_data = cursor.fetchall()
                     connection.close()
                     return render_template('view_billings.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/show_product_inventory')
+def show_product_inventory():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select product_name, quantity from product_qty"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('show_product_inventory.html', items_data=items_data)
             except Exception as e:
                 return str(e)
 
