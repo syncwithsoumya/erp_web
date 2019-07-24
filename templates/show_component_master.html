@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- View Component Master
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">View Component Master</h1>
+<div class="dropdown show">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Download
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Excel</a>
+    <a class="dropdown-item" href="#">Pdf</a>
+    <a class="dropdown-item" href="#">CSV</a>
+  </div>
+</div>
+<br>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Rate</th>
+                <th>Product Specification</th>
+                <th>Added By</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+                    <td>{{items.id}}</td>
+                    <td>{{items.product_name}}</td>
+                    <td>{{items.product_rate}}</td>
+                    <td>{{items.product_spec}}</td>
+                    <td>{{items.added_by}}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}

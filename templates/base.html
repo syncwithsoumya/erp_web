@@ -124,6 +124,8 @@
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
             <a class="collapse-item" href="/component_master">Component Master</a>
             <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>
+            <a class="collapse-item" href="/view_component_details">View Component Master</a>
+            <a class="collapse-item" href="/view_manufactured_details">View Manufacture</a>
 <!--            <a class="collapse-item" href="/check_buildout">Alter Component Master</a>-->
 <!--            <a class="collapse-item" href="/view_product_details">Alter Manufacture Details</a>-->
 
@@ -364,7 +366,6 @@ $.ajax({
     $('select#inputState1').change(function(){
     var nodeList = $(this).children("option:selected").val();
     var nodeListname = $(this).children("option:selected").text();
-    alert(nodeListname);
 $.ajax({
 	url: "/process_material/"+nodeList,
 	type: "GET",

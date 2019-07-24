@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}
-Star ERP -- View Product Details
+Star ERP -- View Manufacture
 {% endblock %}
 {% block content %}
 
-<h1 class="h3 mb-4 text-gray-800">View Product Details</h1>
+<h1 class="h3 mb-4 text-gray-800">View Manufacture</h1>
 <div class="dropdown show">
   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Download
@@ -23,9 +23,6 @@ Star ERP -- View Product Details
             <tr>
                 <th>Product ID</th>
                 <th>Product Name</th>
-                <th>Comments</th>
-                <th>Product Color</th>
-                <th>Build Date</th>
                 <th>Product Rate</th>
                 <th>Product Specification</th>
                 <th>Added By</th>
@@ -34,15 +31,12 @@ Star ERP -- View Product Details
 
         <tbody>
         {% for items in items_data %}
-            <tr>
-                    <td>{{items.id}}</td>
-                    <td>{{items.product_name}}</td>
-                    <td>{{items.comments}}</td>
-                    <td>{{items.product_color}}</td>
-                    <td>{{items.build_date}}</td>
-                    <td>{{items.product_rate}}</td>
-                    <td>{{items.product_spec}}</td>
-                    <td>{{items.added_by}}</td>
+            <tr class="table-secondary">
+                    <td class="table-secondary" style="font-weight:bold">{{items.id}}</td>
+                    <td  class="table-secondary" style="font-weight:bold">{{items.product_name}}</td>
+                    <td  class="table-secondary" style="font-weight:bold">{{items.product_rate}}</td>
+                    <td  class="table-secondary" style="font-weight:bold">{{items.product_spec}}</td>
+                    <td  class="table-secondary" style="font-weight:bold">{{items.added_by}}</td>
             </tr>
          {% endfor %}
         </tbody>

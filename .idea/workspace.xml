@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/templates/alter_material.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/alter_material.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/show_manufacture_details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/show_product_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_component_master.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="366" column="24" selection-start-line="366" selection-start-column="24" selection-end-line="366" selection-end-column="24" />
+            <state relative-caret-position="173">
+              <caret line="127" column="61" selection-start-line="127" selection-start-column="61" selection-end-line="127" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -25,14 +28,47 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="335" column="51" selection-start-line="335" selection-start-column="51" selection-end-line="335" selection-end-column="51" />
+            <state relative-caret-position="380">
+              <caret line="986" column="26" lean-forward="true" selection-start-line="986" selection-start-column="26" selection-end-line="986" selection-end-column="26" />
               <folding>
                 <element signature="e#0#92#0" expanded="true" />
-                <marker date="1563911285538" expanded="true" signature="18215:18216" ph="..." />
-                <marker date="1563911285538" expanded="true" signature="44281:44286" ph="..." />
-                <marker date="1563911285538" expanded="true" signature="44427:44429" ph="..." />
+                <marker date="1563946123239" expanded="true" signature="18215:18216" ph="..." />
+                <marker date="1563946123239" expanded="true" signature="46176:46181" ph="..." />
+                <marker date="1563946123239" expanded="true" signature="46322:46324" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/show_manufacture_details.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="35" column="69" lean-forward="true" selection-start-line="35" selection-start-column="69" selection-end-line="35" selection-end-column="69" />
+              <folding>
+                <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#2;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/show_component_master.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="36" column="33" selection-end-line="46" />
             </state>
           </provider>
         </entry>
@@ -45,15 +81,6 @@
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#2;n#div#1;n#form#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="104" column="1" selection-start-line="104" selection-start-column="1" selection-end-line="104" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -106,7 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>new_bui</find>
       <find>ast</find>
       <find>new_bu</find>
       <find>collect</find>
@@ -136,6 +162,7 @@
       <find>/material_cr</find>
       <find>/material_modifi</find>
       <find>manu</find>
+      <find>/componen</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -159,7 +186,6 @@
         <option value="$PROJECT_DIR$/templates/view_ledger.html" />
         <option value="$PROJECT_DIR$/templates/view_material.html" />
         <option value="$PROJECT_DIR$/templates/delete_purchased.html" />
-        <option value="$PROJECT_DIR$/templates/show_product_details.html" />
         <option value="$PROJECT_DIR$/templates/show_material_inventory.html" />
         <option value="$PROJECT_DIR$/templates/show_materials.html" />
         <option value="$PROJECT_DIR$/templates/show_ledgers.html" />
@@ -186,9 +212,12 @@
         <option value="$PROJECT_DIR$/templates/manufacture_process.html" />
         <option value="$PROJECT_DIR$/templates/component_master.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/templates/alter_material.html" />
+        <option value="$PROJECT_DIR$/templates/show_product_details.html" />
+        <option value="$PROJECT_DIR$/templates/show_component_master.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/templates/show_manufacture_details.html" />
       </list>
     </option>
   </component>
@@ -328,16 +357,16 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5052083" side_tool="true" visible="true" weight="0.29787233" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.30729166" side_tool="true" visible="true" weight="0.34697217" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49925596" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="3" />
-      <window_info anchor="bottom" id="Find" order="4" sideWeight="0.4985119" weight="0.3289689" />
+      <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49776787" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.49479166" visible="true" weight="0.29787233" />
-      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.6941964" weight="0.34697217" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.49479166" weight="0.29787233" />
+      <window_info active="true" anchor="bottom" id="Debug" order="7" sideWeight="0.6927083" visible="true" weight="0.34697217" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -362,32 +391,32 @@
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>959</line>
+          <line>1000</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>961</line>
+          <line>1002</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>962</line>
+          <line>1003</line>
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>958</line>
+          <line>999</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>957</line>
+          <line>998</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1006</line>
+          <line>1047</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -532,27 +561,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>904</line>
+          <line>905</line>
           <option name="timeStamp" value="215" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>905</line>
+          <line>906</line>
           <option name="timeStamp" value="216" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>906</line>
+          <line>907</line>
           <option name="timeStamp" value="217" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>907</line>
+          <line>908</line>
           <option name="timeStamp" value="218" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>908</line>
+          <line>909</line>
           <option name="timeStamp" value="219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -562,17 +591,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>909</line>
+          <line>917</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>910</line>
+          <line>918</line>
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>911</line>
+          <line>919</line>
           <option name="timeStamp" value="225" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -587,362 +616,292 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1171</line>
-          <option name="timeStamp" value="245" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1173</line>
-          <option name="timeStamp" value="246" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1175</line>
-          <option name="timeStamp" value="247" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1174</line>
-          <option name="timeStamp" value="248" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1176</line>
-          <option name="timeStamp" value="249" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1177</line>
-          <option name="timeStamp" value="250" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1178</line>
-          <option name="timeStamp" value="251" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1179</line>
-          <option name="timeStamp" value="252" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1180</line>
-          <option name="timeStamp" value="253" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1181</line>
-          <option name="timeStamp" value="254" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1182</line>
-          <option name="timeStamp" value="255" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1172</line>
-          <option name="timeStamp" value="256" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1244</line>
+          <line>1285</line>
           <option name="timeStamp" value="261" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1242</line>
+          <line>1283</line>
           <option name="timeStamp" value="262" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1241</line>
+          <line>1282</line>
           <option name="timeStamp" value="263" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1240</line>
+          <line>1281</line>
           <option name="timeStamp" value="264" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1238</line>
+          <line>1279</line>
           <option name="timeStamp" value="265" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1239</line>
+          <line>1280</line>
           <option name="timeStamp" value="266" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1243</line>
+          <line>1284</line>
           <option name="timeStamp" value="267" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1250</line>
+          <line>1291</line>
           <option name="timeStamp" value="268" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1249</line>
+          <line>1290</line>
           <option name="timeStamp" value="269" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1253</line>
+          <line>1294</line>
           <option name="timeStamp" value="270" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1254</line>
+          <line>1295</line>
           <option name="timeStamp" value="271" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1256</line>
+          <line>1297</line>
           <option name="timeStamp" value="272" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1255</line>
+          <line>1296</line>
           <option name="timeStamp" value="273" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1257</line>
+          <line>1298</line>
           <option name="timeStamp" value="274" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1258</line>
+          <line>1299</line>
           <option name="timeStamp" value="275" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1259</line>
+          <line>1300</line>
           <option name="timeStamp" value="276" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1260</line>
+          <line>1301</line>
           <option name="timeStamp" value="277" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1262</line>
+          <line>1303</line>
           <option name="timeStamp" value="278" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1261</line>
+          <line>1302</line>
           <option name="timeStamp" value="279" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1263</line>
+          <line>1304</line>
           <option name="timeStamp" value="280" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1266</line>
+          <line>1307</line>
           <option name="timeStamp" value="281" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1267</line>
+          <line>1308</line>
           <option name="timeStamp" value="282" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1268</line>
+          <line>1309</line>
           <option name="timeStamp" value="283" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1270</line>
+          <line>1311</line>
           <option name="timeStamp" value="285" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1272</line>
+          <line>1313</line>
           <option name="timeStamp" value="288" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1271</line>
+          <line>1312</line>
           <option name="timeStamp" value="289" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1273</line>
+          <line>1314</line>
           <option name="timeStamp" value="290" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1274</line>
+          <line>1315</line>
           <option name="timeStamp" value="291" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1275</line>
+          <line>1316</line>
           <option name="timeStamp" value="292" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1276</line>
+          <line>1317</line>
           <option name="timeStamp" value="293" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1277</line>
+          <line>1318</line>
           <option name="timeStamp" value="294" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1278</line>
+          <line>1319</line>
           <option name="timeStamp" value="295" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1279</line>
+          <line>1320</line>
           <option name="timeStamp" value="296" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1280</line>
+          <line>1321</line>
           <option name="timeStamp" value="297" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1281</line>
+          <line>1322</line>
           <option name="timeStamp" value="298" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1269</line>
+          <line>1310</line>
           <option name="timeStamp" value="299" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>922</line>
-          <option name="timeStamp" value="300" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>924</line>
+          <line>932</line>
           <option name="timeStamp" value="301" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>923</line>
+          <line>931</line>
           <option name="timeStamp" value="302" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>925</line>
+          <line>933</line>
           <option name="timeStamp" value="303" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>926</line>
+          <line>934</line>
           <option name="timeStamp" value="304" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>928</line>
+          <line>936</line>
           <option name="timeStamp" value="305" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>927</line>
+          <line>935</line>
           <option name="timeStamp" value="306" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>929</line>
+          <line>937</line>
           <option name="timeStamp" value="307" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>930</line>
+          <line>938</line>
           <option name="timeStamp" value="308" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>932</line>
+          <line>940</line>
           <option name="timeStamp" value="310" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>933</line>
+          <line>941</line>
           <option name="timeStamp" value="311" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>934</line>
+          <line>942</line>
           <option name="timeStamp" value="312" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>935</line>
+          <line>943</line>
           <option name="timeStamp" value="313" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>936</line>
+          <line>944</line>
           <option name="timeStamp" value="314" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>937</line>
+          <line>945</line>
           <option name="timeStamp" value="315" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>938</line>
+          <line>946</line>
           <option name="timeStamp" value="316" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>939</line>
+          <line>947</line>
           <option name="timeStamp" value="317" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>940</line>
+          <line>948</line>
           <option name="timeStamp" value="318" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>942</line>
+          <line>950</line>
           <option name="timeStamp" value="319" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>944</line>
+          <line>952</line>
           <option name="timeStamp" value="320" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>946</line>
+          <line>954</line>
           <option name="timeStamp" value="321" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>947</line>
+          <line>955</line>
           <option name="timeStamp" value="322" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>948</line>
-          <option name="timeStamp" value="323" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>931</line>
+          <line>939</line>
           <option name="timeStamp" value="324" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1062,50 +1021,48 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>971</line>
+          <line>1012</line>
           <option name="timeStamp" value="352" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>972</line>
+          <line>1013</line>
           <option name="timeStamp" value="356" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>973</line>
+          <line>1014</line>
           <option name="timeStamp" value="357" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>974</line>
+          <line>1015</line>
           <option name="timeStamp" value="358" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>975</line>
+          <line>1016</line>
           <option name="timeStamp" value="359" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>977</line>
+          <line>1018</line>
           <option name="timeStamp" value="360" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>976</line>
+          <line>1017</line>
           <option name="timeStamp" value="361" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>956</line>
+          <option name="timeStamp" value="362" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/scss/navs/_sidebar.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5164">
-          <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/scss/navs/_topbar.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-31" />
@@ -1314,13 +1271,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/new_units_add.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1346,13 +1296,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="28" column="45" lean-forward="true" selection-start-line="28" selection-start-column="45" selection-end-line="28" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/show_product_details.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="45" column="17" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -1394,19 +1337,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="335" column="51" selection-start-line="335" selection-start-column="51" selection-end-line="335" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#92#0" expanded="true" />
-            <marker date="1563911285538" expanded="true" signature="18215:18216" ph="..." />
-            <marker date="1563911285538" expanded="true" signature="44281:44286" ph="..." />
-            <marker date="1563911285538" expanded="true" signature="44427:44429" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/alter_material.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -1414,10 +1344,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/show_component_master.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="36" column="33" selection-end-line="46" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="366" column="24" selection-start-line="366" selection-start-column="24" selection-end-line="366" selection-end-column="24" />
+        <state relative-caret-position="173">
+          <caret line="127" column="61" selection-start-line="127" selection-start-column="61" selection-end-line="127" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="986" column="26" lean-forward="true" selection-start-line="986" selection-start-column="26" selection-end-line="986" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#92#0" expanded="true" />
+            <marker date="1563946123239" expanded="true" signature="18215:18216" ph="..." />
+            <marker date="1563946123239" expanded="true" signature="46176:46181" ph="..." />
+            <marker date="1563946123239" expanded="true" signature="46322:46324" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/show_manufacture_details.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="69" lean-forward="true" selection-start-line="35" selection-start-column="69" selection-end-line="35" selection-end-column="69" />
+          <folding>
+            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#2;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

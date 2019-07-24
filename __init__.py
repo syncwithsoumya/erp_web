@@ -778,11 +778,11 @@ def component_master_creation():
                                 return redirect(url_for('component_master'))
                             else:
                                 sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
-                                      "product_spec, product_rate,ip_address,mac_id) " \
-                                      "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+                                      "product_spec,component_flag, product_rate,ip_address,mac_id) " \
+                                      "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                                 cursor.execute(sql,
                                                (product_name, date_time, str(session['username']), product_comments,
-                                                str(data), product_rate, ip, mac))
+                                                str(data), 'Y', product_rate, ip, mac))
                                 sql_product_qty = "INSERT INTO product_qty(product_name,quantity) VALUES (%s,%s)"
                                 cursor.execute(sql_product_qty,
                                                (product_name, product_qty))
@@ -896,6 +896,7 @@ def manufacture_process_creation():
                         cursor.execute(sql_quantity, (product_qty, product_name))
                         connection.commit()
                         for item in all_keys:
+
                             check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
                             cursor.execute(check_material, item)
                             data_checked = cursor.fetchone()
@@ -906,6 +907,13 @@ def manufacture_process_creation():
                                 list_of_ofs_items.append(item)
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (data[item], item))
+                        connection.commit()
+                        sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
+                              "product_spec,component_flag, product_rate,ip_address,mac_id) " \
+                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        cursor.execute(sql,
+                                       (product_name, date_time, str(session['username']), '',
+                                        str(data), 'N', product_rate, ip, mac))
                         connection.commit()
                         flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
                         flash(flag)
@@ -918,19 +926,19 @@ def manufacture_process_creation():
                         connection.close()
 
 
-@app.route('/view_product_details')
-def view_product_details():
+@app.route('/view_component_details')
+def view_component_details():
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            get_product_data = "SELECT id, product_name,comments,product_color,build_date,added_by,product_rate,product_spec FROM product"
-            cursor.execute(get_product_data)
+            get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM product WHERE component_flag=%s"
+            cursor.execute(get_product_data, 'Y')
             data = cursor.fetchall()
             temp = data
-            for i in range(0,len(data)):
+            for i in range(0, len(data)):
                 a = ast.literal_eval(data[i]['product_spec'])
-                del a[0]
-                b = a
+                # del a[0] if a[0] else a
+                # b = a
                 all_keys = a.keys()
                 tempo = dict()
                 for j in all_keys:
@@ -944,9 +952,42 @@ def view_product_details():
                 # print(c)
                 temp[i]['product_spec'] = c
             # print(temp)
-            return render_template('show_product_details.html', items_data=temp)
+            return render_template('show_component_master.html', items_data=temp)
     except Exception as e:
         return str(e)
+
+
+@app.route('/view_manufactured_details')
+def view_manufactured_details():
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM product WHERE component_flag=%s"
+            cursor.execute(get_product_data, 'N')
+            data = cursor.fetchall()
+            # temp = data
+            # for i in range(0, len(data)):
+            #     a = ast.literal_eval(data[i]['product_spec'])
+            #     # del a[0] if a[0] else a
+            #     # b = a
+            #     all_keys = a.keys()
+            #     tempo = dict()
+            #     for j in all_keys:
+            #         get_material = "SELECT material_name FROM material WHERE id=%s"
+            #         cursor.execute(get_material, j)
+            #         material_name = cursor.fetchone()
+            #         name = material_name['material_name']
+            #         tempo[j] = name
+            #     # print(tempo)
+            #     c = {tempo[key]: value for key, value in a.items()}
+            #     # print(c)
+            #     temp[i]['product_spec'] = c
+            # print(temp)
+            return render_template('show_manufacture_details.html', items_data=data)
+    except Exception as e:
+        return str(e)
+
+
 
 
 @app.route('/process_ledger/<int:p_id>', methods=['GET'])
