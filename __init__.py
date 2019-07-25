@@ -1563,7 +1563,7 @@ def download_cash_report_as_csv():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        filename = 'Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        filename = '/Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
         connection = connect_to_db()
         if connection.open == 1:
             # Populate material names from table
