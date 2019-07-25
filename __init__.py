@@ -1,17 +1,45 @@
-from flask import Flask, render_template,redirect, url_for, request, flash, session, jsonify
+from flask import Flask, render_template,redirect, url_for, request, flash, session, jsonify,send_file
 import pymysql.cursors
 from datetime import datetime
 import utilities
 from collections import Counter
 import ast
+import csv
 app = Flask(__name__)
 app.secret_key = 'dot tell me again'
+Upload_location = '/out/{}'
 
 
 def connect_to_db():
     conn = pymysql.connect(host='localhost', user='root', password='root123', db='erp_web', charset='utf8mb4',
                            cursorclass=pymysql.cursors.DictCursor)
     return conn
+
+
+def product_manipulation(dict_product, amount):
+    for i in dict_product:
+        product = int(dict_product[i]) * int(amount)
+        dict_product[i] = product
+    return dict_product
+
+
+def convertid2name(data):
+    dict_data = ast.literal_eval(data)
+    connection = connect_to_db()
+    new_dict = dict_data.copy()
+    try:
+        with connection.cursor() as cursor:
+            for i in list(dict_data.keys()):
+                get_items = "SELECT material_name FROM material WHERE id=%s"
+                cursor.execute(get_items, i)
+                items_data = cursor.fetchone()
+                new_dict[i] = items_data['material_name']
+            new_dict2 = dict((new_dict[key], value) for (key, value) in dict_data.items())
+            return new_dict2
+    except Exception as e:
+        return str(e)
+    finally:
+        connection.close()
 
 
 @app.route('/index')
@@ -510,6 +538,7 @@ def new_purchased():
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
 
+
             if qty_unit == "" or pdate == "" or material == "" or qty_sub_unit == "":
                 flag = "Invalid Data"
                 flash(flag)
@@ -518,10 +547,15 @@ def new_purchased():
                 connection = connect_to_db()
                 with connection.cursor() as cursor:
                     try:
+                        amount = -totamt
                         sql = "INSERT INTO purchased(purchased_date,ledger_id,unit,sub_unit," \
                               "quantity_unit, quantity_sub_unit,rate, total_amount, material_id, added_by,ip_address,mac_id) " \
                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        cursor.execute(sql, (pdate, ledger_id, unit, subunit, qty_unit, qty_sub_unit, rate, totamt, material, str(session['username']), ip, mac))
+                        cursor.execute(sql, (pdate, ledger_id, unit, subunit, qty_unit, qty_sub_unit, rate, totamt,
+                                             material, str(session['username']), ip, mac))
+                        connection.commit()
+                        insert_sql = "INSERT INTO cash(date_time,ledger_id, amount,comments) VALUES (%s, %s,%s,'Money Spent on Raw Material Purchase')"
+                        cursor.execute(insert_sql, (date_time, ledger_id, amount))
                         connection.commit()
                         get_material_purchased = "SELECT id FROM material_qty WHERE material_id=%s"
                         cursor.execute(get_material_purchased, material)
@@ -1269,6 +1303,31 @@ def add_billing():
             connection.close()
 
 
+@app.route('/direct_billing')
+def direct_billing():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        cursor = None
+        connection = None
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_items = "SELECT id,ledger_name FROM ledger"
+                cursor.execute(get_items)
+                ledger_data = cursor.fetchall()
+            with connection.cursor() as cursor:
+                get_products = "SELECT id,product_name FROM product where component_flag=%s"
+                cursor.execute(get_products, 'Y')
+                product_data = cursor.fetchall()
+                return render_template('direct_billing.html', ledger_data=ledger_data, product_data=product_data)
+        except Exception as e:
+            return str(e)
+        finally:
+            cursor.close()
+            connection.close()
+
+
 @app.route('/billing_creation', methods=['POST', 'GET'])
 def billing_creation():
     if session.get('username') is None:
@@ -1329,6 +1388,78 @@ def billing_creation():
                         connection.close()
 
 
+@app.route('/direct_billing_creation', methods=['POST'])
+def direct_billing_creation():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        mac = utilities.get_mac()
+        ip = utilities.get_ip()
+        if request.method == 'POST':
+            ledger_id = int(request.form['ledgers_dat'])
+            pdate = request.form['pdate']
+            qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
+            product_id = request.form['products_dat']
+            totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
+            rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
+            if ledger_id == 0:
+                flag = "Ledger not selected."
+                flash(flag)
+                return redirect(url_for('direct_billing'))
+            elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
+                flag = "Invalid Data"
+                flash(flag)
+                return redirect(url_for('direct_billing'))
+            else:
+                connection = connect_to_db()
+                with connection.cursor() as cursor:
+                    try:
+                        flag = 'y'
+                        get_product_name = "SELECT product_name,product_spec FROM product WHERE id=%s and component_flag=%s"
+                        cursor.execute(get_product_name, (product_id, flag))
+                        names = cursor.fetchone()
+                        product_data = product_manipulation(convertid2name(names['product_spec']), qty_unit)
+                        sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
+                              "product_spec,component_flag, product_rate,ip_address,mac_id) " \
+                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        cursor.execute(sql,
+                                       (names['product_name'], date_time, str(session['username']), 'Directly Added',
+                                        str(product_data), 'N', rate, ip, mac))
+                        connection.commit()
+                        get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
+                        cursor.execute(get_ledger_name, ledger_id)
+                        ledger_name = cursor.fetchone()
+                        sql = "INSERT INTO sell(sell_date,ledger_id,product_id,quantity," \
+                              "rate, amount,added_by,ip_address,mac_id) " \
+                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        cursor.execute(sql, (pdate, ledger_id, product_id, qty_unit, rate, totamt, str(session['username']), ip, mac))
+                        connection.commit()
+                        insert_sql = "INSERT INTO cash(date_time,ledger_id, amount,comments) VALUES (%s, %s,%s,'Money Received on Sell')"
+                        cursor.execute(insert_sql, (date_time, ledger_id, totamt))
+                        connection.commit()
+                        # check_products = "SELECT id,quantity FROM product_qty WHERE product_name=%s"
+                        # cursor.execute(check_products, names['product_name'])
+                        # data = cursor.fetchone()
+                        # if int(data['quantity']) < qty_unit:
+                        #     flag = "Insufficient Quantity. Please manufacture..."
+                        #     flash(flag)
+                        #     return redirect(url_for('add_billing'))
+                        # else:
+                        # sql_quantity = "UPDATE product_qty SET quantity = quantity - %s WHERE product_name=%s and id=%s"
+                        # cursor.execute(sql_quantity, (qty_unit, names['product_name'], str(data['id'])))
+                        # connection.commit()
+                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time)
+                        flash(flag)
+                        return redirect(url_for('direct_billing'))
+                    except Exception as e:
+                        flag = "Failure with %s" % str(e)
+                        flash(flag)
+                        return redirect(url_for('direct_billing'))
+                    finally:
+                        connection.close()
+
+
 @app.route('/view_billings')
 def view_billings():
     if session.get('username') is None:
@@ -1363,6 +1494,92 @@ def show_product_inventory():
                     items_data = cursor.fetchall()
                     connection.close()
                     return render_template('show_product_inventory.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/pay_to_ledger')
+def pay_to_ledger():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select id,ledger_name from ledger"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('pay_to_ledger.html', ledger_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+# @app.route('/paid_ledger')
+# def paid_ledger():
+#     ledger_id = int(request.form['ledgers_dat'])
+#     payamount = request.form['payamount']
+#     qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
+#     connection = connect_to_db()
+#     if connection.open == 1:
+#         # Populate ledger names from table
+#         try:
+#             with connection.cursor() as cursor:
+#                 get_ledger_id = "SELECT ledger_id FROM cash WHERE ledger_id=%s"
+#                 cursor.execute(get_ledger_id, ledger_id)
+#                 check = cursor.fetchone()
+#                 if check is None:
+#                     insert_sql = "INSERT INTO cash(ledger_id, amount,comments) VALUES (%s,%s,'')"
+#                     cursor.execute(insert_sql, (ledger_id, amount))
+#                     connection.commit()
+#                 else:
+#                     update_sql = "UPDATE cash SET amount = amount - %s WHERE ledger_id=%s"
+#                     cursor.execute(update_sql, (totamt, ledger_id))
+#                     connection.commit()
+
+@app.route('/show_cash_report')
+def show_cash_report():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select c.id, c.date_time, l.ledger_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('show_cash_report.html', items_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/download_cash_report_as_csv')
+def download_cash_report_as_csv():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        filename = 'Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select c.id as id, c.date_time as Entry_Time, l.ledger_name as Ledger_Name, ABS(amount) as Amount,  CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                with open(filename, 'w', newline='') as csvFile:
+                    fields = ['id', 'Entry_Time', 'Ledger_Name', 'Amount', 'Transaction_Type']
+                    writer = csv.DictWriter(csvFile, fieldnames=fields)
+                    writer.writeheader()
+                    writer.writerows(items_data)
+                csvFile.close()
+                return send_file(filename, as_attachment=True)
             except Exception as e:
                 return str(e)
 

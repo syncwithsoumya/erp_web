@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Purchased
+{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Pay to Ledger</h1>
+<form action="/paid_ledger" method="POST">
+
+  <div class="form-row">
+    <div class="form-group col-md-2">
+         <label>Ledger Name</label>
+      <select id="inputState" name="ledgers_dat" class="form-control">
+          <option value="0" selected> -- Choose -- </option>
+        {% if not ledger_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in ledger_data %}
+        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+      <div class="form-group col-md-2">
+         <label>Amount in Rs</label>
+        <input type="text"  name="amount" readonly class="form-control">
+     </div>
+       </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label>How much to Pay ?(Rs.)</label>
+            <input type="text"  name="payamount" class="form-control">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label>Comments</label>
+            <input type="text"  name="paycomments" class="form-control">
+        </div>
+    </div>
+<!--      <div class="form-group col-md-2">-->
+<!--         <label>Purchase Date</label>-->
+<!--        <input type="text"  name="pdate" class="form-control" data-date-format="dd-mm-yy" id="dp2">-->
+<!--     </div>-->
+<!--    <div class="form-group col-md-2">-->
+<!--          <label>Material Name</label>-->
+<!--      <select id="inputState2" name="materials_dat" class="form-control">-->
+<!--          <option value="0" selected> &#45;&#45; Choose &#45;&#45; </option>-->
+<!--        {% if not material_data %}-->
+<!--        <option value="no_items">No Items to display</option>-->
+<!--      {% else %}-->
+<!--        {% for items in material_data %}-->
+<!--        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>-->
+<!--        {% endfor %}-->
+<!--      {% endif %}-->
+<!--      </select>-->
+<!--     </div>-->
+<!--      <div class="form-group col-md-1">-->
+<!--         <label for>Unit</label>-->
+<!--        <input type="text" readonly class="form-control" id="unit_show" name="unit">-->
+<!--     </div>-->
+<!--     -->
+<!--    <div class="form-row">-->
+<!--        <div class="form-group col-md-2">-->
+<!--        <label>Quantity(Unit)</label>-->
+<!--        <input type="text" class="form-control" id="qty" name="qtykg">-->
+<!--     </div>-->
+<!--        <div class="form-group col-md-2">-->
+<!--         <label>Rate Per Unit(Rs)</label>-->
+<!--        <input type="text" class="form-control" id="rate" name="recamt">-->
+<!--     </div>-->
+<!--        <div class="form-group col-md-2">-->
+<!--         <label>Quantity(Sub-Unit)</label>-->
+<!--        <input type="text" class="form-control" name="piece">-->
+<!--     </div>-->
+<!--        <div class="form-group col-md-1">-->
+<!--         <label>Sub-Unit</label>-->
+<!--        <input type="text" readonly class="form-control" id="subunit_show" name="subunit">-->
+<!--     </div>-->
+<!--        </div>-->
+<!--    <div class="form-row">-->
+<!--        <div class="form-group col-md-2">-->
+<!--         <label class="text-danger">Billed Amount(Rs)</label>-->
+<!--        <input type="text" readonly id="amount" class="form-control text-danger" name="totamt">-->
+<!--     </div>-->
+<!--    </div>-->
+    <br>
+         <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Reset</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- View Component Master
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Cash Transaction Details</h1>
+<div class="dropdown show">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Download
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+<!--    <a class="dropdown-item" href="#">Excel</a>-->
+<!--    <a class="dropdown-item" href="#">Pdf</a>-->
+    <a class="dropdown-item" href="/download_cash_report_as_csv">CSV</a>
+  </div>
+</div>
+<br>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Receipt ID</th>
+                <th>Date Time</th>
+                <th>Ledger Name</th>
+                <th>Amount</th>
+                <th>Transaction Type</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+                    <td>{{items.id}}</td>
+                    <td>{{items.date_time}}</td>
+                    <td>{{items.ledger_name}}</td>
+                    <td>{{items.amount}}</td>
+                {% if items.amount > 0 %}
+                <td  class="table-success"> Debit </td>
+                {% else %}
+                <td class="table-danger"> Credit </td>
+                {% endif %}
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
