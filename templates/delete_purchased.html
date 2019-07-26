@@ -12,9 +12,9 @@ Star ERP -- Delete Purchased
                 <th>Purchased_ID</th>
                 <th>Purchased_Date</th>
                 <th>Ledger Name</th>
-                <th>Quantity(KG)</th>
+                <th>Quantity in Unit</th>
                 <th>Total Amount</th>
-                <th>Pieces</th>
+                <th>Quantity Sub Unit</th>
                 <th>Material Name</th>
                 <th>Added By</th>
                 <th>Action</th>
@@ -28,9 +28,9 @@ Star ERP -- Delete Purchased
                     <td>{{items.purchased_id}}</td>
                     <td>{{items.purchased_date}}</td>
                     <td>{{items.ledger_name}}</td>
-                    <td>{{items.quantity_KG}}</td>
+                    <td>{{items.quantity_unit}}</td>
                     <td>{{items.total_amount}}</td>
-                    <td>{{items.no_of_piece}}</td>
+                    <td>{{items.quantity_sub_unit}}</td>
                     <td>{{items.material_name}}</td>
                     <td>{{items.added_by}}</td>
                 <td><a href="/del_purchased_data/{{items.purchased_id}}" id="del"><button class="btn btn-primary">Delete</button></a></td>

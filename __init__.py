@@ -568,8 +568,8 @@ def new_purchased():
                         cursor.execute(sql, (pdate, ledger_id, unit, subunit, qty_unit, qty_sub_unit, rate, totamt,
                                              material, str(session['username']), ip, mac))
                         connection.commit()
-                        insert_sql = "INSERT INTO cash(date_time,ledger_id, amount,comments) VALUES (%s, %s,%s,'Money Spent on Raw Material Purchase')"
-                        cursor.execute(insert_sql, (date_time, ledger_id, amount))
+                        insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,%s,NULL,%s,'Money Spent on Raw Material Purchase')"
+                        cursor.execute(insert_sql, (date_time, ledger_id, material, amount))
                         connection.commit()
                         get_material_purchased = "SELECT id FROM material_qty WHERE material_id=%s"
                         cursor.execute(get_material_purchased, material)
@@ -622,13 +622,13 @@ def delete_purchased_db():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT purchased_id, purchased_date, l.ledger_name, quantity_KG, total_amount, receive_amount, no_of_piece, m.material_name, p.added_by  FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
+                    get_items = "SELECT purchased_id, purchased_date, l.ledger_name, quantity_unit, total_amount, quantity_sub_unit, m.material_name, p.added_by  FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
                     return render_template('delete_purchased.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
 @app.route('/del_purchased_data/<int:p_id>')
@@ -636,18 +636,22 @@ def del_purchased_data(p_id):
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
         connection = connect_to_db()
         if connection.open == 1:
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_material_qty = "SELECT material_id, no_of_piece FROM purchased WHERE purchased_id=%s"
+                    get_material_qty = "SELECT material_id, quantity_sub_unit, total_amount,ledger_id FROM purchased WHERE purchased_id=%s"
                     cursor.execute(get_material_qty, p_id)
                     data = cursor.fetchone()
-                    qty = data['no_of_piece']
+                    qty = data['quantity_sub_unit']
                     mat_id = data['material_id']
                     sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
                     cursor.execute(sql_quantity, (qty, mat_id))
+                    connection.commit()
+                    insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,%s,NULL,%s,'Money Received as Refund')"
+                    cursor.execute(insert_sql, (date_time, data['ledger_id'], data['material_id'], data['total_amount']))
                     connection.commit()
                     del_items = "DELETE FROM purchased WHERE purchased_id=%s"
                     cursor.execute(del_items, p_id)
@@ -655,7 +659,7 @@ def del_purchased_data(p_id):
                     connection.close()
                     return redirect(url_for('delete_purchased_db'))
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
 @app.route('/show_material_inventory')
@@ -681,23 +685,23 @@ def show_material_inventory():
 '''
 
 
-@app.route('/manufacture_process')
-def manufacture_process():
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        connection = connect_to_db()
-        if connection.open == 1:
-            # Populate ledger names from table
-            try:
-                with connection.cursor() as cursor:
-                    get_items = "SELECT id, product_name, comments FROM product"
-                    cursor.execute(get_items)
-                    items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('manufacture_process.html', items_data=items_data)
-            except Exception as e:
-                return str(e)
+# @app.route('/manufacture_process')
+# def manufacture_process():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         connection = connect_to_db()
+#         if connection.open == 1:
+#             # Populate ledger names from table
+#             try:
+#                 with connection.cursor() as cursor:
+#                     get_items = "SELECT id, product_name, comments FROM product"
+#                     cursor.execute(get_items)
+#                     items_data = cursor.fetchall()
+#                     connection.close()
+#                     return render_template('manufacture_process.html', items_data=items_data)
+#             except Exception as e:
+#                 return str(e)
 
 
 @app.route('/component_master')
@@ -846,132 +850,132 @@ def component_master_creation():
                             connection.close()
 
 
-@app.route('/manufacture_process_creation', methods=['POST', 'GET'])
-def manufacture_process_creation():
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
-        mac = utilities.get_mac()
-        ip = utilities.get_ip()
-        if request.method == 'POST':
-            product_name = request.form['pname']
-            product_rate = request.form['prate']
-            # product_color = request.form['pcolor']
-            # product_date = request.form['pdate']
-            product_qty = request.form['pqty']
-
-            item1_combo = request.form['item_cm1']
-            item2_combo = request.form['item_cm2']
-            item3_combo = request.form['item_cm3']
-            item4_combo = request.form['item_cm4']
-            item5_combo = request.form['item_cm5']
-            item6_combo = request.form['item_cm6']
-            item7_combo = request.form['item_cm7']
-            item8_combo = request.form['item_cm8']
-            item9_combo = request.form['item_cm9']
-            item10_combo = request.form['item_cm10']
-
-            item1 = int(request.form['item1'])
-            item2 = int(request.form['item2'])
-            item3 = int(request.form['item3'])
-            item4 = int(request.form['item4'])
-            item5 = int(request.form['item5'])
-            item6 = int(request.form['item6'])
-            item7 = int(request.form['item7'])
-            item8 = int(request.form['item8'])
-            item9 = int(request.form['item9'])
-            item10 = int(request.form['item10'])
-
-            data = dict()
-            list_handler = list()
-            if item1 > 0 and item1_combo != "":
-                list_handler.append(item1_combo)
-            if item2 > 0 and item2_combo != "":
-                list_handler.append(item2_combo)
-            if item3 > 0 and item3_combo != "":
-                list_handler.append(item3_combo)
-            if item4 > 0 and item4_combo != "":
-                list_handler.append(item4_combo)
-            if item5 > 0 and item5_combo != "":
-                list_handler.append(item5_combo)
-            if item6 > 0 and item6_combo != "":
-                list_handler.append(item6_combo)
-            if item7 > 0 and item7_combo != "":
-                list_handler.append(item7_combo)
-            if item8 > 0 and item8_combo != "":
-                list_handler.append(item8_combo)
-            if item9 > 0 and item9_combo != "":
-                list_handler.append(item9_combo)
-            if item10 > 0 and item10_combo != "":
-                list_handler.append(item10_combo)
-            else:
-                pass
-            dupes = [item for item, count in Counter(list_handler).items() if count > 1]
-            if any(dupes):
-                sum_of_dupes = ''
-                counter = 0
-                try:
-                    connection = connect_to_db()
-                    with connection.cursor() as cursor:
-                        for i in dupes:
-                            get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
-                            cursor.execute(get_material_purchased, int(i))
-                            data = cursor.fetchone()
-                            if counter == 0:
-                                sum_of_dupes = data['material_name']
-                            else:
-                                sum_of_dupes = sum_of_dupes + " and " + data['material_name']
-                            counter += 1
-                    flash('Duplicate material - %s' % sum_of_dupes)
-                    connection.close()
-                except Exception as e:
-                    flash('Exception %s' % e)
-                    redirect(url_for('manufacture_process'))
-                return redirect(url_for('manufacture_process'))
-            else:
-                list_of_ofs_items = list()
-                connection = connect_to_db()
-                with connection.cursor() as cursor:
-                    try:
-                        for i in range(1, 9):
-                            exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
-                        print(data)
-                        new = {k: v for k, v in data.items() if v}
-                        data = new
-                        all_keys = data.keys()
-                        sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s"
-                        cursor.execute(sql_quantity, (product_qty, product_name))
-                        connection.commit()
-                        for item in all_keys:
-
-                            check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
-                            cursor.execute(check_material, item)
-                            data_checked = cursor.fetchone()
-                            if data_checked is None:
-                                flash("Material - {} not in inventory. Purchase Material.".format(item))
-                                return redirect(url_for('manufacture_process'))
-                            if int(data_checked['quantity']) < int(data[item]):
-                                list_of_ofs_items.append(item)
-                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
-                            cursor.execute(sql_quantity, (data[item], item))
-                        connection.commit()
-                        sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
-                              "product_spec,component_flag, product_rate,ip_address,mac_id) " \
-                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        cursor.execute(sql,
-                                       (product_name, date_time, str(session['username']), '',
-                                        str(data), 'N', product_rate, ip, mac))
-                        connection.commit()
-                        flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
-                        flash(flag)
-                        return redirect(url_for('manufacture_process'))
-                    except Exception as e:
-                        flag = "Failure with %s" % e
-                        flash(flag)
-                        return redirect(url_for('manufacture_process'))
-                    finally:
-                        connection.close()
+# @app.route('/manufacture_process_creation', methods=['POST', 'GET'])
+# def manufacture_process_creation():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+#         mac = utilities.get_mac()
+#         ip = utilities.get_ip()
+#         if request.method == 'POST':
+#             product_name = request.form['pname']
+#             product_rate = request.form['prate']
+#             # product_color = request.form['pcolor']
+#             # product_date = request.form['pdate']
+#             product_qty = request.form['pqty']
+#
+#             item1_combo = request.form['item_cm1']
+#             item2_combo = request.form['item_cm2']
+#             item3_combo = request.form['item_cm3']
+#             item4_combo = request.form['item_cm4']
+#             item5_combo = request.form['item_cm5']
+#             item6_combo = request.form['item_cm6']
+#             item7_combo = request.form['item_cm7']
+#             item8_combo = request.form['item_cm8']
+#             item9_combo = request.form['item_cm9']
+#             item10_combo = request.form['item_cm10']
+#
+#             item1 = int(request.form['item1'])
+#             item2 = int(request.form['item2'])
+#             item3 = int(request.form['item3'])
+#             item4 = int(request.form['item4'])
+#             item5 = int(request.form['item5'])
+#             item6 = int(request.form['item6'])
+#             item7 = int(request.form['item7'])
+#             item8 = int(request.form['item8'])
+#             item9 = int(request.form['item9'])
+#             item10 = int(request.form['item10'])
+#
+#             data = dict()
+#             list_handler = list()
+#             if item1 > 0 and item1_combo != "":
+#                 list_handler.append(item1_combo)
+#             if item2 > 0 and item2_combo != "":
+#                 list_handler.append(item2_combo)
+#             if item3 > 0 and item3_combo != "":
+#                 list_handler.append(item3_combo)
+#             if item4 > 0 and item4_combo != "":
+#                 list_handler.append(item4_combo)
+#             if item5 > 0 and item5_combo != "":
+#                 list_handler.append(item5_combo)
+#             if item6 > 0 and item6_combo != "":
+#                 list_handler.append(item6_combo)
+#             if item7 > 0 and item7_combo != "":
+#                 list_handler.append(item7_combo)
+#             if item8 > 0 and item8_combo != "":
+#                 list_handler.append(item8_combo)
+#             if item9 > 0 and item9_combo != "":
+#                 list_handler.append(item9_combo)
+#             if item10 > 0 and item10_combo != "":
+#                 list_handler.append(item10_combo)
+#             else:
+#                 pass
+#             dupes = [item for item, count in Counter(list_handler).items() if count > 1]
+#             if any(dupes):
+#                 sum_of_dupes = ''
+#                 counter = 0
+#                 try:
+#                     connection = connect_to_db()
+#                     with connection.cursor() as cursor:
+#                         for i in dupes:
+#                             get_material_purchased = "SELECT material_name FROM material WHERE id = %s"
+#                             cursor.execute(get_material_purchased, int(i))
+#                             data = cursor.fetchone()
+#                             if counter == 0:
+#                                 sum_of_dupes = data['material_name']
+#                             else:
+#                                 sum_of_dupes = sum_of_dupes + " and " + data['material_name']
+#                             counter += 1
+#                     flash('Duplicate material - %s' % sum_of_dupes)
+#                     connection.close()
+#                 except Exception as e:
+#                     flash('Exception %s' % e)
+#                     redirect(url_for('manufacture_process'))
+#                 return redirect(url_for('manufacture_process'))
+#             else:
+#                 list_of_ofs_items = list()
+#                 connection = connect_to_db()
+#                 with connection.cursor() as cursor:
+#                     try:
+#                         for i in range(1, 9):
+#                             exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
+#                         print(data)
+#                         new = {k: v for k, v in data.items() if v}
+#                         data = new
+#                         all_keys = data.keys()
+#                         sql_quantity = "UPDATE product_qty SET quantity = quantity + %s WHERE product_name=%s"
+#                         cursor.execute(sql_quantity, (product_qty, product_name))
+#                         connection.commit()
+#                         for item in all_keys:
+#
+#                             check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
+#                             cursor.execute(check_material, item)
+#                             data_checked = cursor.fetchone()
+#                             if data_checked is None:
+#                                 flash("Material - {} not in inventory. Purchase Material.".format(item))
+#                                 return redirect(url_for('manufacture_process'))
+#                             if int(data_checked['quantity']) < int(data[item]):
+#                                 list_of_ofs_items.append(item)
+#                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
+#                             cursor.execute(sql_quantity, (data[item], item))
+#                         connection.commit()
+#                         sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
+#                               "product_spec,component_flag, product_rate,ip_address,mac_id) " \
+#                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+#                         cursor.execute(sql,
+#                                        (product_name, date_time, str(session['username']), '',
+#                                         str(data), 'N', product_rate, ip, mac))
+#                         connection.commit()
+#                         flag = 'Successfully Added the new product {}'.format(product_name) if not any(list_of_ofs_items) else "Finished Product was created.. with Insufficient Materials - %s " % ','.join(str(n) for n in list_of_ofs_items)
+#                         flash(flag)
+#                         return redirect(url_for('manufacture_process'))
+#                     except Exception as e:
+#                         flag = "Failure with %s" % e
+#                         flash(flag)
+#                         return redirect(url_for('manufacture_process'))
+#                     finally:
+#                         connection.close()
 
 
 @app.route('/view_component_details')
@@ -1446,16 +1450,20 @@ def direct_billing_creation():
                                        (names['product_name'], date_time, str(session['username']), 'Directly Added',
                                         str(product_data), 'N', rate, ip, mac))
                         connection.commit()
+                        get_product_name = "SELECT MAX(id) as id FROM product"
+                        cursor.execute(get_product_name,)
+                        data_id = cursor.fetchone()
                         get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
                         cursor.execute(get_ledger_name, ledger_id)
                         ledger_name = cursor.fetchone()
                         sql = "INSERT INTO sell(sell_date,ledger_id,product_id,quantity," \
                               "rate, amount,added_by,ip_address,mac_id) " \
                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        cursor.execute(sql, (pdate, ledger_id, product_id, qty_unit, rate, totamt, str(session['username']), ip, mac))
+                        cursor.execute(sql, (pdate, ledger_id, data_id['id'], qty_unit, rate, totamt, str(session['username']), ip, mac))
                         connection.commit()
-                        insert_sql = "INSERT INTO cash(date_time,ledger_id, amount,comments) VALUES (%s, %s,%s,'Money Received on Sell')"
-                        cursor.execute(insert_sql, (date_time, ledger_id, totamt))
+
+                        insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id,amount,comments) VALUES (%s, %s,NULL,%s,%s,'Money Received on Sell')"
+                        cursor.execute(insert_sql, (date_time, ledger_id, data_id['id'], totamt))
                         connection.commit()
                         for item in product_data:
                             check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
@@ -1493,23 +1501,42 @@ def view_billings():
                 return str(e)
 
 
-@app.route('/show_product_inventory')
-def show_product_inventory():
+@app.route('/delete_billings')
+def delete_billings():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
         connection = connect_to_db()
         if connection.open == 1:
-            # Populate material names from table
+            # Populate billing from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select product_name, quantity from product_qty"
+                    get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product p ON s.product_id=p.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('show_product_inventory.html', items_data=items_data)
+                    return render_template('delete_sell_items.html', items_data=items_data)
             except Exception as e:
                 return str(e)
+
+
+# @app.route('/show_product_inventory')
+# def show_product_inventory():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         connection = connect_to_db()
+#         if connection.open == 1:
+#             # Populate material names from table
+#             try:
+#                 with connection.cursor() as cursor:
+#                     get_items = "select product_name, quantity from product_qty"
+#                     cursor.execute(get_items)
+#                     items_data = cursor.fetchall()
+#                     connection.close()
+#                     return render_template('show_product_inventory.html', items_data=items_data)
+#             except Exception as e:
+#                 return str(e)
 
 
 @app.route('/pay_to_ledger')
@@ -1563,7 +1590,7 @@ def show_cash_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id, c.date_time, l.ledger_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id"
+                    get_items = "select c.id, c.date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product pr ON pr.id=c.product_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
@@ -1577,7 +1604,6 @@ def download_cash_report_as_csv():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        a = request.url
         filename = 'Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
         full_fname = app.config['UPLOAD_FOLDER'] + filename
         connection = connect_to_db()
@@ -1585,17 +1611,48 @@ def download_cash_report_as_csv():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id as id, c.date_time as Entry_Time, l.ledger_name as Ledger_Name, ABS(amount) as Amount,  CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id"
+                    get_items = "select c.id as id, c.date_time as Entry_Time, l.ledger_name as Ledger_Name, m.material_name as Material_Name, pr.product_name as Product_Name, ABS(c.amount) as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product pr ON pr.id=c.product_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
                 with open(full_fname, 'w', newline='') as csvFile:
-                    fields = ['id', 'Entry_Time', 'Ledger_Name', 'Amount', 'Transaction_Type']
+                    fields = ['id', 'Entry_Time', 'Ledger_Name', 'Material_Name', 'Product_Name','Amount', 'Transaction_Type']
                     writer = csv.DictWriter(csvFile, fieldnames=fields)
                     writer.writeheader()
                     writer.writerows(items_data)
                 csvFile.close()
                 return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/del_sell_data/<int:p_id>')
+def del_sell_data(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_product_qty = "SELECT pr.product_spec, s.quantity, s.amount,s.ledger_id FROM sell s INNER JOIN product pr ON s.product_id = pr.id WHERE sell_id=%s "
+                    cursor.execute(get_product_qty, p_id)
+                    data = cursor.fetchone()
+                    new_data = product_manipulation(ast.literal_eval(data['product_spec']),1)
+                    for item in new_data:
+                        sql_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
+                        cursor.execute(sql_quantity, (new_data[item], item))
+                    connection.commit()
+                    del_items = "DELETE FROM sell WHERE sell_id=%s"
+                    cursor.execute(del_items, p_id)
+                    connection.commit()
+                    insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,NULL,%s,%s,'Reversed')"
+                    cursor.execute(insert_sql, (date_time, data['ledger_id'], p_id, data['amount']))
+                    connection.commit()
+                    connection.close()
+                    return redirect(url_for('delete_billings'))
             except Exception as e:
                 return str(e)
 

@@ -24,6 +24,8 @@ Star ERP -- View Component Master
                 <th>Receipt ID</th>
                 <th>Date Time</th>
                 <th>Ledger Name</th>
+                <th>Material Name</th>
+                <th>Product Name</th>
                 <th>Amount</th>
                 <th>Transaction Type</th>
             </tr>
@@ -35,6 +37,16 @@ Star ERP -- View Component Master
                     <td>{{items.id}}</td>
                     <td>{{items.date_time}}</td>
                     <td>{{items.ledger_name}}</td>
+                {% if items.material_name %}
+                    <td>{{items.material_name}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                {% if items.product_name %}
+                    <td>{{items.product_name}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                     <td>{{items.amount}}</td>
                 {% if items.amount > 0 %}
                 <td  class="table-success"> Debit </td>
