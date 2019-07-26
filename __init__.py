@@ -1649,7 +1649,7 @@ def del_sell_data(p_id):
                     cursor.execute(del_items, p_id)
                     connection.commit()
                     insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,NULL,%s,%s,'Reversed')"
-                    cursor.execute(insert_sql, (date_time, data['ledger_id'], p_id, data['amount']))
+                    cursor.execute(insert_sql, (date_time, data['ledger_id'], p_id, -(data['amount'])))
                     connection.commit()
                     connection.close()
                     return redirect(url_for('delete_billings'))

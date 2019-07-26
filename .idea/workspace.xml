@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/delete_sell_items.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/delete_purchased.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delete_purchased.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/show_cash_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_cash_report.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,13 +42,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="1617" selection-start-line="1617" selection-end-line="1617" />
+            <state relative-caret-position="241">
+              <caret line="1651" column="102" selection-start-line="1651" selection-start-column="102" selection-end-line="1651" selection-end-column="102" />
               <folding>
                 <element signature="e#0#102#0" expanded="true" />
-                <marker date="1564149276592" expanded="true" signature="19688:19689" ph="..." />
-                <marker date="1564149276592" expanded="true" signature="48753:48758" ph="..." />
-                <marker date="1564149276592" expanded="true" signature="48899:48901" ph="..." />
+                <marker date="1564151294754" expanded="true" signature="19688:19689" ph="..." />
+                <marker date="1564151294754" expanded="true" signature="48753:48758" ph="..." />
+                <marker date="1564151294754" expanded="true" signature="48899:48901" ph="..." />
               </folding>
             </state>
           </provider>
@@ -1688,13 +1683,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="1617" selection-start-line="1617" selection-end-line="1617" />
+        <state relative-caret-position="241">
+          <caret line="1651" column="102" selection-start-line="1651" selection-start-column="102" selection-end-line="1651" selection-end-column="102" />
           <folding>
             <element signature="e#0#102#0" expanded="true" />
-            <marker date="1564149276592" expanded="true" signature="19688:19689" ph="..." />
-            <marker date="1564149276592" expanded="true" signature="48753:48758" ph="..." />
-            <marker date="1564149276592" expanded="true" signature="48899:48901" ph="..." />
+            <marker date="1564151294754" expanded="true" signature="19688:19689" ph="..." />
+            <marker date="1564151294754" expanded="true" signature="48753:48758" ph="..." />
+            <marker date="1564151294754" expanded="true" signature="48899:48901" ph="..." />
           </folding>
         </state>
       </provider>
