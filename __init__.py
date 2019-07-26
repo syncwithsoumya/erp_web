@@ -8,13 +8,19 @@ import csv
 import os
 app = Flask(__name__)
 app.secret_key = 'dot tell me again'
+
 current_dir = str(os.getcwd())
-app.config['UPLOAD_FOLDER'] = current_dir + '/out/'
+app.config['UPLOAD_FOLDER'] = ''
+
 
 
 def connect_to_db():
-    conn = pymysql.connect(host='localhost', user='root', password='root123', db='erp_web', charset='utf8mb4',
+    if '127' in request.url:
+        conn = pymysql.connect(host='localhost', user='root', password='root123', db='erp_web', charset='utf8mb4',
                            cursorclass=pymysql.cursors.DictCursor)
+    else:
+        conn = pymysql.connect(host='App01.mysql.pythonanywhere-services.com', user='App01', password='Data2019', db='App01$erp_web', charset='utf8mb4',
+                               cursorclass=pymysql.cursors.DictCursor)
     return conn
 
 
@@ -55,6 +61,12 @@ def dashboard():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
+        url = request.url
+        session['url'] = url
+        if '127' in session.get('url'):
+            app.config['UPLOAD_FOLDER'] = current_dir + '/out/'
+        else:
+            app.config['UPLOAD_FOLDER'] = current_dir + '/erp_web/out/'
         return render_template('blank.html')
 
 
@@ -1565,6 +1577,7 @@ def download_cash_report_as_csv():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
+        a = request.url
         filename = 'Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
         full_fname = app.config['UPLOAD_FOLDER'] + filename
         connection = connect_to_db()
