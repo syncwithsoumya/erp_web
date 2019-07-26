@@ -1,0 +1,5 @@
+id,Entry_Time,Ledger_Name,Amount,Transaction_Type
+1,20190725221247,Rahul Mehta,25,CREDIT
+2,20190725221321,Rahul Mehta,80,CREDIT
+3,20190725221339,Rahul Mehta,20,CREDIT
+4,20190725221632,Rahul Mehta,50,DEBIT
