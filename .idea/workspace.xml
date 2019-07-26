@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,20 +13,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="32" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
+            <state relative-caret-position="166">
+              <caret line="75" column="32" lean-forward="true" selection-start-line="75" selection-start-column="32" selection-end-line="75" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="1461" column="60" selection-start-line="1461" selection-start-column="60" selection-end-line="1461" selection-end-column="60" />
+            <state relative-caret-position="31">
+              <caret line="1587" column="29" selection-start-line="1587" selection-start-column="29" selection-end-line="1587" selection-end-column="29" />
               <folding>
                 <element signature="e#0#102#0" expanded="true" />
                 <marker date="1564131668274" expanded="true" signature="19688:19689" ph="..." />
@@ -105,7 +106,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>inputState</find>
       <find>aqty</find>
       <find>new_p</find>
       <find>view_pro</find>
@@ -135,6 +135,7 @@
       <find>/au</find>
       <find>/direct</find>
       <find>/dire</find>
+      <find>material</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -193,9 +194,9 @@
         <option value="$PROJECT_DIR$/templates/manufacture_process.html" />
         <option value="$PROJECT_DIR$/templates/direct_billing.html" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/templates/show_cash_report.html" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
       </list>
     </option>
   </component>
@@ -1199,6 +1200,21 @@
           <line>1464</line>
           <option name="timeStamp" value="439" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1465</line>
+          <option name="timeStamp" value="440" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1466</line>
+          <option name="timeStamp" value="441" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1467</line>
+          <option name="timeStamp" value="442" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -1508,13 +1524,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="32" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/show_cash_report.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1538,14 +1547,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="1461" column="60" selection-start-line="1461" selection-start-column="60" selection-end-line="1461" selection-end-column="60" />
+        <state relative-caret-position="31">
+          <caret line="1587" column="29" selection-start-line="1587" selection-start-column="29" selection-end-line="1587" selection-end-column="29" />
           <folding>
             <element signature="e#0#102#0" expanded="true" />
             <marker date="1564131668274" expanded="true" signature="19688:19689" ph="..." />
             <marker date="1564131668274" expanded="true" signature="48014:48019" ph="..." />
             <marker date="1564131668274" expanded="true" signature="48160:48162" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="75" column="32" lean-forward="true" selection-start-line="75" selection-start-column="32" selection-end-line="75" selection-end-column="32" />
         </state>
       </provider>
     </entry>
