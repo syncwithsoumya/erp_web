@@ -1,13 +1,15 @@
-from flask import Flask, render_template,redirect, url_for, request, flash, session, jsonify,send_file
+from flask import Flask, render_template,redirect, url_for, request, flash, session, jsonify,send_from_directory
 import pymysql.cursors
 from datetime import datetime
 import utilities
 from collections import Counter
 import ast
 import csv
+import os
 app = Flask(__name__)
 app.secret_key = 'dot tell me again'
-Upload_location = '/out/{}'
+current_dir = str(os.getcwd())
+app.config['UPLOAD_FOLDER'] = current_dir + '/out/'
 
 
 def connect_to_db():
@@ -1563,7 +1565,8 @@ def download_cash_report_as_csv():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        filename = '/Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        filename = 'Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        full_fname = app.config['UPLOAD_FOLDER'] + filename
         connection = connect_to_db()
         if connection.open == 1:
             # Populate material names from table
@@ -1573,13 +1576,13 @@ def download_cash_report_as_csv():
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                with open(filename, 'w', newline='') as csvFile:
+                with open(full_fname, 'w', newline='') as csvFile:
                     fields = ['id', 'Entry_Time', 'Ledger_Name', 'Amount', 'Transaction_Type']
                     writer = csv.DictWriter(csvFile, fieldnames=fields)
                     writer.writeheader()
                     writer.writerows(items_data)
                 csvFile.close()
-                return send_file(filename, as_attachment=True)
+                return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
             except Exception as e:
                 return str(e)
 
