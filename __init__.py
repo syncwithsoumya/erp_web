@@ -1410,6 +1410,7 @@ def direct_billing_creation():
         date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
         mac = utilities.get_mac()
         ip = utilities.get_ip()
+        list_of_ofs_items = list()
         if request.method == 'POST':
             ledger_id = int(request.form['ledgers_dat'])
             pdate = request.form['pdate']
@@ -1434,6 +1435,10 @@ def direct_billing_creation():
                         cursor.execute(get_product_name, (product_id, flag))
                         names = cursor.fetchone()
                         product_data = product_manipulation(convertid2name(names['product_spec']), qty_unit)
+                        for item in product_data:
+                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
+                            cursor.execute(sql_quantity, (product_data[item], item))
+                        connection.commit()
                         sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
                               "product_spec,component_flag, product_rate,ip_address,mac_id) " \
                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
@@ -1452,18 +1457,13 @@ def direct_billing_creation():
                         insert_sql = "INSERT INTO cash(date_time,ledger_id, amount,comments) VALUES (%s, %s,%s,'Money Received on Sell')"
                         cursor.execute(insert_sql, (date_time, ledger_id, totamt))
                         connection.commit()
-                        # check_products = "SELECT id,quantity FROM product_qty WHERE product_name=%s"
-                        # cursor.execute(check_products, names['product_name'])
-                        # data = cursor.fetchone()
-                        # if int(data['quantity']) < qty_unit:
-                        #     flag = "Insufficient Quantity. Please manufacture..."
-                        #     flash(flag)
-                        #     return redirect(url_for('add_billing'))
-                        # else:
-                        # sql_quantity = "UPDATE product_qty SET quantity = quantity - %s WHERE product_name=%s and id=%s"
-                        # cursor.execute(sql_quantity, (qty_unit, names['product_name'], str(data['id'])))
-                        # connection.commit()
-                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time)
+                        for item in product_data:
+                            check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
+                            cursor.execute(check_material, (item))
+                            data_checked = cursor.fetchone()
+                            if int(data_checked['quantity']) < int(product_data[item]):
+                                list_of_ofs_items.append(item)
+                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time) if not any(list_of_ofs_items) else 'Successfully Sold %s to %s on %s with Insufficient Materials - %s' % (names['product_name'],ledger_name['ledger_name'],date_time,','.join(str(n) for n in list_of_ofs_items))
                         flash(flag)
                         return redirect(url_for('direct_billing'))
                     except Exception as e:
