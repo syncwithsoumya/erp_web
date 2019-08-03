@@ -6,12 +6,12 @@ from collections import Counter
 import ast
 import csv
 import os
+import json
 app = Flask(__name__)
 app.secret_key = 'dot tell me again'
 
 current_dir = str(os.getcwd())
 app.config['UPLOAD_FOLDER'] = ''
-
 
 
 def connect_to_db():
@@ -273,11 +273,12 @@ def view_ledger():
 '''
 
 
-@app.route('/material_creation', methods=['POST', 'GET'])
+@app.route('/material_creation', methods=['POST'])
 def material_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
+        connection = connect_to_db()
         date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
         mac = utilities.get_mac()
         ip = utilities.get_ip()
@@ -295,11 +296,10 @@ def material_creation():
                 flash(flag)
                 return redirect(url_for('create_material'))
             else:
-                connection = connect_to_db()
                 with connection.cursor() as cursor:
                     try:
-                        sql = "INSERT INTO material(material_name,unit,sub_unit,date_time,added_by,comments,ip_address,mac_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-                        cursor.execute(sql, (material_name, unit, subunit, date_time, str(session['username']), comments, ip, mac))
+                        sql = "INSERT INTO material(material_name,unit,sub_unit,usage_flag,date_time,added_by,comments,ip_address,mac_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        cursor.execute(sql, (material_name, unit, subunit, '0', date_time, str(session['username']), comments, ip, mac))
                         connection.commit()
                         flag = 'Successfully Added Material - {} at {}' .format(material_name, date_time)
                         flash(flag)
@@ -331,8 +331,12 @@ def delete_material():
                 return 'Exception'
 
 
-@app.route('/material_deletion',  methods=['POST', 'GET'])
+@app.route('/material_deletion',  methods=['POST'])
 def material_deletion():
+    """
+    Delete a Material
+    :return: Success for Deletion and Failed for errors
+    """
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
@@ -348,16 +352,20 @@ def material_deletion():
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    del_items = "DELETE FROM material WHERE material_name=%s"
+                    del_items = "DELETE FROM material WHERE material_name=%s AND usage_flag < 1"
                     cursor.execute(del_items, material_name)
                     connection.commit()
-                    connection.close()
-                    flag = "Successfully deleted - {} at - {}" .format(material_name, datetime.now())
+                    if connection.affected_rows() > 0:
+                        flag = "Successfully deleted - {} at - {}" .format(material_name, datetime.now())
+                    else:
+                        flag = "Failed to delete - {} as it is linked to a Product in Component Master".format(material_name)
                     flash(flag)
                     return redirect(url_for('delete_material'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/material_modification', methods=['POST', 'GET'])
@@ -395,13 +403,13 @@ def material_modification():
                         upd_items = 'UPDATE material SET material_name="%s", comments="%s", unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, mat_comments, material_id)
                     cursor.execute(upd_items)
                     connection.commit()
-                    connection.close()
                     flag = "Successfully Updated - {} to {} at {}".format(item['material_name'], material_name, datetime.now())
                     flash(flag)
                     return redirect(url_for('modify_material'))
-                    # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
                 return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/modify_material')
@@ -760,8 +768,13 @@ def component_master_creation():
             item8 = int(request.form['item8'])
             item9 = int(request.form['item9'])
             item10 = int(request.form['item10'])
-            if item1 == 0 or item2 == 0: #  or item3==0 or item4==0 or item5==0 or item6==0 or item7==0 or item8==0:
-                flag = "Minimum 2 Item's quantity is expected ..."
+            # if item1 == 0 or item2 == 0: #  or item3==0 or item4==0 or item5==0 or item6==0 or item7==0 or item8==0:
+            #     flag = "Minimum 2 Item's quantity is expected ..."
+            #     flash(flag)
+            #     return redirect(url_for('component_master'))
+            if item1 == 0 and item2 == 0 and item3 == 0 and item4 == 0 and item5 == 0 and item6 == 0 and item7 == 0 \
+                    and item8 == 0 and item9 == 0 and item10 == 0:
+                flag = "Minimum 1 Item's quantity is expected ..."
                 flash(flag)
                 return redirect(url_for('component_master'))
             else:
@@ -822,23 +835,33 @@ def component_master_creation():
                         try:
                             for i in range(1,9):
                                 exec('data[item{}_combo] = item{}'.format(str(i), str(i)))
-                            print(data)
+                            # print(data)
                             del data[0]
                             if not any(data):
                                 flag = 'Items not provided'.format(product_name)
                                 flash(flag)
                                 return redirect(url_for('component_master'))
                             else:
-                                sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
+                                sql = "INSERT INTO component_master(product_name,date_time,added_by,comments," \
                                       "product_spec,component_flag, product_rate,ip_address,mac_id) " \
                                       "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                                 cursor.execute(sql,
                                                (product_name, date_time, str(session['username']), product_comments,
                                                 str(data), 'Y', product_rate, ip, mac))
-                                sql_product_qty = "INSERT INTO product_qty(product_name,quantity) VALUES (%s,%s)"
-                                cursor.execute(sql_product_qty,
-                                               (product_name, product_qty))
-                                connection.commit()
+                                # sql_product_qty = "INSERT INTO product_qty(product_name,quantity) VALUES (%s,%s)"
+                                # cursor.execute(sql_product_qty,
+                                #                (product_name, product_qty))
+                                # connection.commit()
+
+                                item_diction = ast.literal_eval(str(data))
+                                for key in item_diction:
+                                    get_material_usage_flag = "SELECT usage_flag FROM material WHERE id = %s"
+                                    cursor.execute(get_material_usage_flag, key)
+                                    data = cursor.fetchone()
+                                    usage_counter = int(data['usage_flag']) + 1
+                                    upd_items = 'UPDATE material SET usage_flag=%s WHERE id=%s' % (usage_counter, key)
+                                    cursor.execute(upd_items)
+                                    connection.commit()
                                 flag = 'Successfully added the new component {}'.format(product_name)
                                 flash(flag)
                                 return redirect(url_for('component_master'))
@@ -982,29 +1005,36 @@ def component_master_creation():
 def view_component_details():
     try:
         connection = connect_to_db()
+        list_data = list()
         with connection.cursor() as cursor:
-            get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM product WHERE component_flag=%s"
+            get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM component_master WHERE component_flag=%s"
             cursor.execute(get_product_data, 'Y')
             data = cursor.fetchall()
-            temp = data
-            for i in range(0, len(data)):
-                a = ast.literal_eval(data[i]['product_spec'])
-                # del a[0] if a[0] else a
-                # b = a
-                all_keys = a.keys()
-                tempo = dict()
-                for j in all_keys:
-                    get_material = "SELECT material_name FROM material WHERE id=%s"
-                    cursor.execute(get_material, j)
-                    material_name = cursor.fetchone()
-                    name = material_name['material_name']
-                    tempo[j] = name
-                # print(tempo)
-                c = {tempo[key]: value for key, value in a.items()}
-                # print(c)
-                temp[i]['product_spec'] = c
-            # print(temp)
-            return render_template('show_component_master.html', items_data=temp)
+            # temp = data
+            # for i in range(0, len(data)):
+            #     a = ast.literal_eval(data[i]['product_spec'])
+            #     # del a[0] if a[0] else a
+            #     # b = a
+            #     all_keys = a.keys()
+            #     tempo = dict()
+            #     for j in all_keys:
+            #         get_material = "SELECT material_name FROM material WHERE id=%s"
+            #         cursor.execute(get_material, j)
+            #         material_name = cursor.fetchone()
+            #         name = material_name['material_name']
+            #         tempo[j] = name
+            #     # print(tempo)
+            #     c = {tempo[key]: value for key, value in a.items()}
+            #     # print(c)
+            #     temp[i]['product_spec'] = c
+            # # print(temp)
+            for items in data:
+                named_item = convertid2name(items['product_spec'])
+                named_item = str(json.dumps(named_item).replace('{', '[')).replace('}', ']').replace('\"', '').replace(
+                    ':', ' -')
+                items['product_spec'] = named_item
+                list_data.append(items)
+            return render_template('show_component_master.html', items_data=list_data)
     except Exception as e:
         return str(e)
 
@@ -1278,22 +1308,22 @@ def show_finished_products(p_id):
         return str(e)
 
 
-@app.route('/show_sell_products/<int:p_id>', methods=['GET'])
-def show_sell_products(p_id):
-    # p_id = 12
-    try:
-        connection = connect_to_db()
-        with connection.cursor() as cursor:
-            get_product_rate = "SELECT id, product_rate,product_name FROM product where id=%s"
-            cursor.execute(get_product_rate, p_id)
-            dat = cursor.fetchone()
-            get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
-            cursor.execute(get_product_qty, dat['product_name'])
-            get_all = cursor.fetchone()
-            connection.close()
-            return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
-    except Exception as e:
-        return str(e)
+# @app.route('/show_sell_products/<int:p_id>', methods=['GET'])
+# def show_sell_products(p_id):
+#     # p_id = 12
+#     try:
+#         connection = connect_to_db()
+#         with connection.cursor() as cursor:
+#             get_product_rate = "SELECT id, product_rate,product_name FROM product where id=%s"
+#             cursor.execute(get_product_rate, p_id)
+#             dat = cursor.fetchone()
+#             get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
+#             cursor.execute(get_product_qty, dat['product_name'])
+#             get_all = cursor.fetchone()
+#             connection.close()
+#             return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
+#     except Exception as e:
+#         return str(e)
 
 
 @app.route('/add_billing')
@@ -1435,22 +1465,24 @@ def direct_billing_creation():
                 with connection.cursor() as cursor:
                     try:
                         flag = 'y'
-                        get_product_name = "SELECT product_name,product_spec FROM product WHERE id=%s and component_flag=%s"
+                        get_product_name = "SELECT product_name,product_spec FROM component_master WHERE id=%s and component_flag=%s"
                         cursor.execute(get_product_name, (product_id, flag))
                         names = cursor.fetchone()
                         product_data = product_manipulation(convertid2name(names['product_spec']), qty_unit)
                         for item in product_data:
+                            # sql_update_flag = "UPDATE material SET usage_flag = 'N' WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (product_data[item], item))
+                            # cursor.execute(sql_update_flag, item)
                         connection.commit()
-                        sql = "INSERT INTO product(product_name,date_time,added_by,comments," \
-                              "product_spec,component_flag, product_rate,ip_address,mac_id) " \
+                        sql = "INSERT INTO product_master(product_name,date_time,added_by,comments," \
+                              "product_spec,link_component_flag, product_rate,ip_address,mac_id) " \
                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                         cursor.execute(sql,
                                        (names['product_name'], date_time, str(session['username']), 'Directly Added',
-                                        str(product_data), 'N', rate, ip, mac))
+                                        str(product_data), product_id, rate, ip, mac))
                         connection.commit()
-                        get_product_name = "SELECT MAX(id) as id FROM product"
+                        get_product_name = "SELECT MAX(id) as id FROM product_master"
                         cursor.execute(get_product_name,)
                         data_id = cursor.fetchone()
                         get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
@@ -1590,7 +1622,7 @@ def show_cash_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id, c.date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product pr ON pr.id=c.product_id;"
+                    get_items = "select c.id, c.date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
@@ -1653,6 +1685,62 @@ def del_sell_data(p_id):
                     connection.commit()
                     connection.close()
                     return redirect(url_for('delete_billings'))
+            except Exception as e:
+                return str(e)
+
+# delete_component_details
+@app.route('/delete_component_details')
+def delete_component_details():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        list_data = []
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT id, product_name, date_time, product_spec, product_rate FROM component_master"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    for items in items_data:
+                        named_item = convertid2name(items['product_spec'])
+                        named_item = str(json.dumps(named_item).replace('{','[')).replace('}',']').replace('\"','')
+                        items['product_spec'] = named_item
+                        list_data.append(items)
+                    return render_template('delete_component_master.html', items_data=list_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/del_component_master_data/<int:p_id>')
+def del_component_master_data(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        # date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    sel_product = "SELECT product_spec FROM component_master WHERE id=%s"
+                    cursor.execute(sel_product, p_id)
+                    fetched_data = cursor.fetchone()
+                    del_items = "DELETE FROM component_master WHERE id=%s"
+                    cursor.execute(del_items, p_id)
+
+                    for key in ast.literal_eval(fetched_data['product_spec']):
+                        get_usage_data = "SELECT usage_flag FROM material WHERE id=%s"
+                        cursor.execute(get_usage_data, key)
+                        fetched_usage_data = cursor.fetchone()
+                        usage_add = int(fetched_usage_data['usage_flag']) - 1
+                        upd_items = 'UPDATE material SET usage_flag=%s WHERE id=%s' % (usage_add, key)
+                        cursor.execute(upd_items)
+                    connection.commit()
+                    connection.close()
+                    return redirect(url_for('delete_component_details'))
             except Exception as e:
                 return str(e)
 

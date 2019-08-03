@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Delete Component
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Delete Component Master</h1>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Component ID</th>
+                <th>Component Name</th>
+                <th>Component Specification</th>
+                <th>Component Rate</th>
+                <th>Date Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+
+                    <td>{{items.id}}</td>
+                    <td>{{items.product_name}}</td>
+                    <td style="font-weight:bold;color:red">{{items.product_spec.replace('[','').replace(']','').replace(',',' +')}}</td>
+                    <td>{{items.product_rate}}</td>
+                    <td>{{items.date_time}}</td>
+                <td><a href="/del_component_master_data/{{items.id}}" id="del"><button class="btn btn-primary">Delete</button></a></td>
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
