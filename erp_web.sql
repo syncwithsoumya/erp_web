@@ -138,6 +138,17 @@ ip_address varchar(20),
 mac_id varchar(20),
 PRIMARY KEY (sell_id)
 );
+
+create table erp_web.material_movement(
+id int NOT NULL AUTO_INCREMENT,
+mat_id int NOT NULL,
+txn_date VARCHAR(20) NOT NULL,
+opening_balance integer(20) NOT NULL,
+closing_balance integer(10) NOT NULL,
+txn_type VARCHAR(20) NOT NULL,
+PRIMARY KEY (id)
+);
+
 select * from erp_web.ledger;
 select * from erp_web.material;
 select * from erp_web.component_master;
@@ -168,13 +179,16 @@ drop table erp_web.cash;
 drop table erp_web.purchased;
 drop table erp_web.sell;
 drop table erp_web.material_qty;
+drop table erp_web.material_movement;
 SELECT purchased_id, purchased_date, l.ledger_name, p.quantity_unit, total_amount, rate, quantity_sub_unit, m.material_name, p.added_by  FROM erp_web.purchased p INNER JOIN erp_web.ledger l ON p.ledger_id = l.id INNER JOIN erp_web.material m ON p.material_id = m.id;
 drop table erp_web.material_qty;
 alter table erp_web.product_qty CHANGE product_id product_name varchar(1000);
 alter table erp_web.product ADD COLUMN component_flag VARCHAR(2) AFTER product_rate;
 select * from erp_web.sell;
 select * from erp_web.cash;
-
+select * from erp_web.material_movement;
+select * from erp_web.material_movement;
+select closing_balance from erp_web.material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM erp_web.material_movement WHERE mat_id=8);
 delete from erp_web.sell where sell_id in (1,2,3,4,5,6,7);
 SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM erp_web.sell s INNER join erp_web.ledger l ON s.ledger_id = l.id INNER JOIN erp_web.product p ON s.product_id=p.id;
 SELECT id, product_name,product_rate,product_spec,added_by FROM erp_web.product WHERE component_flag='y';

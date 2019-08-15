@@ -508,7 +508,7 @@ def new_purchased_db():
                 material_data = cursor.fetchall()
                 return render_template('new_purchased.html', ledger_data=ledger_data, material_data=material_data)
         except Exception as e:
-            return 'Exception'
+            return str(e)
         finally:
             cursor.close()
             connection.close()
@@ -582,13 +582,20 @@ def new_purchased():
                         get_material_purchased = "SELECT id FROM material_qty WHERE material_id=%s"
                         cursor.execute(get_material_purchased, material)
                         data = cursor.fetchone()
+                        get_material_cdate = "SELECT closing_balance FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=%s);"
+                        cursor.execute(get_material_cdate, material)
+                        cdate = cursor.fetchone()
                         if data is None:
+                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
+                            cursor.execute(sql_mat_mov, (material, date_time,"0",qty_sub_unit,'Purchase'))
                             sql_quantity = "INSERT INTO material_qty(material_id,quantity) VALUES(%s,%s)"
                             cursor.execute(sql_quantity, (material, qty_sub_unit))
                             connection.commit()
                         else:
                             sql_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE material_id=%s and id=%s"
                             cursor.execute(sql_quantity, (qty_sub_unit, material, str(data['id'])))
+                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
+                            cursor.execute(sql_mat_mov, (material, date_time, cdate['closing_balance'], qty_sub_unit, 'Purchase'))
                             connection.commit()
                         flag = 'Successfully Added the Purchased data on {}' .format(date_time)
                         flash(flag)
@@ -1308,22 +1315,23 @@ def show_finished_products(p_id):
         return str(e)
 
 
-# @app.route('/show_sell_products/<int:p_id>', methods=['GET'])
-# def show_sell_products(p_id):
-#     # p_id = 12
-#     try:
-#         connection = connect_to_db()
-#         with connection.cursor() as cursor:
-#             get_product_rate = "SELECT id, product_rate,product_name FROM product where id=%s"
-#             cursor.execute(get_product_rate, p_id)
-#             dat = cursor.fetchone()
-#             get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
-#             cursor.execute(get_product_qty, dat['product_name'])
-#             get_all = cursor.fetchone()
-#             connection.close()
-#             return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
-#     except Exception as e:
-#         return str(e)
+@app.route('/show_sell_products/<int:p_id>', methods=['GET'])
+def show_sell_products(p_id):
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_product_rate = "SELECT id, product_rate,product_name FROM component_master where id=%s"
+            cursor.execute(get_product_rate, p_id)
+            dat = cursor.fetchone()
+            # get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
+            # cursor.execute(get_product_qty, dat['product_name'])
+            # get_all = cursor.fetchone()
+            connection.close()
+            # return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
+            return jsonify({'id': dat['id'], 'product_rate': dat['product_rate']})
+    except Exception as e:
+        return str(e)
 
 
 @app.route('/add_billing')
@@ -1365,7 +1373,7 @@ def direct_billing():
                 cursor.execute(get_items)
                 ledger_data = cursor.fetchall()
             with connection.cursor() as cursor:
-                get_products = "SELECT id,product_name FROM product where component_flag=%s"
+                get_products = "SELECT id,product_name FROM component_master where component_flag=%s"
                 cursor.execute(get_products, 'Y')
                 product_data = cursor.fetchall()
                 return render_template('direct_billing.html', ledger_data=ledger_data, product_data=product_data)
@@ -1469,9 +1477,18 @@ def direct_billing_creation():
                         cursor.execute(get_product_name, (product_id, flag))
                         names = cursor.fetchone()
                         product_data = product_manipulation(convertid2name(names['product_spec']), qty_unit)
+
                         for item in product_data:
-                            # sql_update_flag = "UPDATE material SET usage_flag = 'N' WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
-                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
+                            # Get Material Movement
+                            get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s));"
+                            cursor.execute(get_material_cdate, item)
+                            cdate = cursor.fetchone()
+                            # Add Material Movement
+                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
+                            cursor.execute(sql_mat_mov, (cdate['mat_id'], date_time, cdate['closing_balance'],
+                                                         product_data[item], 'Sale'))
+                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
+                                           "material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (product_data[item], item))
                             # cursor.execute(sql_update_flag, item)
                         connection.commit()
@@ -1524,7 +1541,7 @@ def view_billings():
             # Populate billing from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product p ON s.product_id=p.id"
+                    get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product_master p ON s.product_id=p.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()

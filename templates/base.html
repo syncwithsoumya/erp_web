@@ -72,11 +72,11 @@
         <div id="collapseMaterial" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/create_material">New Material</a>
+            <a class="collapse-item" href="/create_material">Create Material</a>
             <a class="collapse-item" href="/modify_material">Alter Material</a>
-            <a class="collapse-item" href="/delete_material">Delete Material</a>
-              <a class="collapse-item" href="/view_material">View Material</a>
-              <a class="collapse-item" href="/show_material_inventory">Material Stock</a>
+<!--            <a class="collapse-item" href="/delete_material">Delete Material</a>-->
+              <a class="collapse-item" href="/view_material">View all Materials</a>
+              <a class="collapse-item" href="/show_material_inventory">View Material Stock</a>
           </div>
         </div>
       </li>
@@ -170,6 +170,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="true" aria-controls="collapseSell">
           <i class="fas fa-fw fa-shipping-fast"></i>
+<!--          <i class="fas fa-fw fa-plus"></i>-->
           <span>Billing</span>
         </a>
         <div id="collapseSell" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -264,7 +265,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <a class="dropdown-item" href="/show_cash_report">Cash Report</a>
-<!--    <a class="dropdown-item" href="#">Sell Report</a>-->
+    <a class="dropdown-item" href="#">Material Movement Report</a>
 <!--    <a class="dropdown-item" href="#">Purchase Report</a>-->
   </div>
 </div>
@@ -501,7 +502,6 @@ $.ajax({
 	type: "GET",
 	dataType: "json",
 	success: function(resp){
-		$('input#aqty').val(resp.quantity);
 		$('input#rate').val(resp.product_rate);
 	}
       });
@@ -604,6 +604,74 @@ var hidden_qty8 = $('input#hidden_item8').val();
     //$("#new_item").hide();
     });
     });
+</script>
+<script>
+   $(document).ready(function(){
+   var count = 1;
+   for (i=2;i<11;i++){
+   $("#item_text"+i).hide();
+   $("#inputStates"+i).hide();
+   $("#item"+i+"_label").hide();
+   $("#item"+i).hide();
+   }
+    $("#show_txtboxes").click(function(){
+    count += 1;
+    if (count == 2) {
+       $("#item_text2").show();
+   $("#inputStates2").show();
+   $("#item2_label").show();
+   $("#item2").show();
+   }
+   if (count == 3) {
+       $("#item_text3").show();
+   $("#inputStates3").show();
+   $("#item3_label").show();
+   $("#item3").show();
+   }
+   if (count == 4) {
+       $("#item_text4").show();
+   $("#inputStates4").show();
+   $("#item4_label").show();
+   $("#item4").show();
+   }
+   if (count == 5) {
+       $("#item_text5").show();
+   $("#inputStates5").show();
+   $("#item5_label").show();
+   $("#item5").show();
+   }
+   if (count == 6) {
+       $("#item_text6").show();
+   $("#inputStates6").show();
+   $("#item6_label").show();
+   $("#item6").show();
+   }
+   if (count == 7) {
+       $("#item_text7").show();
+   $("#inputStates7").show();
+   $("#item7_label").show();
+   $("#item7").show();
+   }
+   if (count == 8) {
+       $("#item_text8").show();
+   $("#inputStates8").show();
+   $("#item8_label").show();
+   $("#item8").show();
+   }
+   if (count == 9) {
+       $("#item_text9").show();
+   $("#inputStates9").show();
+   $("#item9_label").show();
+   $("#item9").show();
+   }
+   if (count == 10) {
+       $("#item_text10").show();
+   $("#inputStates10").show();
+   $("#item10_label").show();
+   $("#item10").show();
+   }
+  });
+});
 </script>
 </body>
 
