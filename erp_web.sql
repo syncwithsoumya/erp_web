@@ -187,7 +187,7 @@ alter table erp_web.product ADD COLUMN component_flag VARCHAR(2) AFTER product_r
 select * from erp_web.sell;
 select * from erp_web.cash;
 select * from erp_web.material_movement;
-select * from erp_web.material_movement;
+select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from erp_web.material_movement mv LEFT JOIN erp_web.material m ON m.id=mv.mat_id WHERE mv.mat_id=1 AND DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') BETWEEN '16-08-2019 10:34:43' AND '16-08-2019 10:35:43';
 delete from erp_web.material_movement where id IN(5);
 select closing_balance from erp_web.material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM erp_web.material_movement WHERE mat_id=8);
 delete from erp_web.sell where sell_id in (1,2,3,4,5,6,7);
@@ -200,3 +200,4 @@ select c.id as id, c.date_time as Entry_Time, l.ledger_name as Ledger_Name, c.am
 SELECT pr.product_spec,s.quantity,s.amount FROM erp_web.sell s INNER JOIN erp_web.product pr ON s.product_id = pr.id WHERE sell_id=4;
 
 select c.id, c.date_time, l.ledger_name, material_id, product_id, amount from erp_web.cash c INNER join erp_web.ledger l ON c.ledger_id = l.id RIGHT JOIN material m ON m.id=c.material_id;
+select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id WHERE mv.mat_id=2;

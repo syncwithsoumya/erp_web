@@ -1774,13 +1774,51 @@ def show_mm_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
+                    get_materials = "SELECT id, material_name FROM material"
+                    cursor.execute(get_materials)
+                    items_mat_data = cursor.fetchall()
                     get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('show_material_movement.html', items_data=items_data)
+                    return render_template('show_material_movement.html', items_data=items_data,
+                                           items_mat_data=items_mat_data)
             except Exception as e:
                 return str(e)
+
+
+@app.route('/download_mm_report_as_csv', methods=['POST'])
+def download_mm_report_as_csv():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        filename = 'Material_Movement_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        full_fname = app.config['UPLOAD_FOLDER'] + filename
+        if request.method == 'POST':
+            material_id = int(request.form['items_mat_data'])
+            txn_date = request.form['daterange']
+            date_from = str(str(txn_date.split("-")[0]).replace(" ","")).split("/")
+            date_to = str(str(txn_date.split("-")[1]).replace(" ","")).split("/")
+            total_from_date = str(date_from[1]+'-'+date_from[0]+'-'+date_from[2]+' 00:00:00')
+            total_to_date = str(date_to[1]+'-'+date_to[0]+'-'+date_to[2]+' 00:00:00')
+            connection = connect_to_db()
+            if connection.open == 1:
+                # Populate material names from table
+                try:
+                    with connection.cursor() as cursor:
+                        get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id WHERE mv.mat_id={} AND DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') BETWEEN '{}' AND '{}'" .format(material_id,total_from_date,total_to_date)
+                        cursor.execute(get_items)
+                        items_data = cursor.fetchall()
+                        connection.close()
+                    with open(full_fname, 'w', newline='') as csvFile:
+                        fields = ['id', 'material_name', 'opening_balance', 'closing_balance', 'txn_type', 'date_and_time']
+                        writer = csv.DictWriter(csvFile, fieldnames=fields)
+                        writer.writeheader()
+                        writer.writerows(items_data)
+                    csvFile.close()
+                    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+                except Exception as e:
+                    return str(e)
 
 
 if __name__ == '__main__':

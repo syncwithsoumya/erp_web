@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/show_material_movement.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/erp_web.sql" beforeDir="false" afterPath="$PROJECT_DIR$/erp_web.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/show_material_movement.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_material_movement.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="267" column="50" selection-start-line="267" selection-start-column="50" selection-end-line="267" selection-end-column="50" />
+            <state relative-caret-position="266">
+              <caret line="682" column="4" selection-start-line="682" selection-start-column="4" selection-end-line="682" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -28,13 +27,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="1766" column="27" selection-start-line="1766" selection-start-column="13" selection-end-line="1766" selection-end-column="27" />
+            <state relative-caret-position="130">
+              <caret line="1818" column="71" lean-forward="true" selection-start-line="1818" selection-start-column="71" selection-end-line="1818" selection-end-column="71" />
               <folding>
                 <element signature="e#0#112#0" expanded="true" />
-                <marker date="1565979058774" expanded="true" signature="19954:19955" ph="..." />
-                <marker date="1565979058774" expanded="true" signature="51441:51446" ph="..." />
-                <marker date="1565979058774" expanded="true" signature="51587:51589" ph="..." />
+                <marker date="1565991152180" expanded="true" signature="19954:19955" ph="..." />
+                <marker date="1565991152180" expanded="true" signature="51441:51446" ph="..." />
+                <marker date="1565991152180" expanded="true" signature="51587:51589" ph="..." />
               </folding>
             </state>
           </provider>
@@ -52,17 +51,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/alter_ledger.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="16" lean-forward="true" selection-end-line="37" selection-end-column="14" />
+            <state relative-caret-position="285">
+              <caret line="34" column="65" lean-forward="true" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="65" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/alter_material.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
+            <state relative-caret-position="208">
+              <caret line="57" column="58" lean-forward="true" selection-start-line="57" selection-start-column="58" selection-end-line="57" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -77,33 +85,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/show_cash_report.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="24" column="21" lean-forward="true" selection-end-line="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/direct_billing.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
               <caret line="53" column="65" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="65" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#2;n#div#3;n#div#0;n#form#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/component_master.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="61" column="31" selection-start-line="61" selection-start-column="31" selection-end-line="61" selection-end-column="31" />
-              <folding>
-                <element signature="n#style#0;n#a#0;n#div#5;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -121,10 +108,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>/view_cas</find>
-      <find>show_sell_products</find>
-      <find>INSERT INTO material</find>
-      <find>material(</find>
       <find>compo</find>
       <find>material_m</find>
       <find>INTO product</find>
@@ -149,8 +132,12 @@
       <find>show_se</find>
       <find>direct_billing</find>
       <find>final_closing</find>
-      <find>cash</find>
       <find>show_</find>
+      <find>cash</find>
+      <find>alter_mater</find>
+      <find>show_com</find>
+      <find>logoutModal</find>
+      <find>jsonify</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -213,9 +200,9 @@
         <option value="$PROJECT_DIR$/templates/component_master.html" />
         <option value="$PROJECT_DIR$/static/css/sb-admin-2.min.css" />
         <option value="$PROJECT_DIR$/templates/view_material_movement.html" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/templates/show_material_movement.html" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
       </list>
     </option>
   </component>
@@ -372,16 +359,16 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49925596" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.515625" side_tool="true" visible="true" weight="0.29787233" />
-      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49627978" weight="0.3289689" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.21279761" side_tool="true" visible="true" weight="0.45335516" />
+      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.4955357" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49776787" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.484375" visible="true" weight="0.29787233" />
-      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.57068455" weight="0.31260228" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.484375" weight="0.29787233" />
+      <window_info active="true" anchor="bottom" id="Debug" order="7" sideWeight="0.78720236" visible="true" weight="0.45335516" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -1382,17 +1369,90 @@
           <line>1756</line>
           <option name="timeStamp" value="550" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1798</line>
+          <option name="timeStamp" value="553" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1803</line>
+          <option name="timeStamp" value="554" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1794</line>
+          <option name="timeStamp" value="555" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1795</line>
+          <option name="timeStamp" value="556" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1796</line>
+          <option name="timeStamp" value="557" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1797</line>
+          <option name="timeStamp" value="558" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1799</line>
+          <option name="timeStamp" value="559" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1800</line>
+          <option name="timeStamp" value="561" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1801</line>
+          <option name="timeStamp" value="562" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1802</line>
+          <option name="timeStamp" value="563" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1806</line>
+          <option name="timeStamp" value="564" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1807</line>
+          <option name="timeStamp" value="565" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1808</line>
+          <option name="timeStamp" value="566" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1810</line>
+          <option name="timeStamp" value="567" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1809</line>
+          <option name="timeStamp" value="568" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1811</line>
+          <option name="timeStamp" value="569" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="73" column="39" selection-start-line="59" selection-start-column="20" selection-end-line="73" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1507,13 +1567,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/alter_material.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="23" column="58" selection-start-line="23" selection-start-column="58" selection-end-line="23" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/show_manufacture_details.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1602,13 +1655,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/delete_purchased.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -1647,13 +1693,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/python/python3.6/Lib/site-packages/flask/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17865">
-          <caret line="1220" selection-start-line="1220" selection-end-line="1220" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/new_material.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -1678,16 +1717,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/direct_billing.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="53" column="65" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="65" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#2;n#div#3;n#div#0;n#form#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/blank.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1699,13 +1728,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="29">
           <caret line="17" column="16" lean-forward="true" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/alter_ledger.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="16" lean-forward="true" selection-end-line="37" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1723,30 +1745,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
+    <entry file="file://$PROJECT_DIR$/templates/alter_material.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
+        <state relative-caret-position="150">
+          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="1766" column="27" selection-start-line="1766" selection-start-column="13" selection-end-line="1766" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#112#0" expanded="true" />
-            <marker date="1565979058774" expanded="true" signature="19954:19955" ph="..." />
-            <marker date="1565979058774" expanded="true" signature="51441:51446" ph="..." />
-            <marker date="1565979058774" expanded="true" signature="51587:51589" ph="..." />
-          </folding>
+        <state relative-caret-position="255">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/platform-impl.jar!/resources/html5-schema/html5/common.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="267" column="50" selection-start-line="267" selection-start-column="50" selection-end-line="267" selection-end-column="50" />
+        <state relative-caret-position="266">
+          <caret line="682" column="4" selection-start-line="682" selection-start-column="4" selection-end-line="682" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/python/python3.6/Lib/site-packages/flask/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="1220" selection-start-line="1220" selection-end-line="1220" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/direct_billing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="53" column="65" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="65" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#div#2;n#div#3;n#div#0;n#form#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/alter_ledger.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="34" column="65" lean-forward="true" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="1818" column="71" lean-forward="true" selection-start-line="1818" selection-start-column="71" selection-end-line="1818" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#112#0" expanded="true" />
+            <marker date="1565991152180" expanded="true" signature="19954:19955" ph="..." />
+            <marker date="1565991152180" expanded="true" signature="51441:51446" ph="..." />
+            <marker date="1565991152180" expanded="true" signature="51587:51589" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="57" column="58" lean-forward="true" selection-start-line="57" selection-start-column="58" selection-end-line="57" selection-end-column="58" />
         </state>
       </provider>
     </entry>
