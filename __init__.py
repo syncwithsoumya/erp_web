@@ -592,10 +592,11 @@ def new_purchased():
                             cursor.execute(sql_quantity, (material, qty_sub_unit))
                             connection.commit()
                         else:
+                            final_closing = int(cdate['closing_balance']) + int(qty_sub_unit)
                             sql_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE material_id=%s and id=%s"
                             cursor.execute(sql_quantity, (qty_sub_unit, material, str(data['id'])))
                             sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
-                            cursor.execute(sql_mat_mov, (material, date_time, cdate['closing_balance'], qty_sub_unit, 'Purchase'))
+                            cursor.execute(sql_mat_mov, (material, date_time, cdate['closing_balance'], final_closing, 'Purchase'))
                             connection.commit()
                         flag = 'Successfully Added the Purchased data on {}' .format(date_time)
                         flash(flag)
@@ -1484,9 +1485,10 @@ def direct_billing_creation():
                             cursor.execute(get_material_cdate, item)
                             cdate = cursor.fetchone()
                             # Add Material Movement
+                            final_closing = int(cdate['closing_balance']) - int(product_data[item])
                             sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
                             cursor.execute(sql_mat_mov, (cdate['mat_id'], date_time, cdate['closing_balance'],
-                                                         product_data[item], 'Sale'))
+                                                         final_closing, 'Sale'))
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
                                            "material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (product_data[item], item))
@@ -1758,6 +1760,25 @@ def del_component_master_data(p_id):
                     connection.commit()
                     connection.close()
                     return redirect(url_for('delete_component_details'))
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/show_mm_report')
+def show_mm_report():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('show_material_movement.html', items_data=items_data)
             except Exception as e:
                 return str(e)
 

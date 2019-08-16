@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- View Material Movement
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Material Movement Details</h1>
+<div class="dropdown show">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Download
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+<!--    <a class="dropdown-item" href="#">Excel</a>-->
+<!--    <a class="dropdown-item" href="#">Pdf</a>-->
+    <a class="dropdown-item" href="/download_mm_report_as_csv">CSV</a>
+  </div>
+</div>
+<br>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Material Name</th>
+                <th>Transaction Date</th>
+                <th>Opening Balance</th>
+                <th>Closing Balance</th>
+                <th>Transaction Type</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+                    <td>{{items.id}}</td>
+                    <td>{{items.material_name}}</td>
+                    <td>{{items.date_and_time}}</td>
+                    <td>{{items.opening_balance}}</td>
+                    <td>{{items.closing_balance}}</td>
+
+                {% if items.txn_type == 'Purchase' %}
+                <td  class="table-success"> Purchase </td>
+                {% else %}
+                <td class="table-danger"> Sale </td>
+                {% endif %}
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}

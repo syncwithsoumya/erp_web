@@ -188,6 +188,7 @@ select * from erp_web.sell;
 select * from erp_web.cash;
 select * from erp_web.material_movement;
 select * from erp_web.material_movement;
+delete from erp_web.material_movement where id IN(5);
 select closing_balance from erp_web.material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM erp_web.material_movement WHERE mat_id=8);
 delete from erp_web.sell where sell_id in (1,2,3,4,5,6,7);
 SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM erp_web.sell s INNER join erp_web.ledger l ON s.ledger_id = l.id INNER JOIN erp_web.product p ON s.product_id=p.id;
