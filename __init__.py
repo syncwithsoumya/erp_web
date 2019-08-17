@@ -726,7 +726,6 @@ def delete_purchased_db():
                     get_items = "SELECT purchased_id, purchased_date, l.ledger_name, quantity_unit, total_amount, quantity_sub_unit, m.material_name, p.added_by  FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
                     return render_template('delete_purchased.html', items_data=items_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
