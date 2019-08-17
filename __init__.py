@@ -1609,27 +1609,104 @@ def pay_to_ledger():
                 return str(e)
 
 
-# @app.route('/paid_ledger')
-# def paid_ledger():
-#     ledger_id = int(request.form['ledgers_dat'])
-#     payamount = request.form['payamount']
-#     qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
-#     connection = connect_to_db()
-#     if connection.open == 1:
-#         # Populate ledger names from table
-#         try:
-#             with connection.cursor() as cursor:
-#                 get_ledger_id = "SELECT ledger_id FROM cash WHERE ledger_id=%s"
-#                 cursor.execute(get_ledger_id, ledger_id)
-#                 check = cursor.fetchone()
-#                 if check is None:
-#                     insert_sql = "INSERT INTO cash(ledger_id, amount,comments) VALUES (%s,%s,'')"
-#                     cursor.execute(insert_sql, (ledger_id, amount))
-#                     connection.commit()
-#                 else:
-#                     update_sql = "UPDATE cash SET amount = amount - %s WHERE ledger_id=%s"
-#                     cursor.execute(update_sql, (totamt, ledger_id))
-#                     connection.commit()
+@app.route('/receive_from_ledger')
+def receive_from_ledger():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select id,ledger_name from ledger"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('receive_from_ledger.html', ledger_data=items_data)
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/show_ledger_credit/<int:p_id>')
+def show_ledger_credit(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_product_qty = "SELECT SUM(amount) AS Amount FROM cash WHERE ledger_id = %s"
+                    cursor.execute(get_product_qty, p_id)
+                    data = cursor.fetchone()
+                    connection.close()
+                    amt = int(data['Amount']) if data['Amount'] is not None else 0
+                    return jsonify({'due': amt})
+            except Exception as e:
+                return str(e)
+
+
+@app.route('/paid_to_ledger', methods=['POST'])
+def paid_to_ledger():
+    date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+    ledger_id = int(request.form['ledgers_dat'])
+    payamount = int(request.form['payamount'])
+    comments = request.form['paycomments']
+    if ledger_id == 0 or payamount <= 0 or comments == '':
+        flash("Invalid Data")
+        return redirect(url_for('pay_to_ledger'))
+    connection = connect_to_db()
+    if connection.open == 1:
+        # Populate ledger names from table
+        try:
+            with connection.cursor() as cursor:
+                insert_sql = "INSERT INTO cash(date_time, ledger_id, material_id, product_id, amount, comments) " \
+                             "VALUES (%s,%s,NULL,NULL,%s,%s)"
+                cursor.execute(insert_sql, (date_time, ledger_id, payamount, comments))
+                connection.commit()
+                connection.commit()
+                flag = 'Payment entry was Successfully done at {}'.format(date_time)
+                flash(flag)
+                return redirect(url_for('pay_to_ledger'))
+        except Exception as e:
+            flag = "Failure with %s" % e
+            flash(flag)
+            return redirect(url_for('pay_to_ledger'))
+        finally:
+            connection.close()
+
+
+@app.route('/received_from_ledger', methods=['POST'])
+def received_from_ledger():
+    date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+    ledger_id = int(request.form['ledgers_dat'])
+    payamount = int(request.form['payamount'])
+    comments = request.form['paycomments']
+    if ledger_id == 0 or payamount <= 0 or comments == '':
+        flash("Invalid Data")
+        return redirect(url_for('receive_from_ledger'))
+    connection = connect_to_db()
+    if connection.open == 1:
+        # Populate ledger names from table
+        try:
+            with connection.cursor() as cursor:
+                insert_sql = "INSERT INTO cash(date_time, ledger_id, material_id, product_id, amount, comments) " \
+                             "VALUES (%s,%s,NULL,NULL,%s,%s)"
+                cursor.execute(insert_sql, (date_time, ledger_id, -payamount, comments))
+                connection.commit()
+                connection.commit()
+                flag = 'Payment entry was Successfully done at {}'.format(date_time)
+                flash(flag)
+                return redirect(url_for('receive_from_ledger'))
+        except Exception as e:
+            flag = "Failure with %s" % e
+            flash(flag)
+            return redirect(url_for('receive_from_ledger'))
+        finally:
+            connection.close()
+
 
 @app.route('/show_cash_report')
 def show_cash_report():

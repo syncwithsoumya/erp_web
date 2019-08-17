@@ -202,9 +202,9 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
             <a class="collapse-item" href="/pay_to_ledger">Pay to Ledger</a>
-            <a class="collapse-item" href="utilities-animation.html">Receive from Ledger</a>
-            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>
-              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>
+            <a class="collapse-item" href="/receive_from_ledger">Receive from Ledger</a>
+<!--            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>-->
+<!--              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>-->
           </div>
         </div>
       </li>
@@ -692,7 +692,19 @@ $(function() {
     return false;
   }
 }
-
+</script>
+<script>
+ $('select#ledger_id').change(function(){
+    var nodeList = $(this).children("option:selected").val();
+$.ajax({
+	url: "/show_ledger_credit/"+nodeList,
+	type: "GET",
+	dataType: "json",
+	success: function(resp){
+		$('input#ledger_amount').val(resp.due);
+	}
+      });
+});
 </script>
 </body>
 
