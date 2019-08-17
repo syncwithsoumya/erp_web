@@ -149,6 +149,16 @@ txn_type VARCHAR(20) NOT NULL,
 PRIMARY KEY (id)
 );
 
+create table erp_web.log_data(
+id int NOT NULL AUTO_INCREMENT,
+txn_date VARCHAR(20) NOT NULL,
+txn_msg VARCHAR(1000) NOT NULL,
+added_by varchar(50) NOT NULL,
+ip_address varchar(20) NOT NULL,
+mac_id varchar(20),
+PRIMARY KEY (id)
+)
+
 select * from erp_web.ledger;
 select * from erp_web.material;
 select * from erp_web.component_master;

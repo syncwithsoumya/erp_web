@@ -14,6 +14,20 @@ current_dir = str(os.getcwd())
 app.config['UPLOAD_FOLDER'] = ''
 
 
+def write_to_log_data(txn_date=None, txn_msg=None, added_by=None, ip_address=None, mac_id=None):
+    connection = connect_to_db()
+    with connection.cursor() as cursor:
+        try:
+            sql = "INSERT INTO log_data(txn_date,txn_msg,added_by,ip_address,mac_id) VALUES (%s,%s,%s,%s,%s)"
+            cursor.execute(sql, (txn_date, txn_msg, added_by, ip_address, mac_id))
+            connection.commit()
+            return True
+        except Exception as e:
+            return False
+        finally:
+            connection.close()
+
+
 def connect_to_db():
     if '127' in request.url:
         conn = pymysql.connect(host='localhost', user='root', password='root123', db='erp_web', charset='utf8mb4',
@@ -121,6 +135,7 @@ def ledger_creation():
             if ledger_name == "":
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(date_time, flag, str(session['username']), ip, mac)
                 return redirect(url_for('create_ledger'))
             else:
                 connection = connect_to_db()
@@ -131,10 +146,12 @@ def ledger_creation():
                         connection.commit()
                         flag = 'Successfully Added Ledger - {} at {}'.format(ledger_name, date_time)
                         flash(flag)
+                        write_to_log_data(date_time, flag, str(session['username']), ip, mac)
                         return redirect(url_for('create_ledger'))
                     except Exception as e:
                         flag = "Failure with %s" % e
                         flash(flag)
+                        write_to_log_data(date_time, flag, str(session['username']), ip, mac)
                         return redirect(url_for('create_ledger'))
                     finally:
                         connection.close()
@@ -155,7 +172,7 @@ def delete_ledger():
                     items_data = cursor.fetchall()
                     return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
             finally:
                 connection.close()
 
@@ -172,6 +189,8 @@ def ledger_deletion():
             if ledger_id == "":
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('delete_ledger'))
         if connection.open == 1:
             # Populate ledger names from table
@@ -183,10 +202,12 @@ def ledger_deletion():
                     connection.close()
                     flag = "Successfully deleted - {} at - {}".format(ledger_id, datetime.now())
                     flash(flag)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return redirect(url_for('delete_ledger'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
 @app.route('/modify_ledger')
@@ -205,7 +226,7 @@ def modify_ledger():
                     connection.close()
                     return render_template('alter_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                return str(e)
 
 
 @app.route('/ledger_modification', methods=['POST', 'GET'])
@@ -222,12 +243,18 @@ def ledger_modification():
             ledger_name = request.form['new_name']
             comments = request.form['new_comments']
         if ledger_name == "" and comments == "":
-            flash('Invalid Data. Please try again.')
+            flag = 'Invalid Data. Please try again.'
+            flash(flag)
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_ledger'))
         if connection.open == 1:
             # Populate ledger names from table
             if ledger_id == "0":
-                flash("Please select Ledger")
+                flag = 'Please select Ledger'
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('modify_ledger'))
             try:
                 with connection.cursor() as cursor:
@@ -243,10 +270,14 @@ def ledger_modification():
                     connection.close()
                     flag = "Successfully Updated - {} to - {} at {}".format(ledger_id, ledger_name, datetime.now())
                     flash(flag)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return redirect(url_for('modify_ledger'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 
 @app.route('/view_ledger')
@@ -259,13 +290,15 @@ def view_ledger():
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id, ledger_name, date_time, added_by, comments FROM ledger"
+                    get_items = "SELECT id, ledger_name, DATE_FORMAT(date_time,'%d-%m-%Y %k:%i:%s') as date_time, added_by, comments FROM ledger"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
                     return render_template('view_ledger.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 
 '''
@@ -303,10 +336,16 @@ def material_creation():
                         connection.commit()
                         flag = 'Successfully Added Material - {} at {}' .format(material_name, date_time)
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+                                          str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('create_material'))
                     except Exception as e:
                         flag = "Failure with %s" % e
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+                                          str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('create_material'))
                     finally:
                         connection.close()
@@ -328,7 +367,9 @@ def delete_material():
                     connection.close()
                     return render_template('delete_material.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 
 @app.route('/material_deletion',  methods=['POST'])
@@ -347,6 +388,8 @@ def material_deletion():
             if material_name == "":
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('delete_material'))
         if connection.open == 1:
             # Populate ledger names from table
@@ -360,9 +403,13 @@ def material_deletion():
                     else:
                         flag = "Failed to delete - {} as it is linked to a Product in Component Master".format(material_name)
                     flash(flag)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return redirect(url_for('delete_material'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
             finally:
                 connection.close()
@@ -384,10 +431,16 @@ def material_modification():
             unit_list = request.form['unit_list']
             sub_unit_list = request.form['sub_unit_list']
         if material_name == "" and mat_comments == "":
-            flash('Invalid Data. Please try again.')
+            flag = 'Invalid Data. Please try again.'
+            flash(flag)
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_material'))
         elif unit_list == "0" or sub_unit_list == "0":
-            flash('Please select the unit or sub-unit')
+            flag = 'Please select the unit or sub-unit'
+            flash(flag)
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_material'))
         else:
             try:
@@ -405,8 +458,12 @@ def material_modification():
                     connection.commit()
                     flag = "Successfully Updated - {} to {} at {}".format(item['material_name'], material_name, datetime.now())
                     flash(flag)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return redirect(url_for('modify_material'))
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
             finally:
                 connection.close()
@@ -431,6 +488,8 @@ def modify_material():
                     connection.close()
                     return render_template('alter_material.html', items_data=items_data, units_data=units_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -444,13 +503,15 @@ def view_material():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id, material_name, date_time, added_by, comments FROM material"
+                    get_items = "SELECT id, material_name, DATE_FORMAT(date_time,'%d-%m-%Y %k:%i:%s') as date_time, added_by, comments FROM material"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
                     return render_template('view_material.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 
 '''
@@ -508,6 +569,8 @@ def new_purchased_db():
                 material_data = cursor.fetchall()
                 return render_template('new_purchased.html', ledger_data=ledger_data, material_data=material_data)
         except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return str(e)
         finally:
             cursor.close()
@@ -536,6 +599,8 @@ def alter_purchased_db():
                 items_material_data = cursor.fetchall()
             return render_template('alter_purchased.html', purchase_data=items_pur_data, ledger_data=items_ledger_data, material_data=items_material_data)
         except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return str(e)
         finally:
             connection.close()
@@ -560,10 +625,11 @@ def new_purchased():
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
 
-
             if qty_unit == "" or pdate == "" or material == "" or qty_sub_unit == "":
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('new_purchased_db'))
             else:
                 connection = connect_to_db()
@@ -600,10 +666,14 @@ def new_purchased():
                             connection.commit()
                         flag = 'Successfully Added the Purchased data on {}' .format(date_time)
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('new_purchased_db'))
                     except Exception as e:
                         flag = "Failure with %s" % e
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('new_purchased_db'))
                     finally:
                         connection.close()
@@ -622,10 +692,13 @@ def view_purchased_db():
                     get_items = "SELECT purchased_id, purchased_date, l.ledger_name, quantity_unit, p.unit, p.sub_unit, total_amount, rate, quantity_sub_unit, m.material_name  FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
                     return render_template('view_purchased.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/delete_purchased_db')
@@ -644,7 +717,11 @@ def delete_purchased_db():
                     connection.close()
                     return render_template('delete_purchased.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/del_purchased_data/<int:p_id>')
@@ -675,6 +752,8 @@ def del_purchased_data(p_id):
                     connection.close()
                     return redirect(url_for('delete_purchased_db'))
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -694,7 +773,9 @@ def show_material_inventory():
                     connection.close()
                     return render_template('show_material_inventory.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 '''
  New Buildout starts here
@@ -736,6 +817,8 @@ def component_master():
                     connection.close()
                     return render_template('component_master.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -784,6 +867,8 @@ def component_master_creation():
                     and item8 == 0 and item9 == 0 and item10 == 0:
                 flag = "Minimum 1 Item's quantity is expected ..."
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('component_master'))
             else:
                 data = dict()
@@ -791,6 +876,8 @@ def component_master_creation():
                 if product_name == "":
                     flag = "Product Name is expected."
                     flash(flag)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return redirect(url_for('component_master'))
                 if item1 > 0 and item1_combo != 0:
                     list_handler.append(item1_combo)
@@ -830,10 +917,16 @@ def component_master_creation():
                                 else:
                                     sum_of_dupes = sum_of_dupes + " and " + data['material_name']
                                 counter += 1
-                        flash('You have provided duplicate item names - %s' % sum_of_dupes)
+                        flag = 'You have provided duplicate item names - %s' % sum_of_dupes
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         connection.close()
                     except Exception as e:
-                        flash('Exception %s' % e)
+                        flag = 'Exception %s' % str(e)
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         redirect(url_for('component_master'))
                     return redirect(url_for('component_master'))
                 else:
@@ -848,6 +941,9 @@ def component_master_creation():
                             if not any(data):
                                 flag = 'Items not provided'.format(product_name)
                                 flash(flag)
+                                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+                                                  str(session['username']),
+                                                  utilities.get_ip(), utilities.get_mac())
                                 return redirect(url_for('component_master'))
                             else:
                                 sql = "INSERT INTO component_master(product_name,date_time,added_by,comments," \
@@ -856,10 +952,6 @@ def component_master_creation():
                                 cursor.execute(sql,
                                                (product_name, date_time, str(session['username']), product_comments,
                                                 str(data), 'Y', product_rate, ip, mac))
-                                # sql_product_qty = "INSERT INTO product_qty(product_name,quantity) VALUES (%s,%s)"
-                                # cursor.execute(sql_product_qty,
-                                #                (product_name, product_qty))
-                                # connection.commit()
 
                                 item_diction = ast.literal_eval(str(data))
                                 for key in item_diction:
@@ -872,10 +964,16 @@ def component_master_creation():
                                     connection.commit()
                                 flag = 'Successfully added the new component {}'.format(product_name)
                                 flash(flag)
+                                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+                                                  str(session['username']),
+                                                  utilities.get_ip(), utilities.get_mac())
                                 return redirect(url_for('component_master'))
                         except Exception as e:
                             flag = "Failure with %s" % e
                             flash(flag)
+                            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+                                              str(session['username']),
+                                              utilities.get_ip(), utilities.get_mac())
                             return redirect(url_for('component_master'))
                         finally:
                             connection.close()
@@ -1018,24 +1116,6 @@ def view_component_details():
             get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM component_master WHERE component_flag=%s"
             cursor.execute(get_product_data, 'Y')
             data = cursor.fetchall()
-            # temp = data
-            # for i in range(0, len(data)):
-            #     a = ast.literal_eval(data[i]['product_spec'])
-            #     # del a[0] if a[0] else a
-            #     # b = a
-            #     all_keys = a.keys()
-            #     tempo = dict()
-            #     for j in all_keys:
-            #         get_material = "SELECT material_name FROM material WHERE id=%s"
-            #         cursor.execute(get_material, j)
-            #         material_name = cursor.fetchone()
-            #         name = material_name['material_name']
-            #         tempo[j] = name
-            #     # print(tempo)
-            #     c = {tempo[key]: value for key, value in a.items()}
-            #     # print(c)
-            #     temp[i]['product_spec'] = c
-            # # print(temp)
             for items in data:
                 named_item = convertid2name(items['product_spec'])
                 named_item = str(json.dumps(named_item).replace('{', '[')).replace('}', ']').replace('\"', '').replace(
@@ -1044,6 +1124,8 @@ def view_component_details():
                 list_data.append(items)
             return render_template('show_component_master.html', items_data=list_data)
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1055,29 +1137,11 @@ def view_manufactured_details():
             get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM product WHERE component_flag=%s"
             cursor.execute(get_product_data, 'N')
             data = cursor.fetchall()
-            # temp = data
-            # for i in range(0, len(data)):
-            #     a = ast.literal_eval(data[i]['product_spec'])
-            #     # del a[0] if a[0] else a
-            #     # b = a
-            #     all_keys = a.keys()
-            #     tempo = dict()
-            #     for j in all_keys:
-            #         get_material = "SELECT material_name FROM material WHERE id=%s"
-            #         cursor.execute(get_material, j)
-            #         material_name = cursor.fetchone()
-            #         name = material_name['material_name']
-            #         tempo[j] = name
-            #     # print(tempo)
-            #     c = {tempo[key]: value for key, value in a.items()}
-            #     # print(c)
-            #     temp[i]['product_spec'] = c
-            # print(temp)
             return render_template('show_manufacture_details.html', items_data=data)
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
-
-
 
 
 @app.route('/process_ledger/<int:p_id>', methods=['GET'])
@@ -1092,6 +1156,8 @@ def process_ledger(p_id):
             connection.close()
             return jsonify({'data': dat[0]['comments']})
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1107,6 +1173,8 @@ def process_material(p_id):
             connection.close()
             return jsonify({'comments': dat[0]['comments'], 'unit': dat[0]['unit'], 'sub_unit': dat[0]['sub_unit']})
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1122,6 +1190,8 @@ def process_unit(p_id):
             connection.close()
             return jsonify({'data': dat[0]['unit'], 'data2': dat[0]['sub_unit']})
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1137,6 +1207,8 @@ def process_alter_product(p_id):
             connection.close()
             return jsonify({'purchased_date': dat[0]['purchased_date'], 'ledger_id': dat[0]['ledger_id'], 'unit': dat[0]['unit'], 'sub_unit': dat[0]['sub_unit'], 'quantity_unit': dat[0]['quantity_unit'], 'rate': dat[0]['rate'], 'total_amount': dat[0]['total_amount'], 'material_id': dat[0]['material_id'], 'quantity_sub_unit': dat[0]['quantity_sub_unit']})
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1148,7 +1220,7 @@ def create_units():
         return render_template('new_units_add.html')
 
 
-@app.route('/unit_creation', methods=['POST', 'GET'])
+@app.route('/unit_creation', methods=['POST'])
 def unit_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
@@ -1165,8 +1237,12 @@ def unit_creation():
                         connection.commit()
                         flag = 'Successfully Added the new {} unit'.format(unit)
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('create_units'))
                 except Exception as e:
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return str(e)
 
 
@@ -1186,10 +1262,12 @@ def modify_units():
                     connection.close()
                     return render_template('alter_unit.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
-@app.route('/unit_modification', methods=['POST', 'GET'])
+@app.route('/unit_modification', methods=['POST'])
 def unit_modification():
     if session.get('username') is None:
         return redirect(url_for('login'))
@@ -1201,7 +1279,10 @@ def unit_modification():
             unit_id = request.form['units_list']
             unit_name = request.form['new_name']
         if unit_id == "0" and unit_name == "":
-            flash('Invalid Data. Please try again.')
+            flag = 'Invalid Data. Please try again.'
+            flash(flag)
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_units'))
         if connection.open == 1:
             # Populate ledger names from table
@@ -1214,12 +1295,17 @@ def unit_modification():
                         upd_items = 'UPDATE units SET unit="%s" WHERE id=%s' % (unit_name, unit_id)
                         cursor.execute(upd_items)
                         connection.commit()
-                        connection.close()
                         flag = "Successfully Updated - {} to {} at {}".format(item['unit'], unit_name, datetime.now())
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('modify_units'))
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/delete_units')
@@ -1237,6 +1323,8 @@ def delete_units():
                     items_data = cursor.fetchall()
                     return render_template('delete_units.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
             finally:
                 connection.close()
@@ -1254,6 +1342,8 @@ def unit_deletion():
             if unit == "0":
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('delete_units'))
         if connection.open == 1:
             # Populate ledger names from table
@@ -1265,9 +1355,13 @@ def unit_deletion():
                     connection.close()
                     flag = "Successfully deleted - {} at - {}".format(unit, datetime.now())
                     flash(flag)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return redirect(url_for('delete_units'))
                     # return render_template('delete_ledger.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1284,10 +1378,13 @@ def view_units():
                     get_items = "SELECT id, unit FROM units"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
                     return render_template('view_units.html', items_data=items_data)
             except Exception as e:
-                return 'Exception'
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/show_finished_products/<int:p_id>', methods=['GET'])
@@ -1313,6 +1410,8 @@ def show_finished_products(p_id):
                 get_all[i]['quantity'] = mat_quantity
             return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_rate': dat['product_rate'], 'spec': get_all})
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1332,6 +1431,8 @@ def show_sell_products(p_id):
             # return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
             return jsonify({'id': dat['id'], 'product_rate': dat['product_rate']})
     except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return str(e)
 
 
@@ -1354,6 +1455,8 @@ def add_billing():
                 product_data = cursor.fetchall()
                 return render_template('add_billing.html', ledger_data=ledger_data, product_data=product_data)
         except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return str(e)
         finally:
             cursor.close()
@@ -1379,6 +1482,8 @@ def direct_billing():
                 product_data = cursor.fetchall()
                 return render_template('direct_billing.html', ledger_data=ledger_data, product_data=product_data)
         except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return str(e)
         finally:
             cursor.close()
@@ -1403,10 +1508,14 @@ def billing_creation():
             if ledger_id == 0:
                 flag = "Ledger not selected."
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('add_billing'))
             elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('add_billing'))
             else:
                 connection = connect_to_db()
@@ -1429,6 +1538,9 @@ def billing_creation():
                         if int(data['quantity']) < qty_unit:
                             flag = "Insufficient Quantity. Please manufacture..."
                             flash(flag)
+                            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+                                              str(session['username']),
+                                              utilities.get_ip(), utilities.get_mac())
                             return redirect(url_for('add_billing'))
                         else:
                             sql_quantity = "UPDATE product_qty SET quantity = quantity - %s WHERE product_name=%s and id=%s"
@@ -1436,10 +1548,14 @@ def billing_creation():
                             connection.commit()
                         flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time)
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('add_billing'))
                     except Exception as e:
                         flag = "Failure with %s" % str(e)
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('add_billing'))
                     finally:
                         connection.close()
@@ -1464,10 +1580,14 @@ def direct_billing_creation():
             if ledger_id == 0:
                 flag = "Ledger not selected."
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('direct_billing'))
             elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
                 flag = "Invalid Data"
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('direct_billing'))
             else:
                 connection = connect_to_db()
@@ -1524,10 +1644,14 @@ def direct_billing_creation():
                                 list_of_ofs_items.append(item)
                         flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time) if not any(list_of_ofs_items) else 'Successfully Sold %s to %s on %s with Insufficient Materials - %s' % (names['product_name'],ledger_name['ledger_name'],date_time,','.join(str(n) for n in list_of_ofs_items))
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('direct_billing'))
                     except Exception as e:
                         flag = "Failure with %s" % str(e)
                         flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('direct_billing'))
                     finally:
                         connection.close()
@@ -1549,6 +1673,8 @@ def view_billings():
                     connection.close()
                     return render_template('view_billings.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1568,6 +1694,8 @@ def delete_billings():
                     connection.close()
                     return render_template('delete_sell_items.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1606,6 +1734,8 @@ def pay_to_ledger():
                     connection.close()
                     return render_template('pay_to_ledger.html', ledger_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1625,6 +1755,8 @@ def receive_from_ledger():
                     connection.close()
                     return render_template('receive_from_ledger.html', ledger_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1645,6 +1777,8 @@ def show_ledger_credit(p_id):
                     amt = int(data['Amount']) if data['Amount'] is not None else 0
                     return jsonify({'due': amt})
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1669,10 +1803,14 @@ def paid_to_ledger():
                 connection.commit()
                 flag = 'Payment entry was Successfully done at {}'.format(date_time)
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('pay_to_ledger'))
         except Exception as e:
             flag = "Failure with %s" % e
             flash(flag)
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('pay_to_ledger'))
         finally:
             connection.close()
@@ -1685,7 +1823,10 @@ def received_from_ledger():
     payamount = int(request.form['payamount'])
     comments = request.form['paycomments']
     if ledger_id == 0 or payamount <= 0 or comments == '':
-        flash("Invalid Data")
+        flag = "Invalid Data"
+        flash(flag)
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return redirect(url_for('receive_from_ledger'))
     connection = connect_to_db()
     if connection.open == 1:
@@ -1699,6 +1840,8 @@ def received_from_ledger():
                 connection.commit()
                 flag = 'Payment entry was Successfully done at {}'.format(date_time)
                 flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('receive_from_ledger'))
         except Exception as e:
             flag = "Failure with %s" % e
@@ -1724,6 +1867,8 @@ def show_cash_report():
                     connection.close()
                     return render_template('show_cash_report.html', items_data=items_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1751,6 +1896,8 @@ def download_cash_report_as_csv():
                 csvFile.close()
                 return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1782,6 +1929,8 @@ def del_sell_data(p_id):
                     connection.close()
                     return redirect(url_for('delete_billings'))
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1808,6 +1957,8 @@ def delete_component_details():
                         list_data.append(items)
                     return render_template('delete_component_master.html', items_data=list_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1839,6 +1990,8 @@ def del_component_master_data(p_id):
                     connection.close()
                     return redirect(url_for('delete_component_details'))
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1862,6 +2015,8 @@ def show_mm_report():
                     return render_template('show_material_movement.html', items_data=items_data,
                                            items_mat_data=items_mat_data)
             except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
 
@@ -1896,6 +2051,8 @@ def download_mm_report_as_csv():
                     csvFile.close()
                     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
                 except Exception as e:
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     return str(e)
 
 
