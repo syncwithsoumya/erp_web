@@ -525,7 +525,15 @@ def authenticate_login():
     if request.method == 'POST':
         id = request.form['username']
         password = request.form['password']
-        if id == 'Admin@ssp.com' and password == 'Pass':
+        if id == 'Admin@ssp.com' and password == 'Pass1234':
+            # flash('Successfully logged in')
+            session['username'] = id.split('@')[0]
+            return redirect(url_for('dashboard'))
+        elif id == 'Luna@ssp.com' and password == 'Pass':
+            # flash('Successfully logged in')
+            session['username'] = id.split('@')[0]
+            return redirect(url_for('dashboard'))
+        elif id == 'Babloo@ssp.com' and password == 'Pass':
             # flash('Successfully logged in')
             session['username'] = id.split('@')[0]
             return redirect(url_for('dashboard'))
