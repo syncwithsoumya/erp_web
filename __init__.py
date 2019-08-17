@@ -1739,7 +1739,7 @@ def download_cash_report_as_csv():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id as id, c.date_time as Entry_Time, l.ledger_name as Ledger_Name, m.material_name as Material_Name, pr.product_name as Product_Name, ABS(c.amount) as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product pr ON pr.id=c.product_id;"
+                    get_items = "select c.id as id, c.date_time as Entry_Time, l.ledger_name as Ledger_Name, m.material_name as Material_Name, pr.product_name as Product_Name, ABS(c.amount) as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()

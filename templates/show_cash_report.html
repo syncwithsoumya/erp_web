@@ -5,17 +5,22 @@ Star ERP -- View Component Master
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">Cash Transaction Details</h1>
-<div class="dropdown show">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Download
-  </a>
-
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-<!--    <a class="dropdown-item" href="#">Excel</a>-->
-<!--    <a class="dropdown-item" href="#">Pdf</a>-->
-    <a class="dropdown-item" href="/download_cash_report_as_csv">CSV</a>
-  </div>
+<div>
+<!--<button type="button" class="btn btn-dark" ><i class="fas fa-download fa-sm"></i> Download</button>-->
+    <a class="btn btn-dark" href="/download_cash_report_as_csv" role="button"><i class="fas fa-download fa-sm"></i> Download</a>
 </div>
+<br>
+<!--<div class="dropdown show">-->
+<!--  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--    Download-->
+<!--  </a>-->
+
+<!--  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
+<!--&lt;!&ndash;    <a class="dropdown-item" href="#">Excel</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    <a class="dropdown-item" href="#">Pdf</a>&ndash;&gt;-->
+<!--    <a class="dropdown-item" href="/download_cash_report_as_csv">CSV</a>-->
+<!--  </div>-->
+<!--</div>-->
 <br>
 <div class="table-responsive">
     <table id="example" class="table table-bordered">
@@ -55,7 +60,7 @@ Star ERP -- View Component Master
                 {% elif items.amount > 0 and not items.product_name and not items.material_name %}
                 <td class="table-dark"> Debit </td>
                 {% elif items.amount < 0 and not items.product_name and not items.material_name %}
-                <td class="table-warning"> Credit </td>
+                <td class="table-primary"> Credit </td>
 
                 {% endif %}
             </tr>
