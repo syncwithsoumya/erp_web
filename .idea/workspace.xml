@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/erp_web.sql" beforeDir="false" afterPath="$PROJECT_DIR$/erp_web.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/new_material.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/new_material.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,17 +41,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="2052" column="38" lean-forward="true" selection-start-line="2052" selection-start-column="38" selection-end-line="2052" selection-end-column="38" />
+            <state relative-caret-position="160">
+              <caret line="532" column="39" selection-start-line="532" selection-start-column="39" selection-end-line="532" selection-end-column="39" />
               <folding>
                 <element signature="e#0#112#0" expanded="true" />
-                <marker date="1566058294022" expanded="true" signature="24795:24796" ph="..." />
-                <marker date="1566058294022" expanded="true" signature="58823:58828" ph="..." />
-                <marker date="1566058294022" expanded="true" signature="58969:58971" ph="..." />
+                <marker date="1566059245575" expanded="true" signature="24788:24789" ph="..." />
+                <marker date="1566059245575" expanded="true" signature="58816:58821" ph="..." />
+                <marker date="1566059245575" expanded="true" signature="58962:58964" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/new_material.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="47" column="52" selection-start-line="47" selection-start-column="52" selection-end-line="47" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -75,15 +85,6 @@
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#form#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/alter_material.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -130,8 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>delete_pur</find>
-      <find>material</find>
       <find>view_c</find>
       <find>component_c</find>
       <find>usage_fla</find>
@@ -160,6 +159,8 @@
       <find>pay_to_ledger</find>
       <find>download_cash_report_as_csv</find>
       <find>flash</find>
+      <find>Cancel</find>
+      <find>authe</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -174,7 +175,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/login.html" />
         <option value="$PROJECT_DIR$/templates/blank.html" />
         <option value="$PROJECT_DIR$/utilities.py" />
         <option value="$PROJECT_DIR$/ledger_section.py" />
@@ -189,7 +189,6 @@
         <option value="$PROJECT_DIR$/templates/new_ledger.html" />
         <option value="$PROJECT_DIR$/templates/delete_ledger.html" />
         <option value="$PROJECT_DIR$/templates/alter_ledger.html" />
-        <option value="$PROJECT_DIR$/templates/new_material.html" />
         <option value="$PROJECT_DIR$/templates/delete_material.html" />
         <option value="$PROJECT_DIR$/templates/delete_unit.html" />
         <option value="$PROJECT_DIR$/templates/show_unit.html" />
@@ -225,6 +224,8 @@
         <option value="$PROJECT_DIR$/templates/show_material_movement.html" />
         <option value="$PROJECT_DIR$/templates/show_cash_report.html" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/templates/new_material.html" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
       </list>
     </option>
   </component>
@@ -381,16 +382,16 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49925596" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5186012" side_tool="true" visible="true" weight="0.29787233" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.2157738" side_tool="true" visible="true" weight="0.45335516" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.4955357" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49776787" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.48139882" visible="true" weight="0.29787233" />
-      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.7849702" weight="0.45335516" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.48139882" weight="0.29787233" />
+      <window_info active="true" anchor="bottom" id="Debug" order="7" sideWeight="0.7842262" visible="true" weight="0.45335516" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -1529,13 +1530,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/new_material.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="61" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/component_master.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1669,14 +1663,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="2052" column="38" lean-forward="true" selection-start-line="2052" selection-start-column="38" selection-end-line="2052" selection-end-column="38" />
+        <state relative-caret-position="160">
+          <caret line="532" column="39" selection-start-line="532" selection-start-column="39" selection-end-line="532" selection-end-column="39" />
           <folding>
             <element signature="e#0#112#0" expanded="true" />
-            <marker date="1566058294022" expanded="true" signature="24795:24796" ph="..." />
-            <marker date="1566058294022" expanded="true" signature="58823:58828" ph="..." />
-            <marker date="1566058294022" expanded="true" signature="58969:58971" ph="..." />
+            <marker date="1566059245575" expanded="true" signature="24788:24789" ph="..." />
+            <marker date="1566059245575" expanded="true" signature="58816:58821" ph="..." />
+            <marker date="1566059245575" expanded="true" signature="58962:58964" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/new_material.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="47" column="52" selection-start-line="47" selection-start-column="52" selection-end-line="47" selection-end-column="52" />
         </state>
       </provider>
     </entry>

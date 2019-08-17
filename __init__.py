@@ -519,7 +519,7 @@ def view_material():
 '''
 
 
-@app.route('/authenticate_login', methods=['POST', 'GET'])
+@app.route('/authenticate_login', methods=['POST'])
 def authenticate_login():
     error = None
     if request.method == 'POST':
