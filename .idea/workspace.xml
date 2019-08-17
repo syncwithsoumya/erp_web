@@ -42,13 +42,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="536" column="30" lean-forward="true" selection-start-line="536" selection-start-column="30" selection-end-line="536" selection-end-column="30" />
+            <state relative-caret-position="161">
+              <caret line="1700" column="37" lean-forward="true" selection-start-line="1700" selection-start-column="37" selection-end-line="1700" selection-end-column="37" />
               <folding>
                 <element signature="e#0#112#0" expanded="true" />
-                <marker date="1566060229407" expanded="true" signature="25204:25205" ph="..." />
-                <marker date="1566060229407" expanded="true" signature="59232:59237" ph="..." />
-                <marker date="1566060229407" expanded="true" signature="59378:59380" ph="..." />
+                <marker date="1566060512212" expanded="true" signature="25204:25205" ph="..." />
+                <marker date="1566060512212" expanded="true" signature="59232:59237" ph="..." />
+                <marker date="1566060512212" expanded="true" signature="59378:59380" ph="..." />
               </folding>
             </state>
           </provider>
@@ -383,13 +383,13 @@
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49925596" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.2157738" side_tool="true" visible="true" weight="0.45335516" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5193452" side_tool="true" visible="true" weight="0.29787233" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.4955357" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49776787" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.48139882" weight="0.29787233" />
-      <window_info active="true" anchor="bottom" id="Debug" order="7" sideWeight="0.7842262" visible="true" weight="0.45335516" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.48065478" visible="true" weight="0.29787233" />
+      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.7842262" weight="0.45335516" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -1668,13 +1668,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="536" column="30" lean-forward="true" selection-start-line="536" selection-start-column="30" selection-end-line="536" selection-end-column="30" />
+        <state relative-caret-position="161">
+          <caret line="1700" column="37" lean-forward="true" selection-start-line="1700" selection-start-column="37" selection-end-line="1700" selection-end-column="37" />
           <folding>
             <element signature="e#0#112#0" expanded="true" />
-            <marker date="1566060229407" expanded="true" signature="25204:25205" ph="..." />
-            <marker date="1566060229407" expanded="true" signature="59232:59237" ph="..." />
-            <marker date="1566060229407" expanded="true" signature="59378:59380" ph="..." />
+            <marker date="1566060512212" expanded="true" signature="25204:25205" ph="..." />
+            <marker date="1566060512212" expanded="true" signature="59232:59237" ph="..." />
+            <marker date="1566060512212" expanded="true" signature="59378:59380" ph="..." />
           </folding>
         </state>
       </provider>

@@ -1696,7 +1696,7 @@ def delete_billings():
             # Populate billing from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product p ON s.product_id=p.id"
+                    get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product_master p ON s.product_id=p.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
