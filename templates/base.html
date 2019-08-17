@@ -684,6 +684,16 @@ $(function() {
   });
 });
 </script>
+<script>
+  function validateForm() {
+  var x = document.forms["gen_mm_report"]["items_mat_data"].value;
+  if (x == "0") {
+    alert("Please select Material");
+    return false;
+  }
+}
+
+</script>
 </body>
 
 </html>
