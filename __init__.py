@@ -1784,6 +1784,7 @@ def del_sell_data(p_id):
             except Exception as e:
                 return str(e)
 
+
 # delete_component_details
 @app.route('/delete_component_details')
 def delete_component_details():
