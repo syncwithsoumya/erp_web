@@ -1920,7 +1920,7 @@ def del_sell_data(p_id):
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_product_qty = "SELECT pr.product_spec, s.quantity, s.amount,s.ledger_id FROM sell s INNER JOIN product pr ON s.product_id = pr.id WHERE sell_id=%s "
+                    get_product_qty = "SELECT pr.product_spec, s.quantity, s.amount,s.ledger_id FROM sell s INNER JOIN product_master pr ON s.product_id = pr.id WHERE sell_id=%s "
                     cursor.execute(get_product_qty, p_id)
                     data = cursor.fetchone()
                     new_data = product_manipulation(ast.literal_eval(data['product_spec']),1)
