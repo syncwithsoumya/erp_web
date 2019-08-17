@@ -49,9 +49,9 @@ Star ERP -- View Component Master
                 {% endif %}
                     <td>{{items.amount}}</td>
                 {% if items.amount > 0 %}
-                <td  class="table-success"> Debit </td>
+                <td  class="table-success"> Purchase </td>
                 {% else %}
-                <td class="table-danger"> Credit </td>
+                <td class="table-danger"> Sale </td>
                 {% endif %}
             </tr>
          {% endfor %}
