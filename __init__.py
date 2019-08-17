@@ -398,6 +398,10 @@ def material_deletion():
                     del_items = "DELETE FROM material WHERE material_name=%s AND usage_flag < 1"
                     cursor.execute(del_items, material_name)
                     connection.commit()
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")),
+                                      'Deleted Material Name-{}'.format(material_name),
+                                      str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     if connection.affected_rows() > 0:
                         flag = "Successfully deleted - {} at - {}" .format(material_name, datetime.now())
                     else:
@@ -757,6 +761,9 @@ def del_purchased_data(p_id):
                     del_items = "DELETE FROM purchased WHERE purchased_id=%s"
                     cursor.execute(del_items, p_id)
                     connection.commit()
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), 'Deleted Purchase ID-{}'.format(p_id),
+                                      str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
                     connection.close()
                     return redirect(url_for('delete_purchased_db'))
             except Exception as e:
@@ -1931,7 +1938,10 @@ def del_sell_data(p_id):
                     del_items = "DELETE FROM sell WHERE sell_id=%s"
                     cursor.execute(del_items, p_id)
                     connection.commit()
-                    insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,NULL,%s,%s,'Reversed')"
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), 'Deleted Sell ID-{}'.format(p_id), str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
+                    insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments)" \
+                                 " VALUES (%s, %s,NULL,%s,%s,'Reversed')"
                     cursor.execute(insert_sql, (date_time, data['ledger_id'], p_id, -(data['amount'])))
                     connection.commit()
                     connection.close()
@@ -1986,6 +1996,9 @@ def del_component_master_data(p_id):
                     fetched_data = cursor.fetchone()
                     del_items = "DELETE FROM component_master WHERE id=%s"
                     cursor.execute(del_items, p_id)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), 'Deleted Component ID-{}'.format(p_id),
+                                      str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
 
                     for key in ast.literal_eval(fetched_data['product_spec']):
                         get_usage_data = "SELECT usage_flag FROM material WHERE id=%s"
