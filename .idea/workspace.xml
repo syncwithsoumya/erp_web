@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-    </list>
+    <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +13,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="207" column="16" selection-start-line="207" selection-start-column="16" selection-end-line="207" selection-end-column="16" />
+            <state relative-caret-position="60">
+              <caret line="69" column="28" lean-forward="true" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -42,13 +40,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-124">
-              <caret line="727" column="50" selection-start-line="727" selection-start-column="50" selection-end-line="727" selection-end-column="50" />
+            <state relative-caret-position="305">
+              <caret line="372" lean-forward="true" selection-start-line="353" selection-end-line="372" />
               <folding>
                 <element signature="e#0#112#0" expanded="true" />
-                <marker date="1566061182592" expanded="true" signature="25519:25520" ph="..." />
-                <marker date="1566061182592" expanded="true" signature="59774:59779" ph="..." />
-                <marker date="1566061182592" expanded="true" signature="59920:59922" ph="..." />
+                <marker date="1566102087413" expanded="true" signature="25557:25558" ph="..." />
+                <marker date="1566102087413" expanded="true" signature="59812:59817" ph="..." />
+                <marker date="1566102087413" expanded="true" signature="59958:59960" ph="..." />
               </folding>
             </state>
           </provider>
@@ -129,7 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>component_c</find>
       <find>usage_fla</find>
       <find>view_billib</find>
       <find>component_m</find>
@@ -152,13 +149,14 @@
       <find>&lt;i</find>
       <find>contai</find>
       <find>pay</find>
-      <find>pay_to</find>
       <find>pay_to_ledger</find>
       <find>download_cash_report_as_csv</find>
       <find>flash</find>
       <find>authe</find>
       <find>Cancel</find>
       <find>&quot;DELETE</find>
+      <find>delete_purchased_db</find>
+      <find>pay_to</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -380,7 +378,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49925596" weight="0.3289689" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5193452" side_tool="true" visible="true" weight="0.29787233" />
@@ -388,7 +386,7 @@
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49776787" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.48065478" visible="true" weight="0.29787233" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.48065478" visible="true" weight="0.29787233" />
       <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.7842262" weight="0.45335516" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -1621,13 +1619,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="207" column="16" selection-start-line="207" selection-start-column="16" selection-end-line="207" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/pay_to_ledger.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1666,15 +1657,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="69" column="28" lean-forward="true" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-124">
-          <caret line="727" column="50" selection-start-line="727" selection-start-column="50" selection-end-line="727" selection-end-column="50" />
+        <state relative-caret-position="305">
+          <caret line="372" lean-forward="true" selection-start-line="353" selection-end-line="372" />
           <folding>
             <element signature="e#0#112#0" expanded="true" />
-            <marker date="1566061182592" expanded="true" signature="25519:25520" ph="..." />
-            <marker date="1566061182592" expanded="true" signature="59774:59779" ph="..." />
-            <marker date="1566061182592" expanded="true" signature="59920:59922" ph="..." />
+            <marker date="1566102087413" expanded="true" signature="25557:25558" ph="..." />
+            <marker date="1566102087413" expanded="true" signature="59812:59817" ph="..." />
+            <marker date="1566102087413" expanded="true" signature="59958:59960" ph="..." />
           </folding>
         </state>
       </provider>

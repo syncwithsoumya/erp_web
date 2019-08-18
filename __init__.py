@@ -351,25 +351,25 @@ def material_creation():
                         connection.close()
 
 
-@app.route('/delete_material')
-def delete_material():
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        connection = connect_to_db()
-        if connection.open == 1:
-            # Populate ledger names from table
-            try:
-                with connection.cursor() as cursor:
-                    get_items = "SELECT id, material_name FROM material"
-                    cursor.execute(get_items)
-                    items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('delete_material.html', items_data=items_data)
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
+# @app.route('/delete_material')
+# def delete_material():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         connection = connect_to_db()
+#         if connection.open == 1:
+#             # Populate ledger names from table
+#             try:
+#                 with connection.cursor() as cursor:
+#                     get_items = "SELECT id, material_name FROM material"
+#                     cursor.execute(get_items)
+#                     items_data = cursor.fetchall()
+#                     connection.close()
+#                     return render_template('delete_material.html', items_data=items_data)
+#             except Exception as e:
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return str(e)
 
 
 @app.route('/material_deletion',  methods=['POST'])
