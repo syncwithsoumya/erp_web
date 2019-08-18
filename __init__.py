@@ -135,7 +135,7 @@ def ledger_creation():
             if ledger_name == "":
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(date_time, flag, str(session['username']), ip, mac)
+                write_to_log_data(date_time, flag + 'create_ledger', str(session['username']), ip, mac)
                 return redirect(url_for('create_ledger'))
             else:
                 connection = connect_to_db()
@@ -189,7 +189,7 @@ def ledger_deletion():
             if ledger_id == "":
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'delete_ledger', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('delete_ledger'))
         if connection.open == 1:
@@ -245,7 +245,7 @@ def ledger_modification():
         if ledger_name == "" and comments == "":
             flag = 'Invalid Data. Please try again.'
             flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_ledger', str(session['username']),
                               utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_ledger'))
         if connection.open == 1:
@@ -388,7 +388,7 @@ def material_deletion():
             if material_name == "":
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'delete_material', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('delete_material'))
         if connection.open == 1:
@@ -437,7 +437,7 @@ def material_modification():
         if material_name == "" and mat_comments == "":
             flag = 'Invalid Data. Please try again.'
             flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_material', str(session['username']),
                               utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_material'))
         elif unit_list == "0" or sub_unit_list == "0":
@@ -640,7 +640,7 @@ def new_purchased():
             if qty_unit == "" or pdate == "" or material == "" or qty_sub_unit == "":
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('new_purchased_db'))
             else:
@@ -1295,7 +1295,7 @@ def unit_modification():
         if unit_id == "0" and unit_name == "":
             flag = 'Invalid Data. Please try again.'
             flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_units', str(session['username']),
                               utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_units'))
         if connection.open == 1:
@@ -1356,7 +1356,7 @@ def unit_deletion():
             if unit == "0":
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'delete_units', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('delete_units'))
         if connection.open == 1:
@@ -1528,7 +1528,7 @@ def billing_creation():
             elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'add_billing', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('add_billing'))
             else:
@@ -1600,7 +1600,7 @@ def direct_billing_creation():
             elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
                 flag = "Invalid Data"
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'direct_billing', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('direct_billing'))
             else:
@@ -1803,7 +1803,10 @@ def paid_to_ledger():
     payamount = int(request.form['payamount'])
     comments = request.form['paycomments']
     if ledger_id == 0 or payamount <= 0 or comments == '':
-        flash("Invalid Data")
+        flag = "Invalid Data"
+        flash(flag)
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'paid_to_ledger', str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
         return redirect(url_for('pay_to_ledger'))
     connection = connect_to_db()
     if connection.open == 1:
@@ -1839,7 +1842,7 @@ def received_from_ledger():
     if ledger_id == 0 or payamount <= 0 or comments == '':
         flag = "Invalid Data"
         flash(flag)
-        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'receive_from_ledger', str(session['username']),
                           utilities.get_ip(), utilities.get_mac())
         return redirect(url_for('receive_from_ledger'))
     connection = connect_to_db()
