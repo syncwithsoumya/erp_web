@@ -34,7 +34,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-fan"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">FANWALA ERP</div>
+        <div class="sidebar-brand-text mx-3">Admin Panel</div>
       </a>
 
 
@@ -45,185 +45,91 @@
       <div class="sidebar-heading">
         MENU
       </div>
-
-      <!-- Nav Item - Ledgers Collapse Menu -->
+      {% if session['username'] == 'superadmin' %}
+      <!-- Nav Item - Build-out Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLedgers" aria-expanded="true" aria-controls="collapseLedgers">
-          <i class="fas fa-fw fa-users"></i>
-          <span>Ledgers Master</span>
-        </a>
-        <div id="collapseLedgers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Components:</h6>-->
-            <a class="collapse-item" href="/create_ledger">New Ledger</a>
-            <a class="collapse-item" href="/delete_ledger">Delete Ledger</a>
-              <a class="collapse-item" href="/modify_ledger">Alter Ledger</a>
-              <a class="collapse-item" href="/view_ledger">View Ledger</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Material/Commodity Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaterial" aria-expanded="true" aria-controls="collapseMaterial">
-          <i class="fas fa-fw fa-luggage-cart"></i>
-          <span>Raw Materials Master</span>
-        </a>
-        <div id="collapseMaterial" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/create_material">Create Material</a>
-            <a class="collapse-item" href="/modify_material">Alter Material</a>
-<!--            <a class="collapse-item" href="/delete_material">Delete Material</a>-->
-              <a class="collapse-item" href="/view_material">View all Materials</a>
-              <a class="collapse-item" href="/show_material_inventory">View Material Stock</a>
-          </div>
-        </div>
-      </li>
-
-        <!-- Nav Item -Unit Master Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true" aria-controls="collapseUnit">
-          <i class="fas fa-fw fa-atom"></i>
-          <span>Units Master</span>
-        </a>
-        <div id="collapseUnit" class="collapse" aria-labelledby="headingUnit" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/create_units">Add New Unit</a>
-            <a class="collapse-item" href="/modify_units">Alter Existing Unit </a>
-            <a class="collapse-item" href="/delete_units">Delete Existing Unit</a>
-              <a class="collapse-item" href="/view_units">View Units</a>
-          </div>
-        </div>
-      </li>
-<!-- Nav Item - Location Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLocation" aria-expanded="true" aria-controls="collapseLocation">
-          <i class="fas fa-fw fa-map"></i>
-          <span>Location & Site Master</span>
-        </a>
-        <div id="collapseLocation" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_purchased_db">Add a Location</a>
-            <a class="collapse-item" href="/alter_purchased_db">Add a site</a>
-            <a class="collapse-item" href="/alter_purchased_db">View Location & Sites</a>
-            <a class="collapse-item" href="/delete_purchased_db">Delete Location</a>
-            <a class="collapse-item" href="/delete_purchased_db">Delete Site</a>
-          </div>
-        </div>
-      </li>
-        <!-- Nav Item - Purchase Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePurchase" aria-expanded="true" aria-controls="collapsePurchase">
-          <i class="fas fa-fw fa-shopping-cart"></i>
-          <span>Purchase</span>
-        </a>
-        <div id="collapsePurchase" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_purchased_db">Purchase</a>
-              <a class="collapse-item" href="/alter_purchased_db">Modify Purchase</a>
-            <a class="collapse-item" href="/delete_purchased_db">Delete existing Purchase</a>
-            <a class="collapse-item" href="/view_purchased_db">View all Purchases</a>
-          </div>
-        </div>
-      </li>
-       <!-- Nav Item - Component-Master Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecomponent" aria-expanded="true" aria-controls="collapsecomponent">
-          <i class="fas fa-fw fa-box"></i>
-          <span>Component Master</span>
-        </a>
-        <div id="collapsecomponent" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/component_master">Component Master</a>
-<!--            <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>-->
-            <a class="collapse-item" href="/view_component_details">View Component Master</a>
-            <a class="collapse-item" href="/delete_component_details">Delete Component Master</a>
-<!--            <a class="collapse-item" href="/view_manufactured_details">View Manufacture</a>-->
-
-          </div>
-        </div>
-      </li>
-          <!-- Nav Item - Build-out Collapse Menu -->
-<!--      <li class="nav-item">-->
-<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBuild" aria-expanded="true" aria-controls="collapseBuild">-->
-<!--          <i class="fas fa-fw fa-wrench"></i>-->
-<!--          <span>Manufacture</span>-->
-<!--        </a>-->
-<!--        <div id="collapseBuild" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
-<!--          <div class="bg-white py-2 collapse-inner rounded">-->
-<!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
-<!--&lt;!&ndash;            <a class="collapse-item" href="/component_master">Component Master</a>&ndash;&gt;-->
-<!--            <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>-->
-<!--&lt;!&ndash;            <a class="collapse-item" href="/view_component_details">View Component Master</a>&ndash;&gt;-->
-<!--            <a class="collapse-item" href="/view_manufactured_details">View Manufacture</a>-->
-
-<!--          </div>-->
-<!--        </div>-->
-<!--      </li>-->
-
-          <!-- Nav Item - Sell Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="true" aria-controls="collapseSell">
-          <i class="fas fa-fw fa-shipping-fast"></i>
-<!--          <i class="fas fa-fw fa-plus"></i>-->
-          <span>Billing</span>
-        </a>
-        <div id="collapseSell" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-<!--            <a class="collapse-item" href="/add_billing">Billing</a>-->
-            <a class="collapse-item" href="/direct_billing">Direct Billing</a>
-            <a class="collapse-item" href="/view_billings">View all Billings</a>
-            <a class="collapse-item" href="/delete_billings">Delete Billings</a>
-          </div>
-        </div>
-      </li>
-
-
-      <!-- Divider
-      <hr class="sidebar-divider">-->
-<!--<hr class="sidebar-divider d-none d-md-block">
-       Heading -->
-      <!--<div class="sidebar-heading">
-        Addons
-      </div>-->
-     <!-- Nav Item - Build-out Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCash" aria-expanded="true" aria-controls="collapseCash">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminMenu2" aria-expanded="true" aria-controls="collapseAdminMenu2">
           <i class="fas fa-fw fa-rupee-sign"></i>
-          <span>Payment</span>
+          <span>User Accounts</span>
         </a>
-        <div id="collapseCash" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseAdminMenu2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/pay_to_ledger">Pay to Ledger</a>
-            <a class="collapse-item" href="/receive_from_ledger">Receive from Ledger</a>
+            <a class="collapse-item" href="#">Add User</a>
+            <a class="collapse-item" href="#">Remove User</a>
+            <a class="collapse-item" href="#">Suspend User</a>
+            <a class="collapse-item" href="#">Sign-Out Users</a>
+            <a class="collapse-item" href="#">Show Users</a>
+          </div>
+        </div>
+      </li>
+      {% endif %}
+        {% if session['username'] == 'superadmin' %}
+      <!-- Nav Item - Build-out Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminMenu3" aria-expanded="true" aria-controls="collapseAdminMenu3">
+          <i class="fas fa-fw fa-rupee-sign"></i>
+          <span>Data Management</span>
+        </a>
+        <div id="collapseAdminMenu3" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
+            <a class="collapse-item" href="#">Delete Data</a>
+            <a class="collapse-item" href="#">Restore Data</a>
+            <a class="collapse-item" href="#">Backup Data</a>
+            <a class="collapse-item" href="/show_logs">Logs</a>
+
 <!--            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>-->
 <!--              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>-->
           </div>
         </div>
       </li>
+      {% endif %}
+        {% if session['username'] == 'superadmin' %}
+      <!-- Nav Item - Build-out Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminMenu4" aria-expanded="true" aria-controls="collapseAdminMenu4">
+          <i class="fas fa-fw fa-rupee-sign"></i>
+          <span>Activation</span>
+        </a>
+        <div id="collapseAdminMenu4" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
+            <a class="collapse-item" href="#">Generate Key</a>
+            <a class="collapse-item" href="#">Map Key to User</a>
+            <a class="collapse-item" href="#">Activate/Reject Key</a>
+            <a class="collapse-item" href="#">Show Keys and Users</a>
+          </div>
+        </div>
+      </li>
+      {% endif %}
+{% if session['username'] == 'superadmin' %}
+      <!-- Nav Item - Build-out Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminMenu5" aria-expanded="true" aria-controls="collapseAdminMenu5">
+          <i class="fas fa-fw fa-rupee-sign"></i>
+          <span>Views</span>
+        </a>
+        <div id="collapseAdminMenu5" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
+            <a class="collapse-item" href="#">Ledgers</a>
+            <a class="collapse-item" href="#">Materials</a>
+            <a class="collapse-item" href="#">Purchases</a>
+            <a class="collapse-item" href="#">Sell</a>
+            <a class="collapse-item" href="#">Cash</a>
+            <a class="collapse-item" href="#">Material Movement</a>
+            <a class="collapse-item" href="#">Material Stock</a>
+            <a class="collapse-item" href="#">Component Master</a>
+            <a class="collapse-item" href="#">Units</a>
+            <a class="collapse-item" href="#">Product Quantity</a>
 
-<!--        <li class="nav-item">-->
-<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">-->
-<!--          <i class="fas fa-fw fa-home"></i>-->
-<!--          <span>Inventory</span>-->
-<!--        </a>-->
-<!--        <div id="collapseReports" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
-<!--          <div class="bg-white py-2 collapse-inner rounded">-->
-<!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
-<!--            <a class="collapse-item" href="/show_material_inventory">Material Stock</a>-->
-<!--&lt;!&ndash;            <a class="collapse-item" href="/show_product_inventory">Finished Products</a>&ndash;&gt;-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </li>-->
-      <!-- Divider -->
-
+<!--            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>-->
+<!--              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>-->
+          </div>
+        </div>
+      </li>
+      {% endif %}
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -245,31 +151,6 @@
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
-
-<!--          <h5 class="font-weight-normal">Logged in as <b>{{ session['username']}}</b>  </h5>-->
-          <!-- Topbar Navbar -->
-<!--          <div class="dropdown">-->
-<!--  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-home"></i>-->
-<!--    Inventory-->
-<!--  </button>-->
-<!--  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-<!--    <a class="dropdown-item" href="/show_material_inventory">Material Stock</a>-->
-<!--    <a class="dropdown-item" href="/show_product_inventory">Finished Products</a>-->
-<!--  </div>-->
-<!--</div>-->
-<!--          <div class="text-center d-none d-md-inline">-->
-<!--        <button class="rounded-circle border-0" id="sidebarToggle2"></button>-->
-<!--      </div>-->
-           <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-book"></i>
-   Reports
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <a class="dropdown-item" href="/show_cash_report">Cash Report</a>
-    <a class="dropdown-item" href="/show_mm_report">Material Movement Report</a>
-<!--    <a class="dropdown-item" href="#">Purchase Report</a>-->
-  </div>
-</div>
           <ul class="navbar-nav ml-auto">
 
 
@@ -283,7 +164,7 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="/change_password">
+                <a class="dropdown-item" href="#">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Change Password
                 </a>

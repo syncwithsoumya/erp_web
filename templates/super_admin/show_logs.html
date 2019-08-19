@@ -1,0 +1,33 @@
+{% extends "super_admin/super_admin_base.html" %}
+{% block title %}
+Star ERP -- View Component Master
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">View Logs</h1>
+<br>
+<div class="table-responsive">
+    <table id="example" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Activity ID</th>
+                <th>Activity Date</th>
+                <th>Activity Message</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+                    <td>{{items.id}}</td>
+                    <td>{{items.txn_date}}</td>
+                    <td>{{items.txn_msg}}</td>
+                    <td>{{items.added_by}}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}

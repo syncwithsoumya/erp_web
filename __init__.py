@@ -70,6 +70,11 @@ def default():
     return render_template('index.html')
 
 
+@app.route('/change_password')
+def change_password():
+    return render_template('change_password.html')
+
+
 @app.route('/dashboard')
 def dashboard():
     if session.get('username') is None:
@@ -87,6 +92,11 @@ def dashboard():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+
+@app.route('/super_admin_panel')
+def super_admin_panel():
+    return render_template('super_admin/super_admin_base.html')
 
 
 @app.route('/create_ledger')
@@ -537,6 +547,10 @@ def authenticate_login():
             # flash('Successfully logged in')
             session['username'] = id.split('@')[0]
             return redirect(url_for('dashboard'))
+        elif id == 'superadmin@ssp.com' and password == 'Pass':
+            # flash('Successfully logged in')
+            session['username'] = id.split('@')[0]
+            return redirect(url_for('super_admin_panel'))
         elif id == 'Babloo@ssp.com' and password == 'Pass':
             # flash('Successfully logged in')
             session['username'] = id.split('@')[0]
@@ -2077,6 +2091,43 @@ def download_mm_report_as_csv():
                     write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                       utilities.get_ip(), utilities.get_mac())
                     return str(e)
+
+
+@app.route('/show_logs')
+def show_logs():
+    if session.get('username') is None and session.get('username') == 'superadmin':
+        return redirect(url_for('login'))
+    else:
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_product_data = "SELECT id, DATE_FORMAT(txn_date,'%d-%m-%Y %k:%i:%s') as txn_date, txn_msg, added_by FROM log_data"
+                cursor.execute(get_product_data)
+                data = cursor.fetchall()
+                return render_template('super_admin/show_logs.html', items_data=data)
+        except Exception as e:
+            return str(e)
+
+
+@app.route('/delete_all_data')
+def delete_all_data():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate billing from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT "
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('delete_all_data.html', items_data=items_data)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 
 if __name__ == '__main__':
