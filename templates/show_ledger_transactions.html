@@ -7,7 +7,7 @@ Star ERP -- View Component Master
 <h1 class="h3 mb-4 text-gray-800">Cash Transaction Details</h1>
 <div>
 <!--<button type="button" class="btn btn-dark" ><i class="fas fa-download fa-sm"></i> Download</button>-->
-    <a class="btn btn-dark" href="/download_cash_report_as_csv" role="button"><i class="fas fa-download fa-sm"></i> Download</a>
+    <a class="btn btn-dark" href="/download_ledger_tx_report_as_csv" role="button"><i class="fas fa-download fa-sm"></i> Download</a>
 </div>
 
 <!--<div class="dropdown show">-->
@@ -29,8 +29,6 @@ Star ERP -- View Component Master
                 <th>Receipt ID</th>
                 <th>Date Time</th>
                 <th>Ledger Name</th>
-                <th>Material Name</th>
-                <th>Product Name</th>
                 <th>Amount</th>
                 <th>Transaction Type</th>
             </tr>
@@ -42,26 +40,12 @@ Star ERP -- View Component Master
                     <td>{{items.id}}</td>
                     <td>{{items.date_time}}</td>
                     <td>{{items.ledger_name}}</td>
-                {% if items.material_name %}
-                    <td>{{items.material_name}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-                {% if items.product_name %}
-                    <td>{{items.product_name}}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
                     <td>{{items.amount}}</td>
-                {% if items.material_name%}
-                <td  class="table-success"> Purchase </td>
-                {% elif items.product_name %}
-                <td class="table-danger"> Sale </td>
-<!--                {% not items.product_name and not items.material_name %}-->
-<!--                <td class="table-dark"> Debit </td>-->
-<!--                {% elif items.amount < 0 and not items.product_name and not items.material_name %}-->
-<!--                <td class="table-primary"> Credit </td>-->
 
+                {% if items.amount < 0 %}
+                <td style="font-weight:bold;color:green"> Debit </td>
+                {% else %}
+                <td style="font-weight:bold;color:red"> Credit </td>
                 {% endif %}
             </tr>
          {% endfor %}

@@ -1831,7 +1831,6 @@ def paid_to_ledger():
                              "VALUES (%s,%s,NULL,NULL,%s,%s)"
                 cursor.execute(insert_sql, (date_time, ledger_id, payamount, comments))
                 connection.commit()
-                connection.commit()
                 flag = 'Payment entry was Successfully done at {}'.format(date_time)
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
@@ -1903,6 +1902,29 @@ def show_cash_report():
                 return str(e)
 
 
+@app.route('/show_ledger_tx_report')
+def show_ledger_tx_report():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as date_time, l.ledger_name, " \
+                                "c.amount from cash c INNER join ledger l ON c.ledger_id = l.id WHERE " \
+                                "c.material_id IS NULL AND c.product_id IS NULL;"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('show_ledger_transactions.html', items_data=items_data)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+
+
 @app.route('/download_cash_report_as_csv')
 def download_cash_report_as_csv():
     if session.get('username') is None:
@@ -1931,6 +1953,36 @@ def download_cash_report_as_csv():
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
 
+
+@app.route('/download_ledger_tx_report_as_csv')
+def download_ledger_tx_report_as_csv():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        filename = 'Ledger_Transaction_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        full_fname = app.config['UPLOAD_FOLDER'] + filename
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as Date_time, l.ledger_name as Ledger_Name, " \
+                                "c.amount as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id WHERE " \
+                                "c.material_id IS NULL AND c.product_id IS NULL;"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                with open(full_fname, 'w', newline='') as csvFile:
+                    fields = ['id', 'Date_time', 'Ledger_Name', 'Amount', 'Transaction_Type']
+                    writer = csv.DictWriter(csvFile, fieldnames=fields)
+                    writer.writeheader()
+                    writer.writerows(items_data)
+                csvFile.close()
+                return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 @app.route('/del_sell_data/<int:p_id>')
 def del_sell_data(p_id):
