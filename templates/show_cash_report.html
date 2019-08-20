@@ -53,15 +53,11 @@ Star ERP -- View Component Master
                     <td></td>
                 {% endif %}
                     <td>{{items.amount}}</td>
-                {% if items.material_name%}
+                {% if items.material_name and not items.product_name %}
                 <td  class="table-success"> Purchase </td>
-                {% elif items.product_name %}
+                {% endif %}
+                {%  if items.product_name and not items.material_name %}
                 <td class="table-danger"> Sale </td>
-<!--                {% not items.product_name and not items.material_name %}-->
-<!--                <td class="table-dark"> Debit </td>-->
-<!--                {% elif items.amount < 0 and not items.product_name and not items.material_name %}-->
-<!--                <td class="table-primary"> Credit </td>-->
-
                 {% endif %}
             </tr>
          {% endfor %}

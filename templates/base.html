@@ -98,22 +98,22 @@
         </div>
       </li>
 <!-- Nav Item - Location Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLocation" aria-expanded="true" aria-controls="collapseLocation">
-          <i class="fas fa-fw fa-map"></i>
-          <span>Location & Site Master</span>
-        </a>
-        <div id="collapseLocation" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-            <a class="collapse-item" href="/new_purchased_db">Add a Location</a>
-            <a class="collapse-item" href="/alter_purchased_db">Add a site</a>
-            <a class="collapse-item" href="/alter_purchased_db">View Location & Sites</a>
-            <a class="collapse-item" href="/delete_purchased_db">Delete Location</a>
-            <a class="collapse-item" href="/delete_purchased_db">Delete Site</a>
-          </div>
-        </div>
-      </li>
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLocation" aria-expanded="true" aria-controls="collapseLocation">-->
+<!--          <i class="fas fa-fw fa-map"></i>-->
+<!--          <span>Location & Site Master</span>-->
+<!--        </a>-->
+<!--        <div id="collapseLocation" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
+<!--          <div class="bg-white py-2 collapse-inner rounded">-->
+<!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
+<!--            <a class="collapse-item" href="/new_purchased_db">Add a Location</a>-->
+<!--            <a class="collapse-item" href="/alter_purchased_db">Add a site</a>-->
+<!--            <a class="collapse-item" href="/alter_purchased_db">View Location & Sites</a>-->
+<!--            <a class="collapse-item" href="/delete_purchased_db">Delete Location</a>-->
+<!--            <a class="collapse-item" href="/delete_purchased_db">Delete Site</a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </li>-->
         <!-- Nav Item - Purchase Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePurchase" aria-expanded="true" aria-controls="collapsePurchase">
@@ -695,7 +695,15 @@ $.ajax({
 	type: "GET",
 	dataType: "json",
 	success: function(resp){
-		$('input#ledger_amount').val(resp.due);
+	var x = parseInt(resp.due);
+	if (x >=0)
+	{
+	$('input#ledger_amount').css("color","black");
+	$('input#ledger_amount').val(x);
+	}
+	else
+	$('input#ledger_amount').css("color","red");
+	$('input#ledger_amount').val(x);
 	}
       });
 });

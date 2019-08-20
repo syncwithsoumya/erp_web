@@ -1891,7 +1891,7 @@ def show_cash_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id;"
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
@@ -1983,6 +1983,7 @@ def download_ledger_tx_report_as_csv():
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
+
 
 @app.route('/del_sell_data/<int:p_id>')
 def del_sell_data(p_id):
