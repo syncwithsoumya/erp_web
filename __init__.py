@@ -1890,12 +1890,23 @@ def show_cash_report():
         if connection.open == 1:
             # Populate material names from table
             try:
+                # with connection.cursor() as cursor:
+                    # get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
+                    # cursor.execute(get_items)
+                    # items_data = cursor.fetchall()
+                    # connection.close()
+                    # return render_template('show_cash_report.html', items_data=items_data)
+
                 with connection.cursor() as cursor:
-                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
+                    get_items = "SELECT id,ledger_name FROM ledger"
                     cursor.execute(get_items)
-                    items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('show_cash_report.html', items_data=items_data)
+                    ledger_data = cursor.fetchall()
+                with connection.cursor() as cursor:
+                    get_materials = "SELECT id,material_name FROM material"
+                    cursor.execute(get_materials)
+                    material_data = cursor.fetchall()
+                    return render_template('show_cash_report.html', ledger_data=ledger_data,
+                                           material_data=material_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
@@ -1937,12 +1948,12 @@ def download_cash_report_as_csv():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id as id, DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') as Entry_Time, l.ledger_name as Ledger_Name, m.material_name as Material_Name, pr.product_name as Product_Name, ABS(c.amount) as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id;"
+                    get_items = "select c.id as id, DATE_FORMAT(c.date_time,'%d-%m-%y') as Transaction_Time, l.ledger_name as Ledger_Name, m.material_name as Material_Name, pr.product_name as Product_Name, ABS(c.amount) as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
                 with open(full_fname, 'w', newline='') as csvFile:
-                    fields = ['id', 'Entry_Time', 'Ledger_Name', 'Material_Name', 'Product_Name','Amount', 'Transaction_Type']
+                    fields = ['id', 'Transaction_Time', 'Ledger_Name', 'Material_Name', 'Product_Name','Amount', 'Transaction_Type']
                     writer = csv.DictWriter(csvFile, fieldnames=fields)
                     writer.writeheader()
                     writer.writerows(items_data)
@@ -1952,6 +1963,37 @@ def download_cash_report_as_csv():
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
+
+
+# @app.route('/download_cash_report_by_entity_as_csv', methods=['POST'])
+# def download_cash_report_by_entity_as_csv():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#
+#         p_id = request.form['param']
+#         filename = 'Cash_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+#         full_fname = app.config['UPLOAD_FOLDER'] + filename
+#         connection = connect_to_db()
+#         if connection.open == 1:
+#             # Populate material names from table
+#             try:
+#                 with connection.cursor() as cursor:
+#                     get_items = "select c.id as ID, DATE_FORMAT(c.date_time,'%d-%m-%y') as Transaction_Time, l.ledger_name as Ledger_Name, m.material_name AS Material_Name, pr.product_name as Product_Name, amount as Amount, CASE WHEN amount > 0 THEN 'SALE' WHEN amount < 0 THEN 'PURCHASE' END as Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id = c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE (c.product_id IS NOT NULL OR c.material_id IS NOT NULL) AND c.ledger_id={}".format(p_id)
+#                     cursor.execute(get_items)
+#                     items_data = cursor.fetchall()
+#                     connection.close()
+#                 with open(full_fname, 'w', newline='') as csvFile:
+#                     fields = ['ID', 'Transaction_Time', 'Ledger_Name', 'Material_Name', 'Product_Name','Amount', 'Transaction_Type']
+#                     writer = csv.DictWriter(csvFile, fieldnames=fields)
+#                     writer.writeheader()
+#                     writer.writerows(items_data)
+#                 csvFile.close()
+#                 return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+#             except Exception as e:
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return str(e)
 
 
 @app.route('/download_ledger_tx_report_as_csv')
@@ -2098,7 +2140,7 @@ def show_mm_report():
                     get_materials = "SELECT id, material_name FROM material"
                     cursor.execute(get_materials)
                     items_mat_data = cursor.fetchall()
-                    get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
+                    get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%y') as date_and_time, (mv.closing_balance-mv.opening_balance) as diff from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
@@ -2129,12 +2171,13 @@ def download_mm_report_as_csv():
                 # Populate material names from table
                 try:
                     with connection.cursor() as cursor:
-                        get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id WHERE mv.mat_id={} AND DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') BETWEEN '{}' AND '{}'" .format(material_id,total_from_date,total_to_date)
+                        get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%y') as date_and_time, (mv.closing_balance-mv.opening_balance) as difference from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id WHERE mv.mat_id={} AND DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') BETWEEN '{}' AND '{}'" .format(material_id,total_from_date,total_to_date)
                         cursor.execute(get_items)
                         items_data = cursor.fetchall()
                         connection.close()
                     with open(full_fname, 'w', newline='') as csvFile:
-                        fields = ['id', 'material_name', 'opening_balance', 'closing_balance', 'txn_type', 'date_and_time']
+                        fields = ['id', 'material_name', 'opening_balance', 'closing_balance', 'difference', 'txn_type',
+                                  'date_and_time']
                         writer = csv.DictWriter(csvFile, fieldnames=fields)
                         writer.writeheader()
                         writer.writerows(items_data)
@@ -2160,6 +2203,28 @@ def show_logs():
                 return render_template('super_admin/show_logs.html', items_data=data)
         except Exception as e:
             return str(e)
+
+
+@app.route('/show_cash_report_by_entity/<int:p_id>')
+def show_cash_report_by_entity(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id = c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE (c.product_id IS NOT NULL OR c.material_id IS NOT NULL) AND c.ledger_id={}".format(p_id)
+                    cursor.execute(get_items)
+                    data = cursor.fetchall()
+                    connection.close()
+                    return jsonify({'dat1': data})
+                    # return render_template('show_materials.html', items_data=data)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
 
 
 @app.route('/delete_all_data')

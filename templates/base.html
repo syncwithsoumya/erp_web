@@ -390,6 +390,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+  <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -707,6 +708,86 @@ $.ajax({
 	}
       });
 });
+</script>
+<script>
+$('#but').click(function(){
+var x = $('select#ledger_id').val();
+y = parseInt(x);
+var html = '';
+var tx_type = '';
+if (y!=0){
+  $.ajax({
+      url: "/show_cash_report_by_entity/"+x,
+      type: "GET",
+      dataType: "json",
+          success: function(resp){
+           $('#ledger_material_table tr').not(':first').not(':last').remove();
+           $.each(resp.dat1, function () {
+              console.log("Amount: " + this.id);
+              console.log("Date: " + this.date_time);
+              console.log("Ledger Name: " + this.ledger_name);
+              console.log("Material Name: " + this.material_name);
+              console.log("Product Name: " + this.product_name);
+              console.log("Amount: " + this.amount);
+          if (this.amount > 0)
+          {
+          tx_type = 'Purchase';
+          }
+          else
+          {
+          tx_type='Sale';
+          }
+          if (this.material_name == null)
+          {
+          this.material_name = "";
+          }
+          else{
+          this.material_name;
+          }
+          if (this.product_name == null)
+          {
+          this.product_name = "";
+          }
+          else{
+          this.product_name;
+          }
+          console.log(" ");
+          html += '<tr><td>' + this.id + '</td><td>' + this.date_time + '</td><td>' + this.ledger_name + '</td><td>' + this.material_name + '</td><td>' + this.product_name + '</td><td>' + this.amount + '</td><td>' + tx_type + '</td></tr>';
+
+
+       });
+       $('#ledger_material_table tr').first().after(html);
+       }
+      });
+      }
+      else
+      {
+      alert('Please select Ledger name');
+      event.stopImmediatePropagation();
+      }
+
+
+});
+</script>
+<script>
+$('#but_report').click(function(){
+var dt = new Date();
+var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
+var file_name = "Ledger_report_"+time;
+        $("#ledger_material_table").table2excel({
+           filename: file_name
+      });
+    });
+</script>
+<script>
+  $('#But_mv_download').click(function(){
+var dt = new Date();
+var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
+var file_name = "Material_movement_report_"+time;
+        $("#example").table2excel({
+           filename: file_name
+      });
+    });
 </script>
 </body>
 

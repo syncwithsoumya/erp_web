@@ -4,26 +4,38 @@ Star ERP -- View Component Master
 {% endblock %}
 {% block content %}
 
-<h1 class="h3 mb-4 text-gray-800">Cash Transaction Details</h1>
-<div>
-<!--<button type="button" class="btn btn-dark" ><i class="fas fa-download fa-sm"></i> Download</button>-->
-    <a class="btn btn-dark" href="/download_cash_report_as_csv" role="button"><i class="fas fa-download fa-sm"></i> Download</a>
+<h1 class="h3 mb-4 text-gray-800">Cash Transaction on Sale and Purchase</h1>
+<div class="form-row">
+    <div class="form-group col-md-4">
+         <label>Ledger Name</label>
+      <select id="ledger_id" name="ledgers_dat" class="form-control">
+          <option value="0" selected> -- Choose -- </option>
+        {% if not ledger_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in ledger_data %}
+        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+<div class="form-group col-md-4" style="margin-top:30px">
+   <button type="button" class="btn btn-secondary openBtn" data-toggle="modal" id="but" data-target="#mmreportModal"><i class="fas fa-search fa-sm"></i> Show Result</button>
 </div>
-
-<!--<div class="dropdown show">-->
-<!--  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--    Download-->
-<!--  </a>-->
-
-<!--  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
-<!--&lt;!&ndash;    <a class="dropdown-item" href="#">Excel</a>&ndash;&gt;-->
-<!--&lt;!&ndash;    <a class="dropdown-item" href="#">Pdf</a>&ndash;&gt;-->
-<!--    <a class="dropdown-item" href="/download_cash_report_as_csv">CSV</a>-->
-<!--  </div>-->
-<!--</div>-->
-<br>
+</div>
+<div class="modal fade" id="mmreportModal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cash Report by Ledger</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="getCode">
+<button type="button" id="but_report" class="btn btn-success" style="margin-bottom: 20px;" ><i class="fas fa-download fa-sm"></i> Download </button>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered">
+    <table id="ledger_material_table" class="table table-bordered">
         <thead>
             <tr>
                 <th>Receipt ID</th>
@@ -37,32 +49,21 @@ Star ERP -- View Component Master
         </thead>
 
         <tbody>
-        {% for items in items_data %}
             <tr>
-                    <td>{{items.id}}</td>
-                    <td>{{items.date_time}}</td>
-                    <td>{{items.ledger_name}}</td>
-                {% if items.material_name %}
-                    <td>{{items.material_name}}</td>
-                {% else %}
                     <td></td>
-                {% endif %}
-                {% if items.product_name %}
-                    <td>{{items.product_name}}</td>
-                {% else %}
                     <td></td>
-                {% endif %}
-                    <td>{{items.amount}}</td>
-                {% if items.material_name and not items.product_name %}
-                <td  class="table-success"> Purchase </td>
-                {% endif %}
-                {%  if items.product_name and not items.material_name %}
-                <td class="table-danger"> Sale </td>
-                {% endif %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
             </tr>
-         {% endfor %}
         </tbody>
 
     </table>
+</div>
+      </div>
+      </div>
+    </div>
 </div>
 {% endblock %}
