@@ -388,7 +388,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
-		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<!--		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>-->
+		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
   <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
@@ -397,12 +398,48 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 		<script type="text/javascript">
+
 		$(document).ready(function() {
     $('#example').DataTable();
-} );
 
-		</script>
+
+    });
+</script>
+  <script>
+  $('#ledgermindate, #ledgermaxdate').change(function() {
+    var table = $('#example').DataTable();
+    table.draw();
+});
+
+  </script>
+<script>
+$(document).ready(function() {
+$.fn.dataTable.ext.search.push(
+function( settings, data, dataIndex ) {
+                            var min = $('#ledgermindate').val();
+                            var max = $('#ledgermaxdate').val();
+                            var startDate = data[1];
+                           if (min == null && max == null) {
+                              return true;
+                            }
+                          if (min == null && startDate <= max) {
+                              return true;
+                            }
+                          if (max == null && startDate >= min) {
+                              return true;
+                            }
+                          if (startDate <= max && startDate >= min) {
+                              console.log("working");
+                              return true;
+                            }
+                return false;
+    }
+   );
+	});	</script>
+
   <script>$('#dp2').datepicker();</script>
+  <script>$('#ledgermindate').datepicker();</script>
+  <script>$('#ledgermaxdate').datepicker();</script>
 <script>
     $('select#inputState').change(function(){
     var nodeList = $(this).children("option:selected").val();
@@ -788,6 +825,21 @@ var file_name = "Material_movement_report_"+time;
            filename: file_name
       });
     });
+</script>
+<script>
+  $('#But_lm_download').click(function(){
+var dt = new Date();
+var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
+var file_name = "Ledger_Transaction_"+time;
+        $("#example").table2excel({
+           filename: file_name
+      });
+    });
+</script>
+<script>
+ $(document).ready(function(){
+
+});
 </script>
 </body>
 

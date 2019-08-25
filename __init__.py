@@ -1928,12 +1928,16 @@ def show_ledger_tx_report():
                                 "c.material_id IS NULL AND c.product_id IS NULL;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('show_ledger_transactions.html', items_data=items_data)
+                    get_ledger = "SELECT id, ledger_name FROM ledger"
+                    cursor.execute(get_ledger)
+                    items_ledger_data = cursor.fetchall()
+                    return render_template('show_ledger_transactions.html', items_data=items_data, items_ledger_data=items_ledger_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/download_cash_report_as_csv')
@@ -1996,35 +2000,71 @@ def download_cash_report_as_csv():
 #                 return str(e)
 
 
-@app.route('/download_ledger_tx_report_as_csv')
+@app.route('/download_ledger_tx_report_as_csv' , methods=['POST'])
 def download_ledger_tx_report_as_csv():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        filename = 'Ledger_Transaction_Report_{}.csv' .format(str(datetime.now().strftime("%Y%m%d%H%M%S")))
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        filename = 'Ledger_Transaction_Report_{}.csv' .format(date_time)
+        filename_tot = 'Ledger_Transaction_Report_Total_{}.csv' .format(date_time)
         full_fname = app.config['UPLOAD_FOLDER'] + filename
-        connection = connect_to_db()
-        if connection.open == 1:
-            # Populate material names from table
-            try:
-                with connection.cursor() as cursor:
-                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as Date_time, l.ledger_name as Ledger_Name, " \
-                                "c.amount as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id WHERE " \
-                                "c.material_id IS NULL AND c.product_id IS NULL;"
-                    cursor.execute(get_items)
-                    items_data = cursor.fetchall()
-                    connection.close()
-                with open(full_fname, 'w', newline='') as csvFile:
-                    fields = ['id', 'Date_time', 'Ledger_Name', 'Amount', 'Transaction_Type']
-                    writer = csv.DictWriter(csvFile, fieldnames=fields)
-                    writer.writeheader()
-                    writer.writerows(items_data)
-                csvFile.close()
-                return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
+        full_fname_total = app.config['UPLOAD_FOLDER'] + filename_tot
+        if request.method == 'POST':
+            ledger_id = int(request.form['ledger_data'])
+            txn_date = request.form['ledger_daterange']
+            date_from = str(str(txn_date.split("-")[0]).replace(" ","")).split("/")
+            date_to = str(str(txn_date.split("-")[1]).replace(" ","")).split("/")
+            total_from_date = str(date_from[1]+'-'+date_from[0]+'-'+date_from[2]+' 00:00:00')
+            total_to_date = str(date_to[1]+'-'+date_to[0]+'-'+date_to[2]+' 00:00:00')
+            connection = connect_to_db()
+            if connection.open == 1:
+                # Populate material names from table
+                try:
+                    with connection.cursor() as cursor:
+                        get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as Date_time, l.ledger_name as Ledger_Name,c.amount as Amount, CASE WHEN amount > 0 THEN 'DEBIT' WHEN amount < 0 THEN 'CREDIT' END AS Transaction_Type from cash c INNER join ledger l ON c.ledger_id = l.id WHERE (c.material_id IS NULL AND c.product_id IS NULL) AND c.ledger_id = {} AND DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') BETWEEN '{}' AND '{}'".format(ledger_id,total_from_date,total_to_date)
+                        cursor.execute(get_items)
+                        items_data = cursor.fetchall()
+                        connection.close()
+                    with open(full_fname, 'w', newline='') as csvFile:
+                        fields = ['id', 'Date_time', 'Ledger_Name', 'Amount', 'Transaction_Type']
+                        writer = csv.DictWriter(csvFile, fieldnames=fields)
+                        writer.writeheader()
+                        writer.writerows(items_data)
+                        csvFile.close()
+                    with open(full_fname, 'r', newline='') as csvFile, open(full_fname_total, "w") as csvFile2:
+                        Reader = csv.reader(csvFile, delimiter=',')
+                        writer = csv.writer(csvFile2)
+                        print(Reader)
+                        c = 1
+                        Rows = list(Reader)
+                        Tot_rows = len(Rows)
+                        print(Tot_rows)
+                        total=0
+                        for row in Rows:
+                            if c != 1:
+                                r = row[3]
+                                total = total + int(r)
+                            c += 1
+                        print(total)
+
+                        # data = dict()
+                        # data[Tot_rows+1][0] = 'Total'
+                        # data[Tot_rows+1][1] = total
+                        # print(data)
+                        row_total = total
+                        data = [{'Total'},{row_total}]
+                        total_header = 'Total'
+
+                        writer.writerows(data)
+                        csvFile.close()
+                        csvFile2.close()
+
+                    return send_from_directory(app.config['UPLOAD_FOLDER'], filename_tot, as_attachment=True)
+                except Exception as e:
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
+                    return str(e)
 
 
 @app.route('/del_sell_data/<int:p_id>')

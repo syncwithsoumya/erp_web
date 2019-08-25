@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- View Ledger Tx
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Send or Receive Amount to or from Ledgers - Report</h1>
+<div class="form-row">
+<div>
+<button type="button" class="btn btn-primary openBtn" data-toggle="modal" data-target="#lmreportModal"><i class="fas fa-download fa-sm"></i> Download Report based on Date Range</button>
+</div>
+<div>
+<button type="button" class="btn btn-success" style="margin-left:20px" id="But_mv_download"><i class="fas fa-download fa-sm"></i> Download Report based on Data Selection</button>
+</div>
+    </div>
+<br>
+<!-- Logout Modal-->
+  <div class="modal fade" id="lmreportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ledger Transactions</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form name="gen_lm_report" action="/download_mm_report_as_csv" onsubmit="return validateledgerForm()" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputState">Ledger Name</label>
+
+      <select id="inputState" name="ledger_data" class="form-control">
+        <option value="0" selected> -- Choose --</option>
+        {% if not items_ledger_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_ledger_data %}
+        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+      <div class="form-group col-md-8">
+          <label for="inputState">Date Range</label>
+          <input type="text" name="ledger_daterange" value="08/15/2019 - 08/30/2019" class="form-control"/>
+      </div>
+  </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+<!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>-->
+            <button type="submit" class="btn btn-primary"><i class="fas fa-download fa-sm"></i> Generate Report</button>
+<!--          <a class="btn btn-primary" href="{{url_for('logout')}}">Generate Report</a>-->
+        </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="table-responsive">
+    <table id="example" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Receipt ID</th>
+                <th>Date Time</th>
+                <th>Ledger Name</th>
+                <th>Amount</th>
+                <th>Transaction Type</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+                   <td>{{items.id}}</td>
+                    <td>{{items.date_time}}</td>
+                    <td>{{items.ledger_name}}</td>
+                    <td>{{items.amount}}</td>
+
+                {% if items.amount < 0 %}
+                <td style="font-weight:bold;color:green"> Debit </td>
+                {% else %}
+                <td style="font-weight:bold;color:red"> Credit </td>
+                {% endif %}
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
