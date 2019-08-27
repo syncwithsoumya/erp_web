@@ -401,23 +401,16 @@
 
 		$(document).ready(function() {
     $('#example').DataTable();
-
-
+    $('#ledger_datatable').DataTable();
     });
 </script>
-  <script>
-  $('#ledgermindate, #ledgermaxdate').change(function() {
-    var table = $('#example').DataTable();
-    table.draw();
-});
 
-  </script>
 <script>
 $(document).ready(function() {
 $.fn.dataTable.ext.search.push(
 function( settings, data, dataIndex ) {
-                            var min = $('#ledgermindate').val();
-                            var max = $('#ledgermaxdate').val();
+                            var min = '01-08-2019'//$('#ledgermindate').val() || ;
+                            var max = '31-12-2019'//$('#ledgermaxdate').val() || '31-12-2020';
                             var startDate = data[1];
                            if (min == null && max == null) {
                               return true;
@@ -438,8 +431,8 @@ function( settings, data, dataIndex ) {
 	});	</script>
 
   <script>$('#dp2').datepicker();</script>
-  <script>$('#ledgermindate').datepicker();</script>
-  <script>$('#ledgermaxdate').datepicker();</script>
+  <script>$('#ledgermindate').datepicker({format: 'dd-mm-yy'});</script>
+  <script>$('#ledgermaxdate').datepicker({format: 'dd-mm-yy'});</script>
 <script>
     $('select#inputState').change(function(){
     var nodeList = $(this).children("option:selected").val();
@@ -831,15 +824,53 @@ var file_name = "Material_movement_report_"+time;
 var dt = new Date();
 var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
 var file_name = "Ledger_Transaction_"+time;
-        $("#example").table2excel({
-           filename: file_name
+        $("#ledger_datatable").table2excel({
+            exclude: ".noExl",
+           filename: file_name+".xlsx",
       });
     });
 </script>
 <script>
- $(document).ready(function(){
+  $('#ledger_datatable').DataTable({
+     "searching": true
+ });
+</script>
+<script>
+var table = $('#ledger_datatable').DataTable()
+$('.dataTables_filter input').unbind().bind('keyup', function() {
+   var searchTerm = this.value.toLowerCase()
+   if (!searchTerm) {
+	   table.draw();
+     return;
+   }
+   $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+      for (var i=0;i<data.length;i++) {
+         if (data[i].toLowerCase() == searchTerm) return true
+      }
+      return false
+   })
+   table.draw();
+   $.fn.dataTable.ext.search.pop()
+})
+</script>
+<script>
+ $(document).ready(function() {
+    var table = $('#ledger_datatable').DataTable();
 
-});
+    $("#ledger_datatable tfoot th").each( function ( i ) {
+        var select = $('<select><option value=""></option></select>')
+            .appendTo( $(this).empty() )
+            .on( 'change', function () {
+                table.column( i )
+                    .search( $(this).val() )
+                    .draw();
+            } );
+
+        table.column( i ).data().unique().sort().each( function ( d, j ) {
+            select.append( '<option value="'+d+'">'+d+'</option>' )
+        } );
+    } );
+} );
 </script>
 </body>
 

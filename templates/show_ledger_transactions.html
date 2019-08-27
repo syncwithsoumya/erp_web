@@ -4,7 +4,7 @@ Star ERP -- View Ledger Tx
 {% endblock %}
 {% block content %}
 
-<h1 class="h3 mb-4 text-gray-800">Send or Receive Amount to or from Ledgers - Report</h1>
+<h1 class="h3 mb-4 text-gray-800">Due Clearance/Advance Payment - Report</h1>
 <div class="form-row">
     <button type="button" class="btn btn-primary" id="But_lm_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
 </div>
@@ -61,11 +61,11 @@ Star ERP -- View Ledger Tx
     </div>
     <div class="form-group col-md-2">
         <label for="ledgermaxdate">To</label>
-    <input type="text" class="form-control" data-date-format="dd-mm-yy" value="20-08-20" placeholder="20-08-20" id="ledgermaxdate">
+    <input type="text" class="form-control" data-date-format="dd-mm-yy" value="20-12-19" placeholder="20-08-20" id="ledgermaxdate">
     </div>
 </div>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered">
+    <table id="ledger_datatable" class="table table-bordered">
        <div class="form-row">
         <thead>
             <tr>
@@ -93,7 +93,16 @@ Star ERP -- View Ledger Tx
             </tr>
          {% endfor %}
         </tbody>
-
+           <tfoot>
+           <tr class="noExl">
+                <th>Receipt ID</th>
+                <th>Date Time</th>
+                <th>Ledger Name</th>
+                <th>Amount</th>
+                <th>Transaction Type</th>
+            </tr>
+           </tfoot>
+       </div>
     </table>
 </div>
 {% endblock %}

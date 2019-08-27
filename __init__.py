@@ -1670,7 +1670,7 @@ def direct_billing_creation():
                             data_checked = cursor.fetchone()
                             if int(data_checked['quantity']) < int(product_data[item]):
                                 list_of_ofs_items.append(item)
-                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time) if not any(list_of_ofs_items) else 'Successfully Sold %s to %s on %s with Insufficient Materials - %s' % (names['product_name'],ledger_name['ledger_name'],date_time,','.join(str(n) for n in list_of_ofs_items))
+                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time) if not any(list_of_ofs_items) else 'Sold %s to %s on %s with Insufficient Materials - %s' % (names['product_name'],ledger_name['ledger_name'],date_time,','.join(str(n) for n in list_of_ofs_items))
                         flash(flag)
                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
                                           utilities.get_ip(), utilities.get_mac())
