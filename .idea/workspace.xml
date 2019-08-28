@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/sb-admin-2.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/sb-admin-2.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/show_cash_report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_cash_report.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/show_ledger_transactions.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_ledger_transactions.html" afterDir="false" />
@@ -16,32 +15,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="77">
-              <caret line="864" column="42" lean-forward="true" selection-start-line="864" selection-start-column="42" selection-end-line="864" selection-end-column="42" />
+            <state relative-caret-position="180">
+              <caret line="18" column="99" selection-start-line="18" selection-start-column="99" selection-end-line="18" selection-end-column="99" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/css/sb-admin-2.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="12064" selection-start-line="12064" selection-end-line="12064" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/show_cash_report.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+            <state relative-caret-position="280">
+              <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
               <folding>
-                <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -59,7 +48,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
+            <state relative-caret-position="-589">
               <caret line="38" column="40" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
               <folding>
                 <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -71,21 +60,25 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/show_ledger_transactions.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="64" column="10" lean-forward="true" selection-start-line="64" selection-start-column="10" selection-end-line="64" selection-end-column="10" />
+            <state relative-caret-position="15">
+              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="68" selection-end-column="6" />
+              <folding>
+                <element signature="e#3345#3368#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/test.html">
+        <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="4" selection-end-line="93" />
+            <state relative-caret-position="50">
+              <caret line="1893" column="79" selection-start-line="1893" selection-start-column="79" selection-end-line="1893" selection-end-column="79" />
               <folding>
-                <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#2;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#5;n#tr#0;n#tbody#0;n#table#0;n#div#2;n#!!top" expanded="true" />
+                <element signature="e#0#112#0" expanded="true" />
+                <marker date="1566970109563" expanded="true" signature="26101:26102" ph="..." />
+                <marker date="1566970109563" expanded="true" signature="60377:60382" ph="..." />
+                <marker date="1566970109563" expanded="true" signature="60523:60525" ph="..." />
               </folding>
             </state>
           </provider>
@@ -117,7 +110,6 @@
       <find>show_mm</find>
       <find>show_cash</find>
       <find>loca</find>
-      <find>show_cas</find>
       <find>by</find>
       <find>sear</find>
       <find>by_enti</find>
@@ -132,6 +124,7 @@
       <find>cash(</find>
       <find>Datatab</find>
       <find>insufficient</find>
+      <find>show_cas</find>
       <find>datatables</find>
     </findStrings>
     <replaceStrings>
@@ -193,11 +186,11 @@
         <option value="$PROJECT_DIR$/templates/show_material_movement.html" />
         <option value="$PROJECT_DIR$/templates/temp.py" />
         <option value="$PROJECT_DIR$/templates/test.html" />
-        <option value="$PROJECT_DIR$/templates/show_cash_report.html" />
-        <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/static/css/sb-admin-2.css" />
+        <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/templates/show_ledger_transactions.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/templates/show_cash_report.html" />
       </list>
     </option>
   </component>
@@ -363,16 +356,16 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.49925596" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5052083" side_tool="true" visible="true" weight="0.3289689" />
-      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49479166" visible="true" weight="0.3289689" />
+      <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.4985119" weight="0.3289689" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5208333" side_tool="true" visible="true" weight="0.4140753" />
+      <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49479166" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="3" />
-      <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49776787" weight="0.3289689" />
+      <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49702382" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.4799107" weight="0.4140753" />
-      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.6004464" weight="0.45335516" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.47916666" visible="true" weight="0.4140753" />
+      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.59970236" weight="0.45335516" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -1640,29 +1633,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="38" column="40" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
-          <folding>
-            <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-387">
-          <caret line="1598" column="31" lean-forward="true" selection-start-line="1598" selection-start-column="31" selection-end-line="1598" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#112#0" expanded="true" />
-            <marker date="1566932868199" expanded="true" signature="26101:26102" ph="..." />
-            <marker date="1566932868199" expanded="true" signature="60377:60382" ph="..." />
-            <marker date="1566932868199" expanded="true" signature="60523:60525" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/sb-admin-2.min.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="259">
@@ -1677,28 +1647,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/show_cash_report.html">
+    <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+        <state relative-caret-position="50">
+          <caret line="1893" column="79" selection-start-line="1893" selection-start-column="79" selection-end-line="1893" selection-end-column="79" />
           <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="e#0#112#0" expanded="true" />
+            <marker date="1566970109563" expanded="true" signature="26101:26102" ph="..." />
+            <marker date="1566970109563" expanded="true" signature="60377:60382" ph="..." />
+            <marker date="1566970109563" expanded="true" signature="60523:60525" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/show_ledger_transactions.html">
+    <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="64" column="10" lean-forward="true" selection-start-line="64" selection-start-column="10" selection-end-line="64" selection-end-column="10" />
+        <state relative-caret-position="-589">
+          <caret line="38" column="40" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+          <folding>
+            <element signature="n#style#0;n#button#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="864" column="42" lean-forward="true" selection-start-line="864" selection-start-column="42" selection-end-line="864" selection-end-column="42" />
+        <state relative-caret-position="180">
+          <caret line="18" column="99" selection-start-line="18" selection-start-column="99" selection-end-line="18" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/show_ledger_transactions.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="68" selection-end-column="6" />
+          <folding>
+            <element signature="e#3345#3368#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/show_cash_report.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

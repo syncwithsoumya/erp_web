@@ -1890,23 +1890,23 @@ def show_cash_report():
         if connection.open == 1:
             # Populate material names from table
             try:
-                # with connection.cursor() as cursor:
-                    # get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y %k:%i:%s') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
-                    # cursor.execute(get_items)
-                    # items_data = cursor.fetchall()
-                    # connection.close()
-                    # return render_template('show_cash_report.html', items_data=items_data)
-
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id,ledger_name FROM ledger"
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
                     cursor.execute(get_items)
-                    ledger_data = cursor.fetchall()
-                with connection.cursor() as cursor:
-                    get_materials = "SELECT id,material_name FROM material"
-                    cursor.execute(get_materials)
-                    material_data = cursor.fetchall()
-                    return render_template('show_cash_report.html', ledger_data=ledger_data,
-                                           material_data=material_data)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('show_cash_report.html', items_data=items_data)
+
+                # with connection.cursor() as cursor:
+                #     get_items = "SELECT id,ledger_name FROM ledger"
+                #     cursor.execute(get_items)
+                #     ledger_data = cursor.fetchall()
+                # with connection.cursor() as cursor:
+                #     get_materials = "SELECT id,material_name FROM material"
+                #     cursor.execute(get_materials)
+                #     material_data = cursor.fetchall()
+                #     return render_template('show_cash_report.html', ledger_data=ledger_data,
+                #                            material_data=material_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())

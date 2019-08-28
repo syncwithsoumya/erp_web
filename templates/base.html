@@ -402,6 +402,8 @@
 		$(document).ready(function() {
     $('#example').DataTable();
     $('#ledger_datatable').DataTable();
+    $('#cash_datatable').DataTable();
+
     });
 </script>
 
@@ -826,7 +828,18 @@ var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHour
 var file_name = "Ledger_Transaction_"+time;
         $("#ledger_datatable").table2excel({
             exclude: ".noExl",
-           filename: file_name+".xlsx",
+           filename: file_name+".xls",
+      });
+    });
+</script>
+  <script>
+  $('#But_ct_download').click(function(){
+var dt = new Date();
+var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
+var file_name = "Sales_Purchase_Transaction_"+time;
+        $("#cash_datatable").table2excel({
+            exclude: ".noExl",
+           filename: file_name+".xls",
       });
     });
 </script>
@@ -858,6 +871,43 @@ $('.dataTables_filter input').unbind().bind('keyup', function() {
     var table = $('#ledger_datatable').DataTable();
 
     $("#ledger_datatable tfoot th").each( function ( i ) {
+        var select = $('<select><option value=""></option></select>')
+            .appendTo( $(this).empty() )
+            .on( 'change', function () {
+                table.column( i )
+                    .search( $(this).val() )
+                    .draw();
+            } );
+
+        table.column( i ).data().unique().sort().each( function ( d, j ) {
+            select.append( '<option value="'+d+'">'+d+'</option>' )
+        } );
+    } );
+} );
+</script>
+  <script>
+var table = $('#cash_datatable').DataTable()
+$('.dataTables_filter input').unbind().bind('keyup', function() {
+   var searchTerm = this.value.toLowerCase()
+   if (!searchTerm) {
+	   table.draw();
+     return;
+   }
+   $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+      for (var i=0;i<data.length;i++) {
+         if (data[i].toLowerCase() == searchTerm) return true
+      }
+      return false
+   })
+   table.draw();
+   $.fn.dataTable.ext.search.pop()
+})
+</script>
+<script>
+ $(document).ready(function() {
+    var table = $('#cash_datatable').DataTable();
+
+    $("#cash_datatable tfoot th").each( function ( i ) {
         var select = $('<select><option value=""></option></select>')
             .appendTo( $(this).empty() )
             .on( 'change', function () {

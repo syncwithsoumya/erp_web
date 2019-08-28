@@ -1,41 +1,30 @@
 {% extends "base.html" %}
 {% block title %}
-Star ERP -- View Component Master
+Star ERP -- View Sales-Purchase
 {% endblock %}
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">Sales-Purchase Payment - Report</h1>
+<!--<div>-->
+<!--&lt;!&ndash;<button type="button" class="btn btn-dark" ><i class="fas fa-download fa-sm"></i> Download</button>&ndash;&gt;-->
+<!--    <a class="btn btn-dark" href="/download_cash_report_as_csv" role="button"><i class="fas fa-download fa-sm"></i> Download</a>-->
+<!--</div>-->
 <div class="form-row">
-    <div class="form-group col-md-4">
-         <label>Ledger Name</label>
-      <select id="ledger_id" name="ledgers_dat" class="form-control">
-          <option value="0" selected> -- Choose -- </option>
-        {% if not ledger_data %}
-        <option value="no_items">No Items to display</option>
-      {% else %}
-        {% for items in ledger_data %}
-        <option value="{{ items.id }}" name="{{ items.ledger_name }}">{{ items.ledger_name }}</option>
-        {% endfor %}
-      {% endif %}
-      </select>
+    <div class="form-group col-md-2">
+        <label for="ledgermindate">From</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yy" value="01-08-19" placeholder="01-08-19" id="ledgermindate">
     </div>
-<div class="form-group col-md-4" style="margin-top:30px">
-   <button type="button" class="btn btn-secondary openBtn" data-toggle="modal" id="but" data-target="#mmreportModal"><i class="fas fa-search fa-sm"></i> Show Result</button>
+    <div class="form-group col-md-2">
+        <label for="ledgermaxdate">To</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yy" value="20-12-19" placeholder="20-08-20" id="ledgermaxdate">
+    </div>
+ <div class="form-group col-md-2 float-right" style="margin-top:30px">
+        <button type="button" class="btn btn-primary" id="But_lm_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
+    </div>
+
 </div>
-</div>
-<div class="modal fade" id="mmreportModal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Cash Report by Ledger</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body" id="getCode">
-<button type="button" id="but_report" class="btn btn-success" style="margin-bottom: 20px;" ><i class="fas fa-download fa-sm"></i> Download </button>
 <div class="table-responsive">
-    <table id="ledger_material_table" class="table table-bordered">
+    <table id="cash_datatable" class="table table-bordered">
         <thead>
             <tr>
                 <th>Receipt ID</th>
@@ -49,21 +38,46 @@ Star ERP -- View Component Master
         </thead>
 
         <tbody>
+        {% for items in items_data %}
             <tr>
+                    <td>{{items.id}}</td>
+                    <td>{{items.date_time}}</td>
+                    <td>{{items.ledger_name}}</td>
+                {% if items.material_name %}
+                    <td>{{items.material_name}}</td>
+                {% else %}
                     <td></td>
+                {% endif %}
+                {% if items.product_name %}
+                    <td>{{items.product_name}}</td>
+                {% else %}
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-            </tr>
-        </tbody>
+                {% endif %}
+                    <td>{{items.amount}}</td>
+                {% if items.material_name%}
+                <td  class="table-success"> Purchase </td>
+                {% elif items.product_name %}
+                <td class="table-danger"> Sale </td>
+                {% elif items.amount > 0 and not items.product_name and not items.material_name %}
+                <td class="table-dark"> Debit </td>
+                {% elif items.amount < 0 and not items.product_name and not items.material_name %}
+                <td class="table-primary"> Credit </td>
 
+                {% endif %}
+            </tr>
+         {% endfor %}
+        </tbody>
+        <tfoot>
+           <tr class="noExl">
+               <th>Receipt ID</th>
+                <th>Date Time</th>
+                <th>Ledger Name</th>
+                <th>Material Name</th>
+                <th>Product Name</th>
+                <th>Amount</th>
+                <th>Transaction Type</th>
+            </tr>
+           </tfoot>
     </table>
-</div>
-      </div>
-      </div>
-    </div>
 </div>
 {% endblock %}
