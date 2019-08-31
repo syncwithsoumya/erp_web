@@ -16,9 +16,12 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <!-- Custom styles for this template-->
     <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+<!--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">-->
+<!--  	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">-->
 
 </head>
 
@@ -387,54 +390,108 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
+<!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>-->
+		<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!--		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>-->
 		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<!--		<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>-->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
   <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-		<script type="text/javascript">
+
+  <script type="text/javascript">
 
 		$(document).ready(function() {
     $('#example').DataTable();
-    $('#ledger_datatable').DataTable();
-    $('#cash_datatable').DataTable();
+    //$('#ledger_datatable').DataTable();
+    //$('#cash_datatable').DataTable();
+    //$('#material_datatable').DataTable();
+    $(".dataTables_filter").hide();
 
     });
 </script>
+  <script>
+    $.fn.dataTable.ext.search.push(
+  function(settings, data, dataIndex) {
+    var min = $('#min').val() || '01-08-2019';
+    min = moment(min, "DD-MM-YYYY");
+    var max = $('#max').val() || '01-09-2019';
+    max = moment(max, "DD-MM-YYYY");
+    var createdAt = moment(data[1], "DD-MM-YYYY") || 0; // Our date column in the table
 
-<script>
-$(document).ready(function() {
-$.fn.dataTable.ext.search.push(
-function( settings, data, dataIndex ) {
-                            var min = '01-08-2019'//$('#ledgermindate').val() || ;
-                            var max = '31-12-2019'//$('#ledgermaxdate').val() || '31-12-2020';
-                            var startDate = data[1];
-                           if (min == null && max == null) {
-                              return true;
-                            }
-                          if (min == null && startDate <= max) {
-                              return true;
-                            }
-                          if (max == null && startDate >= min) {
-                              return true;
-                            }
-                          if (startDate <= max && startDate >= min) {
-                              console.log("working");
-                              return true;
-                            }
-                return false;
+    if (
+      (min == "" || max == "") ||
+      (moment(createdAt).isSameOrAfter(min) && moment(createdAt).isSameOrBefore(max))
+    ) {
+      return true;
     }
-   );
-	});	</script>
+    return false;
+  }
+);
 
+// Re-draw the table when the a date range filter changes
+//$('#min, #max').change(function () {
+//              table.draw();
+//          });
+  </script>
+<!--<script>-->
+<!--    $(document).ready(function(){-->
+<!--        $.fn.dataTable.ext.search.push(-->
+<!--        function (settings, data, dataIndex) {-->
+<!--            var min = $('#min').datepicker({ dateFormat: 'dd-mm-yyyy' }).val();-->
+<!--            var max = $('#max').datepicker({ dateFormat: 'dd-mm-yyyy' }).val();-->
+<!--            var startDate = new Date(data[1]);-->
+<!--            if (min == null && max == null) { return true; }-->
+<!--            if (min == null && startDate <= max) { return true;}-->
+<!--            if(max == null && startDate >= min) {return true;}-->
+<!--            if (startDate <= max && startDate >= min) { return true; }-->
+<!--            return false;-->
+<!--        }-->
+<!--        );-->
+
+
+<!--            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });-->
+<!--            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });-->
+<!--            var table = $('#material_datatable').DataTable();-->
+
+<!--            // Event listener to the two range filtering inputs to redraw on input-->
+<!--            $('#min, #max').change(function () {-->
+<!--                table.draw();-->
+<!--            });-->
+<!--        });-->
+<!--</script>-->
+<!--  <script>-->
+<!--    $.fn.dataTable.ext.filter.push(-->
+<!--    function( settings, data, dataIndex ) {-->
+<!--        var min = $('#min').val() * 1;-->
+<!--        var max = $('#max').val() * 1;-->
+<!--        var age = data[1]; // use data for the age column-->
+
+<!--        if ( ( min == '' && max == '' ) ||-->
+<!--             ( min == '' && age <= max ) ||-->
+<!--             ( min <= age && '' == max ) ||-->
+<!--             ( min <= age && age <= max ) )-->
+<!--        {-->
+<!--            return true;-->
+<!--        }-->
+<!--        return false;-->
+<!--    }-->
+<!--);-->
+
+
+<!--  </script>-->
   <script>$('#dp2').datepicker();</script>
-  <script>$('#ledgermindate').datepicker({format: 'dd-mm-yy'});</script>
-  <script>$('#ledgermaxdate').datepicker({format: 'dd-mm-yy'});</script>
+  <script>$('#ledgermindate').datepicker({format: 'dd-mm-yyyy'});</script>
+  <script>$('#ledgermaxdate').datepicker({format: 'dd-mm-yyyy'});</script>
+  <script>$('#min').datepicker({format: 'dd-mm-yyyy'});</script>
+  <script>$('#max').datepicker({format: 'dd-mm-yyyy'});</script>
 <script>
     $('select#inputState').change(function(){
     var nodeList = $(this).children("option:selected").val();
@@ -833,12 +890,24 @@ var file_name = "Ledger_Transaction_"+time;
     });
 </script>
   <script>
+  $('#But_mm_download').click(function(){
+var dt = new Date();
+var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
+var file_name = "Material_Movement_"+time;
+        $("#material_datatable").table2excel({
+            exclude: ".noExl",
+           filename: file_name+".xls",
+      });
+    });
+</script>
+
+  <script>
   $('#But_ct_download').click(function(){
 var dt = new Date();
 var time = dt.getFullYear() +""+ dt.getMonth() +""+ dt.getDate() +""+ dt.getHours() +""+ dt.getMinutes() +""+ dt.getSeconds();
 var file_name = "Sales_Purchase_Transaction_"+time;
         $("#cash_datatable").table2excel({
-            exclude: ".noExl",
+            exclude: ".NoXl",
            filename: file_name+".xls",
       });
     });
@@ -847,6 +916,7 @@ var file_name = "Sales_Purchase_Transaction_"+time;
   $('#ledger_datatable').DataTable({
      "searching": true
  });
+
 </script>
 <script>
 var table = $('#ledger_datatable').DataTable()
@@ -875,7 +945,7 @@ $('.dataTables_filter input').unbind().bind('keyup', function() {
             .appendTo( $(this).empty() )
             .on( 'change', function () {
                 table.column( i )
-                    .search( $(this).val() )
+                    .search( $(this).val() ? "^" + $(this).val() + "$" : "", true, false, true )
                     .draw();
             } );
 
@@ -886,42 +956,124 @@ $('.dataTables_filter input').unbind().bind('keyup', function() {
 } );
 </script>
   <script>
-var table = $('#cash_datatable').DataTable()
-$('.dataTables_filter input').unbind().bind('keyup', function() {
-   var searchTerm = this.value.toLowerCase()
-   if (!searchTerm) {
-	   table.draw();
-     return;
-   }
-   $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-      for (var i=0;i<data.length;i++) {
-         if (data[i].toLowerCase() == searchTerm) return true
-      }
-      return false
-   })
-   table.draw();
-   $.fn.dataTable.ext.search.pop()
-})
-</script>
-<script>
- $(document).ready(function() {
-    var table = $('#cash_datatable').DataTable();
+    $(document).ready(function() {
+   var table = $('#cash_datatable').DataTable();
+   $('#cash_datatable thead tr:eq(1) th').each(function(i) {
+     var select = $('<select><option value=""></option></select>')
+       .appendTo($(this).empty())
+       .on('change', function() {
+         table.column(i)
+           .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+           .draw();
+       });
+     table.column(i).data().unique().sort().each(function(d, j) {
+       select.append('<option value="' + d + '">' + d + '</option>')
+     });
+   });
 
-    $("#cash_datatable tfoot th").each( function ( i ) {
-        var select = $('<select><option value=""></option></select>')
-            .appendTo( $(this).empty() )
+ });
+ $('#cash_datatable').DataTable({
+   "footerCallback": function(row, data, start, end, display) {
+     var api = this.api(),
+       data;
+
+     // Remove the formatting to get integer data for summation
+     var intVal = function(i) {
+       return typeof i === 'string' ?
+         i.replace(/[\$,]/g, '') * 1 :
+         typeof i === 'number' ?
+         i : 0;
+     };
+
+     // Total over all pages
+     total = api
+       .column(5)
+       .data()
+       .reduce(function(a, b) {
+         return intVal(a) + intVal(b);
+       }, 0);
+
+     // Total over this page
+     pageTotal = api
+       .column(5, {
+         page: 'current'
+       })
+       .data()
+       .reduce(function(a, b) {
+         return intVal(a) + intVal(b);
+       }, 0);
+
+     // Update footer
+     $(api.column(5).footer()).html(
+       pageTotal
+     );
+     $(api.column(6).footer()).html(
+       total
+     );
+   }
+ });
+  </script>
+
+<script>
+   $(document).ready(function() {
+    var table = $('#material_datatable').DataTable();
+    $('#min, #max').change( function() {
+        table.draw();
+    } );
+
+    $('#material_datatable thead tr:eq(1) th').each( function (i) {
+     var select = $('<select><option value=""></option></select>')
+        .appendTo( $(this).empty() )
             .on( 'change', function () {
                 table.column( i )
-                    .search( $(this).val() )
+                    .search( $(this).val() ? "^" + $(this).val() + "$" : "", true, false, true )
                     .draw();
             } );
-
         table.column( i ).data().unique().sort().each( function ( d, j ) {
             select.append( '<option value="'+d+'">'+d+'</option>' )
         } );
     } );
+
 } );
+$('#material_datatable').DataTable( {
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column( 5 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over this page
+            pageTotal = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 5 ).footer() ).html(
+                pageTotal
+            );
+            $( api.column( 6 ).footer() ).html(
+                total
+            );
+        }
+    } );
 </script>
+
 </body>
 
 </html>

@@ -12062,3 +12062,10 @@ body.sidebar-toggled footer.sticky-footer {
 .flashes {
 
 }
+.dataTables_filter {
+display: none;
+}
+
+tfoot {
+        display: table-header-group;
+    }

@@ -147,6 +147,7 @@ def ledger_creation():
                 flash(flag)
                 write_to_log_data(date_time, flag + 'create_ledger', str(session['username']), ip, mac)
                 return redirect(url_for('create_ledger'))
+
             else:
                 connection = connect_to_db()
                 with connection.cursor() as cursor:
@@ -1891,7 +1892,7 @@ def show_cash_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y') as date_time, l.ledger_name, m.material_name, pr.product_name, amount from cash c INNER join ledger l ON c.ledger_id = l.id LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.product_id IS NOT NULL OR c.material_id IS NOT NULL"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
@@ -2177,15 +2178,14 @@ def show_mm_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_materials = "SELECT id, material_name FROM material"
-                    cursor.execute(get_materials)
-                    items_mat_data = cursor.fetchall()
-                    get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%y') as date_and_time, (mv.closing_balance-mv.opening_balance) as diff from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
+                    # get_materials = "SELECT id, material_name FROM material"
+                    # cursor.execute(get_materials)
+                    # items_mat_data = cursor.fetchall()
+                    get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y') as date_and_time, (mv.closing_balance-mv.opening_balance) as diff from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
-                    return render_template('show_material_movement.html', items_data=items_data,
-                                           items_mat_data=items_mat_data)
+                    return render_template('show_material_movement.html', items_data=items_data,)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
