@@ -301,7 +301,7 @@ def view_ledger():
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id, ledger_name, DATE_FORMAT(date_time,'%d-%m-%Y %k:%i:%s') as date_time, added_by, comments FROM ledger"
+                    get_items = "SELECT id, ledger_name, DATE_FORMAT(date_time,'%d-%m-%Y') as date_time, added_by, comments FROM ledger"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()
@@ -518,7 +518,7 @@ def view_material():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id, material_name, DATE_FORMAT(date_time,'%d-%m-%Y %k:%i:%s') as date_time, added_by, comments FROM material"
+                    get_items = "SELECT id, material_name, DATE_FORMAT(date_time,'%d-%m-%Y') as date_time, added_by, comments FROM material"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     connection.close()

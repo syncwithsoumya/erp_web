@@ -55,12 +55,12 @@ Star ERP -- View Ledger Tx
 
 <div class="form-row">
     <div class="form-group col-md-2">
-        <label for="ledgermindate">From</label>
-    <input type="text" class="form-control" data-date-format="dd-mm-yy" value="01-08-19" placeholder="01-08-19" id="ledgermindate">
+        <label for="min">From</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" value="01-08-2019" placeholder="01-08-2019" id="min">
     </div>
     <div class="form-group col-md-2">
-        <label for="ledgermaxdate">To</label>
-    <input type="text" class="form-control" data-date-format="dd-mm-yy" value="20-12-19" placeholder="20-08-20" id="ledgermaxdate">
+        <label for="max">To</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" value="20-12-2019" placeholder="20-08-2019" id="max">
     </div>
  <div class="form-group col-md-2 float-right" style="margin-top:30px">
         <button type="button" class="btn btn-primary" id="But_lm_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
@@ -72,11 +72,18 @@ Star ERP -- View Ledger Tx
        <div class="form-row">
         <thead>
             <tr>
-                <th>Receipt ID</th>
-                <th>Date Time</th>
-                <th>Ledger Name</th>
-                <th>Amount</th>
-                <th>Transaction Type</th>
+                <th class="table-dark">Receipt ID</th>
+                <th class="table-dark">Date Time</th>
+                <th class="table-dark">Ledger Name</th>
+                <th class="table-dark">Amount</th>
+                <th class="table-dark">Transaction Type</th>
+            </tr>
+        <tr class="noExl">
+                <th class="table-primary">Receipt ID</th>
+                <th class="table-primary">Date Time</th>
+                <th class="table-primary">Ledger Name</th>
+                <th class="table-primary">Amount</th>
+                <th class="table-primary">Transaction Type</th>
             </tr>
         </thead>
 
@@ -97,14 +104,16 @@ Star ERP -- View Ledger Tx
          {% endfor %}
         </tbody>
            <tfoot>
-           <tr class="noExl">
-                <th>Receipt ID</th>
-                <th>Date Time</th>
-                <th>Ledger Name</th>
-                <th>Amount</th>
-                <th>Transaction Type</th>
+            <tr>
+
+                <th class="table-dark"></th>
+                <th class="table-dark"></th>
+                <th class="table-dark" style="text-align:right">Total:</th>
+                <th class="table-dark"></th>
+                <th class="table-dark"></th>
             </tr>
-           </tfoot>
+        </tfoot>
+
        </div>
     </table>
 </div>
