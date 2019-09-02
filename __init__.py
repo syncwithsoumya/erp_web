@@ -56,6 +56,7 @@ def convertid2name(data):
                 cursor.execute(get_items, i)
                 items_data = cursor.fetchone()
                 new_dict[i] = items_data['material_name']
+
             new_dict2 = dict((new_dict[key], value) for (key, value) in dict_data.items())
             return new_dict2
     except Exception as e:
@@ -643,7 +644,7 @@ def new_purchased():
         ip = utilities.get_ip()
         if request.method == 'POST':
             ledger_id = int(request.form['ledgers_dat'])
-            pdate = request.form['pdate']
+            pdate = datetime.strptime(request.form['pdate'],'%d-%m-%Y').strftime('%d-%m-%Y'),
             qty_unit = int(request.form['qtykg'])
             unit = request.form['unit']
             subunit = request.form['subunit']
@@ -738,7 +739,7 @@ def delete_purchased_db():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT purchased_id, purchased_date, l.ledger_name, quantity_unit, total_amount, quantity_sub_unit, m.material_name, p.added_by  FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
+                    get_items = "SELECT p.purchased_id, p.purchased_date, l.ledger_name, p.quantity_unit, p.total_amount, p.quantity_sub_unit, p.sub_unit,p.unit, m.material_name FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     return render_template('delete_purchased.html', items_data=items_data)
@@ -761,7 +762,7 @@ def del_purchased_data(p_id):
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_material_qty = "SELECT material_id, quantity_sub_unit, total_amount,ledger_id FROM purchased WHERE purchased_id=%s"
+                    get_material_qty = "SELECT material_id, quantity_sub_unit, unit, total_quantity_sub_unit, amount,ledger_id FROM purchased WHERE purchased_id=%s"
                     cursor.execute(get_material_qty, p_id)
                     data = cursor.fetchone()
                     qty = data['quantity_sub_unit']
@@ -1142,12 +1143,21 @@ def view_component_details():
         connection = connect_to_db()
         list_data = list()
         with connection.cursor() as cursor:
-            get_product_data = "SELECT id, product_name,product_rate,product_spec,added_by FROM component_master WHERE component_flag=%s"
+            get_product_data = "SELECT id,date_time, product_name,product_rate,product_spec,added_by FROM component_master WHERE component_flag=%s"
             cursor.execute(get_product_data, 'Y')
             data = cursor.fetchall()
             for items in data:
-                named_item = convertid2name(items['product_spec'])
-                named_item = str(json.dumps(named_item).replace('{', '[')).replace('}', ']').replace('\"', '').replace(
+                items['date_time'] = datetime.strptime(str(items['date_time']), '%Y%m%d%H%M%S').strftime('%d-%m-%Y')
+                dict_data = ast.literal_eval(items['product_spec'])
+                for material in dict_data:
+                    get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
+                    cursor.execute(get_item_unit, material)
+                    items_unit_data = cursor.fetchone()
+                    value = str(ast.literal_eval(items['product_spec'])[material])+str(items_unit_data['sub_unit'])
+                    dict_data[material] = value
+                # dict_data = ast.literal_eval(items['product_spec'])
+                named_item = convertid2name(str(dict_data))
+                named_item = str(json.dumps(named_item).replace('{', '')).replace('}', '').replace('\"', '').replace(
                     ':', ' -')
                 items['product_spec'] = named_item
                 list_data.append(items)
@@ -1254,6 +1264,7 @@ def unit_creation():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
         if request.method == 'POST':
             connection = connect_to_db()
             unit = request.form['unitname']
@@ -1261,8 +1272,8 @@ def unit_creation():
                 # Add Unit to DB
                 try:
                     with connection.cursor() as cursor:
-                        get_items = "INSERT INTO units(unit) VALUES(%s)"
-                        cursor.execute(get_items, unit)
+                        get_items = "INSERT INTO units(date_time, unit) VALUES(%s,%s)"
+                        cursor.execute(get_items, (date_time,unit))
                         connection.commit()
                         flag = 'Successfully Added the new {} unit'.format(unit)
                         flash(flag)
@@ -1404,7 +1415,7 @@ def view_units():
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "SELECT id, unit FROM units"
+                    get_items = "SELECT id, DATE_FORMAT(date_time,'%d-%m-%Y') as date_time, unit FROM units"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
                     return render_template('view_units.html', items_data=items_data)
@@ -2119,12 +2130,23 @@ def delete_component_details():
                     get_items = "SELECT id, product_name, date_time, product_spec, product_rate FROM component_master"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
                     for items in items_data:
-                        named_item = convertid2name(items['product_spec'])
-                        named_item = str(json.dumps(named_item).replace('{','[')).replace('}',']').replace('\"','')
-                        items['product_spec'] = named_item
-                        list_data.append(items)
+                        items['date_time'] = datetime.strptime(str(items['date_time']), '%Y%m%d%H%M%S').strftime(
+                            '%d-%m-%Y')
+                        dict_data = ast.literal_eval(items['product_spec'])
+                    for material in dict_data:
+                        get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
+                        cursor.execute(get_item_unit, material)
+                        items_unit_data = cursor.fetchone()
+                        value = str(ast.literal_eval(items['product_spec'])[material]) + str(items_unit_data['sub_unit'])
+                        dict_data[material] = value
+                    # dict_data = ast.literal_eval(items['product_spec'])
+                    named_item = convertid2name(str(dict_data))
+                    named_item = str(json.dumps(named_item).replace('{', '')).replace('}', '').replace('\"',
+                                                                                                       '').replace(
+                        ':', ' -')
+                    items['product_spec'] = named_item
+                    list_data.append(items)
                     return render_template('delete_component_master.html', items_data=list_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
@@ -2142,30 +2164,35 @@ def del_component_master_data(p_id):
         if connection.open == 1:
             # Populate ledger names from table
             try:
+                connection = connect_to_db()
+                list_data = list()
                 with connection.cursor() as cursor:
-                    sel_product = "SELECT product_spec FROM component_master WHERE id=%s"
-                    cursor.execute(sel_product, p_id)
-                    fetched_data = cursor.fetchone()
-                    del_items = "DELETE FROM component_master WHERE id=%s"
-                    cursor.execute(del_items, p_id)
-                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), 'Deleted Component ID-{}'.format(p_id),
-                                      str(session['username']),
-                                      utilities.get_ip(), utilities.get_mac())
-
-                    for key in ast.literal_eval(fetched_data['product_spec']):
-                        get_usage_data = "SELECT usage_flag FROM material WHERE id=%s"
-                        cursor.execute(get_usage_data, key)
-                        fetched_usage_data = cursor.fetchone()
-                        usage_add = int(fetched_usage_data['usage_flag']) - 1
-                        upd_items = 'UPDATE material SET usage_flag=%s WHERE id=%s' % (usage_add, key)
-                        cursor.execute(upd_items)
-                    connection.commit()
-                    connection.close()
-                    return redirect(url_for('delete_component_details'))
+                    get_product_data = "SELECT id,date_time, product_name,product_rate,product_spec,added_by FROM component_master"
+                    cursor.execute(get_product_data,)
+                    data = cursor.fetchall()
+                    for items in data:
+                        items['date_time'] = datetime.strptime(str(items['date_time']), '%Y%m%d%H%M%S').strftime(
+                            '%d-%m-%Y')
+                        dict_data = ast.literal_eval(items['product_spec'])
+                        for material in dict_data:
+                            get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
+                            cursor.execute(get_item_unit, material)
+                            items_unit_data = cursor.fetchone()
+                            value = str(ast.literal_eval(items['product_spec'])[material]) + str(
+                                items_unit_data['sub_unit'])
+                            dict_data[material] = value
+                        # dict_data = ast.literal_eval(items['product_spec'])
+                        named_item = convertid2name(str(dict_data))
+                        named_item = str(json.dumps(named_item).replace('{', '')).replace('}', '').replace('\"','').replace(':', ' -')
+                        items['product_spec'] = named_item
+                        list_data.append(items)
+                    return render_template('delete_component_master.html', items_data=list_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
+            finally:
+                connection.close()
 
 
 @app.route('/show_mm_report')

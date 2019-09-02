@@ -5,31 +5,28 @@ Star ERP -- View Inventory
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">View Material Stock</h1>
-<div class="dropdown show">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Download
-  </a>
+<div class="form-row">
+ <div class="form-group col-md-2">
+        <button type="button" class="btn btn-primary" id="But_material_stock_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
+    </div>
 
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="#">Excel</a>
-    <a class="dropdown-item" href="#">Pdf</a>
-    <a class="dropdown-item" href="#">CSV</a>
-  </div>
 </div>
-<br>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered" style="width:100%">
+    <table id="show_material_inventory" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Material Name</th>
-                <th>Available Quantity</th>
+                <th class="table-dark">Material Name</th>
+                <th class="table-dark">Available Quantity</th>
+            </tr><tr class="NoXl">
+                <th class="table-primary">Material Name</th>
+                <th class="table-primary">Available Quantity</th>
             </tr>
         </thead>
 
         <tbody>
         {% for items in items_data %}
             <tr>
-                    <td>{{items.material_name}}</td>
+                    <td >{{items.material_name}}</td>
                     <td>{{items.quantity}}</td>
             </tr>
          {% endfor %}

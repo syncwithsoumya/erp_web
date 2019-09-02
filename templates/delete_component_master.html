@@ -5,16 +5,24 @@ Star ERP -- Delete Component
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">Delete Component Master</h1>
+
 <div class="table-responsive">
-    <table id="example" class="table table-bordered" style="width:100%">
+    <table id="delete_component_master" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Component ID</th>
-                <th>Component Name</th>
-                <th>Component Specification</th>
-                <th>Component Rate</th>
-                <th>Date Time</th>
-                <th>Action</th>
+                <th class="table-dark">Component ID</th>
+                <th class="table-dark">Date Time</th>
+                <th class="table-dark">Component Name</th>
+                <th class="table-dark">Component Specification</th>
+                <th class="table-dark">Component Rate</th>
+                <th class="table-dark">Action</th>
+            </tr><tr class="NoXl">
+                <th class="table-primary">Component ID</th>
+                <th class="table-primary">Date Time</th>
+                <th class="table-primary">Component Name</th>
+                <th class="table-primary">Component Specification</th>
+                <th class="table-primary">Component Rate</th>
+                <th class="table-primary">Action</th>
             </tr>
         </thead>
 
@@ -23,10 +31,11 @@ Star ERP -- Delete Component
             <tr>
 
                     <td>{{items.id}}</td>
-                    <td>{{items.product_name}}</td>
-                    <td style="font-weight:bold;color:red">{{items.product_spec.replace('[','').replace(']','').replace(',',' +')}}</td>
-                    <td>{{items.product_rate}}</td>
                     <td>{{items.date_time}}</td>
+                    <td>{{items.product_name}}</td>
+                    <td>{{items.product_spec}}</td>
+                    <td>{{items.product_rate}}</td>
+
                 <td><a href="/del_component_master_data/{{items.id}}" id="del"><button class="btn btn-primary">Delete</button></a></td>
             </tr>
          {% endfor %}

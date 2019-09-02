@@ -5,19 +5,43 @@ Star ERP -- View Purchased
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">View Purchased Details</h1>
+<div class="form-row">
+    <div class="form-group col-md-2">
+        <label for="min">From</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy"  placeholder="01-08-2019" id="min">
+    </div>
+    <div class="form-group col-md-2">
+        <label for="max">To</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" placeholder="20-08-2019" id="max">
+    </div>
+ <div class="form-group col-md-2 float-right" style="margin-top:30px">
+        <button type="button" class="btn btn-primary" id="But_show_purchased_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
+    </div>
+
+</div>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered" style="width:100%">
+    <table id="show_purchased" class="table table-bordered">
         <thead>
             <tr>
-                <th>Purchased_ID</th>
-                <th>Purchased_Date</th>
-                <th>Ledger Name</th>
-                <th>Quantity_Unit</th>
-                <th>Unit</th>
-                <th>Total Amount</th>
-                <th>Quantity_Sub_unit</th>
-                <th>Sub_Unit</th>
-                <th>Material Name</th>
+                <th class="table-dark">Purchased ID</th>
+                <th class="table-dark">Purchased Date</th>
+                <th class="table-dark">Ledger Name</th>
+                <th class="table-dark">Quantity(Unit)</th>
+<!--                <th class="table-dark">Unit</th>-->
+                <th class="table-dark">Total Amount</th>
+                <th class="table-dark">Quantity(Sub-Unit)</th>
+<!--                <th class="table-dark">Sub_Unit</th>-->
+                <th class="table-dark">Material Name</th>
+            </tr>
+            <tr class="NoXl">
+                <th class="table-primary"></th>
+                <th class="table-primary"></th>
+                <th class="table-primary"></th>
+                <th class="table-primary"></th>
+                <th class="table-primary"></th>
+                <th class="table-primary"></th>
+<!--                <th class="table-primary">Sub_Unit</th>-->
+                <th class="table-primary"></th>
             </tr>
         </thead>
 
@@ -28,11 +52,10 @@ Star ERP -- View Purchased
                     <td>{{items.purchased_id}}</td>
                     <td>{{items.purchased_date}}</td>
                     <td>{{items.ledger_name}}</td>
-                    <td>{{items.quantity_unit}}</td>
-                    <td>{{items.unit}}</td>
+                    <td style="color:black">{{items.quantity_unit ~ items.unit}}</td>
                     <td>{{items.total_amount}}</td>
-                    <td>{{items.quantity_sub_unit}}</td>
-                    <td>{{items.sub_unit}}</td>
+                    <td style="color:blue">{{items.quantity_sub_unit ~ items.sub_unit}}</td>
+<!--                    <td>{{items.sub_unit}}</td>-->
                     <td>{{items.material_name}}</td>
             </tr>
          {% endfor %}

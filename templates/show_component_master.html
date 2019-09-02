@@ -5,27 +5,38 @@ Star ERP -- View Component Master
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">View Component Master</h1>
-<div class="dropdown show">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Download
-  </a>
-
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="#">Excel</a>
-    <a class="dropdown-item" href="#">Pdf</a>
-    <a class="dropdown-item" href="#">CSV</a>
-  </div>
+<div class="form-row">
+    <div class="form-group col-md-2">
+<!--    <input type="text" class="form-control" placeholder="01-08-2019" id="min">-->
+        <label>From</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" placeholder="01-08-2019" id="min">
+    </div>
+    <div class="form-group col-md-2">
+        <label>To</label>
+<!--    <input type="text" class="form-control" placeholder="20-08-2019" id="max">-->
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" placeholder="20-08-2019" id="max">
+    </div>
+ <div class="form-group col-md-2 float-right" style="margin-top:30px">
+        <button type="button" class="btn btn-primary" id="But_component_master_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
+    </div>
 </div>
-<br>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered">
+    <table id="show_component_master" class="table table-bordered">
         <thead>
             <tr>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Product Rate</th>
-                <th>Product Specification</th>
-                <th>Added By</th>
+                <th class="table-dark">Product ID</th>
+                <th class="table-dark">Creation Date</th>
+                <th class="table-dark">Product Name</th>
+                <th class="table-dark">Product Rate</th>
+                <th class="table-dark">Product Specification</th>
+<!--                <th>Added By</th>-->
+            </tr><tr class="NoXl">
+                <th class="table-primary">Product ID</th>
+                <th class="table-primary">Creation Date</th>
+                <th class="table-primary">Product Name</th>
+                <th class="table-primary">Product Rate</th>
+                <th class="table-primary">Product Specification</th>
+<!--                <th>Added By</th>-->
             </tr>
         </thead>
 
@@ -33,10 +44,11 @@ Star ERP -- View Component Master
         {% for items in items_data %}
             <tr>
                     <td>{{items.id}}</td>
+                    <td>{{items.date_time}}</td>
                     <td>{{items.product_name}}</td>
                     <td>{{items.product_rate}}</td>
                     <td>{{items.product_spec}}</td>
-                    <td>{{items.added_by}}</td>
+<!--                    <td>{{items.added_by}}</td>-->
             </tr>
          {% endfor %}
         </tbody>

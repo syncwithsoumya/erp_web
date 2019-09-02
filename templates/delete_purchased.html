@@ -6,18 +6,28 @@ Star ERP -- Delete Purchased
 
 <h1 class="h3 mb-4 text-gray-800">Delete Purchased Details</h1>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered" style="width:100%">
+    <table id="delete_purchased" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Purchased_ID</th>
-                <th>Purchased_Date</th>
-                <th>Ledger Name</th>
-                <th>Quantity in Unit</th>
-                <th>Total Amount</th>
-                <th>Quantity Sub Unit</th>
-                <th>Material Name</th>
-                <th>Added By</th>
-                <th>Action</th>
+                <th class="table-dark">Purchased_ID</th>
+                <th class="table-dark">Date</th>
+                <th class="table-dark">Ledger Name</th>
+                <th class="table-dark">Quantity(Unit)</th>
+                <th class="table-dark">Total Amount</th>
+                <th class="table-dark">Quantity(Sub-Unit)</th>
+                <th class="table-dark">Material Name</th>
+<!--                <th class="table-dark">Added By</th>-->
+                <th class="table-dark">Action</th>
+            </tr><tr>
+                <th class="table-primary">Purchased_ID</th>
+                <th class="table-primary">Purchased_Date</th>
+                <th class="table-primary">Ledger Name</th>
+                <th class="table-primary">Quantity(Unit)</th>
+                <th class="table-primary">Total Amount</th>
+                <th class="table-primary">Quantity(Sub-Unit)</th>
+                <th class="table-primary">Material Name</th>
+<!--                <th>Added By</th>-->
+                <th class="table-primary">Action</th>
             </tr>
         </thead>
 
@@ -28,11 +38,11 @@ Star ERP -- Delete Purchased
                     <td>{{items.purchased_id}}</td>
                     <td>{{items.purchased_date}}</td>
                     <td>{{items.ledger_name}}</td>
-                    <td>{{items.quantity_unit}}</td>
+                    <td style="color:black">{{items.quantity_unit ~ items.unit}}</td>
                     <td>{{items.total_amount}}</td>
-                    <td>{{items.quantity_sub_unit}}</td>
+                    <td style="color:blue">{{items.quantity_sub_unit ~ items.sub_unit}}</td>
                     <td>{{items.material_name}}</td>
-                    <td>{{items.added_by}}</td>
+<!--                    <td>{{items.added_by}}</td>-->
                 <td><a href="/del_purchased_data/{{items.purchased_id}}" id="del"><button class="btn btn-primary">Delete</button></a></td>
             </tr>
          {% endfor %}
