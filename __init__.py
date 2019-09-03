@@ -2137,19 +2137,19 @@ def delete_component_details():
                         items['date_time'] = datetime.strptime(str(items['date_time']), '%Y%m%d%H%M%S').strftime(
                             '%d-%m-%Y')
                         dict_data = ast.literal_eval(items['product_spec'])
-                    for material in dict_data:
-                        get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
-                        cursor.execute(get_item_unit, material)
-                        items_unit_data = cursor.fetchone()
-                        value = str(ast.literal_eval(items['product_spec'])[material]) + str(items_unit_data['sub_unit'])
-                        dict_data[material] = value
+                        for material in dict_data:
+                            get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
+                            cursor.execute(get_item_unit, material)
+                            items_unit_data = cursor.fetchone()
+                            value = str(ast.literal_eval(items['product_spec'])[material]) + str(items_unit_data['sub_unit'])
+                            dict_data[material] = value
                     # dict_data = ast.literal_eval(items['product_spec'])
-                    named_item = convertid2name(str(dict_data))
-                    named_item = str(json.dumps(named_item).replace('{', '')).replace('}', '').replace('\"',
-                                                                                                       '').replace(
-                        ':', ' -')
-                    items['product_spec'] = named_item
-                    list_data.append(items)
+                        named_item = convertid2name(str(dict_data))
+                        named_item = str(json.dumps(named_item).replace('{', '')).replace('}', '').replace('\"',
+                                                                                                           '').replace(
+                            ':', ' -')
+                        items['product_spec'] = named_item
+                        list_data.append(items)
                     return render_template('delete_component_master.html', items_data=list_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),

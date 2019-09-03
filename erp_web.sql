@@ -119,6 +119,7 @@ PRIMARY KEY (id)
 
 create table erp_web.units(
 id int NOT NULL AUTO_INCREMENT,
+date_time VARCHAR(15),
 unit VARCHAR(20) NOT NULL,
 PRIMARY KEY (id),
 UNIQUE KEY(unit)
@@ -157,7 +158,7 @@ added_by varchar(50) NOT NULL,
 ip_address varchar(20) NOT NULL,
 mac_id varchar(20),
 PRIMARY KEY (id)
-)
+);
 
 select * from erp_web.ledger;
 select * from erp_web.material;
