@@ -2167,29 +2167,25 @@ def del_component_master_data(p_id):
         if connection.open == 1:
             # Populate ledger names from table
             try:
-                connection = connect_to_db()
-                list_data = list()
                 with connection.cursor() as cursor:
-                    get_product_data = "SELECT id,date_time, product_name,product_rate,product_spec,added_by FROM component_master"
-                    cursor.execute(get_product_data,)
-                    data = cursor.fetchall()
-                    for items in data:
-                        items['date_time'] = datetime.strptime(str(items['date_time']), '%Y%m%d%H%M%S').strftime(
-                            '%d-%m-%Y')
-                        dict_data = ast.literal_eval(items['product_spec'])
-                        for material in dict_data:
-                            get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
-                            cursor.execute(get_item_unit, material)
-                            items_unit_data = cursor.fetchone()
-                            value = str(ast.literal_eval(items['product_spec'])[material]) + str(
-                                items_unit_data['sub_unit'])
-                            dict_data[material] = value
-                        # dict_data = ast.literal_eval(items['product_spec'])
-                        named_item = convertid2name(str(dict_data))
-                        named_item = str(json.dumps(named_item).replace('{', '')).replace('}', '').replace('\"','').replace(':', ' -')
-                        items['product_spec'] = named_item
-                        list_data.append(items)
-                    return render_template('delete_component_master.html', items_data=list_data)
+                    sel_product = "SELECT product_spec FROM component_master WHERE id=%s"
+                    cursor.execute(sel_product, p_id)
+                    fetched_data = cursor.fetchone()
+                    del_items = "DELETE FROM component_master WHERE id=%s"
+                    cursor.execute(del_items, p_id)
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), 'Deleted Component ID-{}'.format(p_id),
+                                      str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
+
+                    for key in ast.literal_eval(fetched_data['product_spec']):
+                        get_usage_data = "SELECT usage_flag FROM material WHERE id=%s"
+                        cursor.execute(get_usage_data, key)
+                        fetched_usage_data = cursor.fetchone()
+                        usage_add = int(fetched_usage_data['usage_flag']) - 1
+                        upd_items = 'UPDATE material SET usage_flag=%s WHERE id=%s' % (usage_add, key)
+                        cursor.execute(upd_items)
+                    connection.commit()
+                    return redirect(url_for('delete_component_details'))
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
