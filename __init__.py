@@ -1710,13 +1710,16 @@ def view_billings():
                     get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product_master p ON s.product_id=p.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
+                    for items in items_data:
+                        items['sell_date'] = datetime.strptime(str(items['sell_date']), '%d-%m-%y').strftime(
+                        '%d-%m-%Y')
                     return render_template('view_billings.html', items_data=items_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
-
+            finally:
+                connection.close()
 
 @app.route('/delete_billings')
 def delete_billings():

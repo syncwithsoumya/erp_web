@@ -876,6 +876,16 @@
                 filename: file_name + ".xls",
             });
         });
+    </script><script>
+        $('#But_billing_report_download').click(function() {
+            var dt = new Date();
+            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+            var file_name = "Billing_Report_" + time;
+            $("#show_billing").table2excel({
+                exclude: ".noXl",
+                filename: file_name + ".xls",
+            });
+        });
     </script>
     <script>
         $(document).ready(function() {
@@ -1160,6 +1170,7 @@ $(document).ready(function() {
             $('#min, #max').change(function() {
                 table.draw();
             });
+
             $('#show_purchased thead tr:eq(1) th').each(function(i) {
                 var select = $('<select><option value=""></option></select>')
                     .appendTo($(this).empty())
@@ -1172,6 +1183,47 @@ $(document).ready(function() {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
             });
+
+        });
+        $('#show_purchased').DataTable({
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(4)
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Total over this page
+                pageTotal = api
+                    .column(4, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(4).footer()).html(
+                    pageTotal
+                );
+                $(api.column(5).footer()).html(
+                    total
+                );
+            }
         });
 </script><script>
 $(document).ready(function() {
@@ -1238,6 +1290,88 @@ $(document).ready(function() {
             });
 
             $('#delete_component_master thead tr:eq(1) th').each(function(i) {
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($(this).empty())
+                    .on('change', function() {
+                        table.column(i)
+                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+                            .draw();
+                    });
+                table.column(i).data().unique().sort().each(function(d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        });
+</script><script>
+      $(document).ready(function() {
+            var table = $('#show_billing').DataTable();
+            $('#min, #max').change(function() {
+                table.draw();
+            });
+
+            $('#show_billing thead tr:eq(1) th').each(function(i) {
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($(this).empty())
+                    .on('change', function() {
+                        table.column(i)
+                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+                            .draw();
+                    });
+                table.column(i).data().unique().sort().each(function(d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+
+        });
+        $('#show_billing').DataTable({
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(6)
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Total over this page
+                pageTotal = api
+                    .column(6, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(6).footer()).html(
+                    pageTotal
+                );
+                //$(api.column(7).footer()).html(
+                 //   total
+                //);
+            }
+        });
+</script>
+<script>
+    $(document).ready(function() {
+            var table = $('#delete_billing').DataTable();
+            $('#min, #max').change(function() {
+                table.draw();
+            });
+
+            $('#delete_billing thead tr:eq(1) th').each(function(i) {
                 var select = $('<select><option value=""></option></select>')
                     .appendTo($(this).empty())
                     .on('change', function() {

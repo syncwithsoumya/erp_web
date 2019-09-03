@@ -3,17 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c7b636c1-29f2-4d91-8b1a-9b0f060e53c6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/alter_purchased.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/alter_purchased.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/delete_component_master.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delete_component_master.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/delete_purchased.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delete_purchased.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/new_purchased.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/new_purchased.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/show_component_master.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_component_master.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/show_material_inventory.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/show_material_inventory.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_ledger.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_ledger.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_material.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_material.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/delete_sell_items.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delete_sell_items.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_billings.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_billings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/view_purchased.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_purchased.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_units.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_units.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,32 +19,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="1239" column="39" selection-start-line="1239" selection-start-column="39" selection-end-line="1239" selection-end-column="39" />
-              <folding>
-                <element signature="e#20199#20205#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="217">
+              <caret line="1222" column="30" selection-start-line="1222" selection-start-column="30" selection-end-line="1222" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/add_billing.html">
+        <entry file="file://$PROJECT_DIR$/templates/delete_sell_items.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="24" column="79" lean-forward="true" selection-start-line="24" selection-start-column="61" selection-end-line="24" selection-end-column="84" />
-              <folding>
-                <element signature="n#style#0;n#input#0;n#div#2;n#div#1;n#form#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/show_material_inventory.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="14" lean-forward="true" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
+            <state relative-caret-position="180">
+              <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -59,44 +37,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-320">
-              <caret line="2119" column="25" selection-start-line="2119" selection-start-column="11" selection-end-line="2119" selection-end-column="25" />
+            <state relative-caret-position="202">
+              <caret line="1707" column="16" lean-forward="true" selection-start-line="1707" selection-start-column="16" selection-end-line="1707" selection-end-column="16" />
               <folding>
                 <element signature="e#0#112#0" expanded="true" />
-                <marker date="1567454631127" expanded="true" signature="26085:26086" ph="..." />
-                <marker date="1567454631127" expanded="true" signature="61123:61128" ph="..." />
-                <marker date="1567454631127" expanded="true" signature="61269:61271" ph="..." />
+                <marker date="1567489428044" expanded="true" signature="26085:26086" ph="..." />
+                <marker date="1567489428044" expanded="true" signature="61123:61128" ph="..." />
+                <marker date="1567489428044" expanded="true" signature="61269:61271" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/show_component_master.html">
+        <entry file="file://$PROJECT_DIR$/templates/view_billings.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" selection-start-line="7" selection-end-line="21" selection-end-column="6" />
-              <folding>
-                <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/delete_component_master.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="6" lean-forward="true" selection-start-line="11" selection-end-line="25" selection-end-column="6" />
+            <state relative-caret-position="217">
+              <caret line="66" column="30" lean-forward="true" selection-start-line="66" selection-start-column="30" selection-end-line="66" selection-end-column="30" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#th#4;n#tr#0;n#tfoot#0;n#table#0;n#div#1;n#!!top" expanded="true" />
@@ -105,34 +62,17 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/alter_purchased.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="38" column="89" selection-start-line="38" selection-start-column="89" selection-end-line="38" selection-end-column="89" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/view_purchased.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="56" column="43" lean-forward="true" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="43" />
+            <state relative-caret-position="307">
+              <caret line="67" column="75" selection-start-line="67" selection-start-column="75" selection-end-line="67" selection-end-column="75" />
               <folding>
                 <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#td#5;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#3;n#tr#0;n#tfoot#0;n#table#0;n#div#1;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/new_purchased.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="24" column="88" selection-start-line="24" selection-start-column="88" selection-end-line="24" selection-end-column="88" />
             </state>
           </provider>
         </entry>
@@ -149,7 +89,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>creation</find>
       <find>jq</find>
       <find>show_material_m</find>
       <find>ledgermindate</find>
@@ -178,6 +117,7 @@
       <find>delete_purchase</find>
       <find>show_material_inven</find>
       <find>component_deta</find>
+      <find>view_bill</find>
       <find>view_component_details</find>
     </findStrings>
     <replaceStrings>
@@ -196,7 +136,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/check_buildout.html" />
         <option value="$PROJECT_DIR$/templates/buildout.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/templates/show_product_details.html" />
@@ -206,7 +145,6 @@
         <option value="$PROJECT_DIR$/templates/manufacture_process.html" />
         <option value="$PROJECT_DIR$/templates/direct_billing.html" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/templates/delete_sell_items.html" />
         <option value="$PROJECT_DIR$/templates/component_master.html" />
         <option value="$PROJECT_DIR$/static/css/sb-admin-2.min.css" />
         <option value="$PROJECT_DIR$/templates/view_material_movement.html" />
@@ -239,14 +177,16 @@
         <option value="$PROJECT_DIR$/templates/view_ledger.html" />
         <option value="$PROJECT_DIR$/templates/view_units.html" />
         <option value="$PROJECT_DIR$/templates/show_material_inventory.html" />
-        <option value="$PROJECT_DIR$/templates/view_purchased.html" />
         <option value="$PROJECT_DIR$/templates/new_purchased.html" />
         <option value="$PROJECT_DIR$/templates/alter_purchased.html" />
         <option value="$PROJECT_DIR$/templates/delete_purchased.html" />
         <option value="$PROJECT_DIR$/templates/show_component_master.html" />
-        <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/templates/delete_component_master.html" />
+        <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/templates/delete_sell_items.html" />
+        <option value="$PROJECT_DIR$/templates/view_billings.html" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/templates/view_purchased.html" />
       </list>
     </option>
   </component>
@@ -412,16 +352,16 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24330357" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.4985119" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5245536" side_tool="true" visible="true" weight="0.24713585" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.52529764" side_tool="true" visible="true" weight="0.24713585" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49255952" weight="0.3289689" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" sideWeight="0.49702382" weight="0.3289689" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.3295082" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.47544643" visible="true" weight="0.24713585" />
-      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.59598213" weight="0.45335516" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.4747024" visible="true" weight="0.24713585" />
+      <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.5952381" weight="0.45335516" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -1009,47 +949,47 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1966</line>
+          <line>1969</line>
           <option name="timeStamp" value="393" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1968</line>
+          <line>1971</line>
           <option name="timeStamp" value="394" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1970</line>
+          <line>1973</line>
           <option name="timeStamp" value="395" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1969</line>
+          <line>1972</line>
           <option name="timeStamp" value="396" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1967</line>
+          <line>1970</line>
           <option name="timeStamp" value="397" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1959</line>
+          <line>1962</line>
           <option name="timeStamp" value="398" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1961</line>
+          <line>1964</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1962</line>
+          <line>1965</line>
           <option name="timeStamp" value="401" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1960</line>
+          <line>1963</line>
           <option name="timeStamp" value="419" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1164,147 +1104,147 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2187</line>
+          <line>2190</line>
           <option name="timeStamp" value="536" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2189</line>
+          <line>2192</line>
           <option name="timeStamp" value="548" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2192</line>
+          <line>2195</line>
           <option name="timeStamp" value="549" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2230</line>
+          <line>2233</line>
           <option name="timeStamp" value="553" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2235</line>
+          <line>2238</line>
           <option name="timeStamp" value="554" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2226</line>
+          <line>2229</line>
           <option name="timeStamp" value="555" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2227</line>
+          <line>2230</line>
           <option name="timeStamp" value="556" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2228</line>
+          <line>2231</line>
           <option name="timeStamp" value="557" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2229</line>
+          <line>2232</line>
           <option name="timeStamp" value="558" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2231</line>
+          <line>2234</line>
           <option name="timeStamp" value="559" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2232</line>
+          <line>2235</line>
           <option name="timeStamp" value="561" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2233</line>
+          <line>2236</line>
           <option name="timeStamp" value="562" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2234</line>
+          <line>2237</line>
           <option name="timeStamp" value="563" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2238</line>
+          <line>2241</line>
           <option name="timeStamp" value="564" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2239</line>
+          <line>2242</line>
           <option name="timeStamp" value="565" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2240</line>
+          <line>2243</line>
           <option name="timeStamp" value="566" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2242</line>
+          <line>2245</line>
           <option name="timeStamp" value="567" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2241</line>
+          <line>2244</line>
           <option name="timeStamp" value="568" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2243</line>
+          <line>2246</line>
           <option name="timeStamp" value="569" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1813</line>
+          <line>1816</line>
           <option name="timeStamp" value="570" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1812</line>
+          <line>1815</line>
           <option name="timeStamp" value="571" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1814</line>
+          <line>1817</line>
           <option name="timeStamp" value="572" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1815</line>
+          <line>1818</line>
           <option name="timeStamp" value="573" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1817</line>
+          <line>1820</line>
           <option name="timeStamp" value="574" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>1816</line>
+          <line>1819</line>
           <option name="timeStamp" value="575" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2070</line>
+          <line>2073</line>
           <option name="timeStamp" value="591" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2071</line>
+          <line>2074</line>
           <option name="timeStamp" value="592" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2072</line>
+          <line>2075</line>
           <option name="timeStamp" value="593" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2068</line>
+          <line>2071</line>
           <option name="timeStamp" value="595" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1329,48 +1269,68 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2131</line>
+          <line>2134</line>
           <option name="timeStamp" value="611" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2136</line>
+          <line>2139</line>
           <option name="timeStamp" value="615" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2137</line>
+          <line>2140</line>
           <option name="timeStamp" value="616" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2129</line>
+          <line>2132</line>
           <option name="timeStamp" value="618" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2130</line>
+          <line>2133</line>
           <option name="timeStamp" value="619" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2138</line>
+          <line>2141</line>
           <option name="timeStamp" value="621" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2139</line>
+          <line>2142</line>
           <option name="timeStamp" value="622" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2140</line>
+          <line>2143</line>
           <option name="timeStamp" value="623" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/__init__.py</url>
-          <line>2143</line>
+          <line>2146</line>
           <option name="timeStamp" value="625" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1713</line>
+          <option name="timeStamp" value="626" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1712</line>
+          <option name="timeStamp" value="627" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1714</line>
+          <option name="timeStamp" value="628" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>1711</line>
+          <option name="timeStamp" value="629" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1412,13 +1372,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/delete_sell_items.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/delete_material.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1451,23 +1404,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_billings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/direct_billing.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#2;n#div#3;n#div#0;n#form#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1690,18 +1626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_purchased.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="56" column="43" lean-forward="true" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="43" />
-          <folding>
-            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#5;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/delete_purchased.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1726,16 +1650,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/add_billing.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="24" column="79" lean-forward="true" selection-start-line="24" selection-start-column="61" selection-end-line="24" selection-end-column="84" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#2;n#div#1;n#form#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/show_material_inventory.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -1743,37 +1657,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
+    <entry file="file://$PROJECT_DIR$/templates/direct_billing.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="6" lean-forward="true" selection-start-line="11" selection-end-line="25" selection-end-column="6" />
+        <state relative-caret-position="90">
+          <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
           <folding>
-            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#th#4;n#tr#0;n#tfoot#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#2;n#div#3;n#div#0;n#form#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
+    <entry file="file://$PROJECT_DIR$/templates/delete_component_master.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-320">
-          <caret line="2119" column="25" selection-start-line="2119" selection-start-column="11" selection-end-line="2119" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#112#0" expanded="true" />
-            <marker date="1567454631127" expanded="true" signature="26085:26086" ph="..." />
-            <marker date="1567454631127" expanded="true" signature="61123:61128" ph="..." />
-            <marker date="1567454631127" expanded="true" signature="61269:61271" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="1239" column="39" selection-start-line="1239" selection-start-column="39" selection-end-line="1239" selection-end-column="39" />
-          <folding>
-            <element signature="e#20199#20205#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-158">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
         </state>
       </provider>
     </entry>
@@ -1787,10 +1684,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/delete_component_master.html">
+    <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="202">
+          <caret line="1707" column="16" lean-forward="true" selection-start-line="1707" selection-start-column="16" selection-end-line="1707" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#112#0" expanded="true" />
+            <marker date="1567489428044" expanded="true" signature="26085:26086" ph="..." />
+            <marker date="1567489428044" expanded="true" signature="61123:61128" ph="..." />
+            <marker date="1567489428044" expanded="true" signature="61269:61271" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/show_material_movement.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="69" column="38" lean-forward="true" selection-start-line="69" selection-start-column="20" selection-end-line="69" selection-end-column="38" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#4;n#tr#0;n#tfoot#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/delete_sell_items.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/add_billing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-45">
+          <caret line="24" column="79" lean-forward="true" selection-start-line="24" selection-start-column="61" selection-end-line="24" selection-end-column="84" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#div#2;n#div#1;n#form#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="1222" column="30" selection-start-line="1222" selection-start-column="30" selection-end-line="1222" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_billings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="66" column="30" lean-forward="true" selection-start-line="66" selection-start-column="30" selection-end-line="66" selection-end-column="30" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#4;n#tr#0;n#tfoot#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_purchased.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="67" column="75" selection-start-line="67" selection-start-column="75" selection-end-line="67" selection-end-column="75" />
+          <folding>
+            <element signature="n#style#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#5;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#th#3;n#tr#0;n#tfoot#0;n#table#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

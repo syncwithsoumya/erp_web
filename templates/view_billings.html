@@ -5,17 +5,41 @@ Star ERP -- View Billings
 {% block content %}
 
 <h1 class="h3 mb-4 text-gray-800">View Billing Details</h1>
+<div class="form-row">
+    <div class="form-group col-md-2">
+<!--    <input type="text" class="form-control" placeholder="01-08-2019" id="min">-->
+        <label>From</label>
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" placeholder="01-08-2019" id="min">
+    </div>
+    <div class="form-group col-md-2">
+        <label>To</label>
+<!--    <input type="text" class="form-control" placeholder="20-08-2019" id="max">-->
+    <input type="text" class="form-control" data-date-format="dd-mm-yyyy" placeholder="20-08-2019" id="max">
+    </div>
+ <div class="form-group col-md-2 float-right" style="margin-top:30px">
+        <button type="button" class="btn btn-primary" id="But_billing_report_download"><i class="fas fa-download fa-sm"></i> Download Report </button>
+    </div>
+</div>
 <div class="table-responsive">
-    <table id="example" class="table table-bordered" style="width:100%">
+    <table id="show_billing" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Sell_ID</th>
-                <th>Sell_Date</th>
-                <th>Ledger Name</th>
-                <th>Product_Name</th>
-                <th>Quantity</th>
-                <th>Rate</th>
-                <th>Total Amount</th>
+                <th  class="table-dark">Sell_ID</th>
+                <th  class="table-dark">Sell_Date</th>
+                <th  class="table-dark">Ledger Name</th>
+                <th  class="table-dark">Product_Name</th>
+                <th  class="table-dark">Quantity</th>
+                <th  class="table-dark">Rate</th>
+                <th  class="table-dark">Amount</th>
+            </tr>
+            <tr class="noXl">
+                <th class="table-primary">Sell_ID</th>
+                <th class="table-primary">Sell_Date</th>
+                <th class="table-primary">Ledger Name</th>
+                <th class="table-primary">Product_Name</th>
+                <th class="table-primary">Quantity</th>
+                <th class="table-primary">Rate</th>
+                <th class="table-primary">Amount</th>
             </tr>
         </thead>
 
@@ -33,7 +57,17 @@ Star ERP -- View Billings
             </tr>
          {% endfor %}
         </tbody>
-
+<tfoot>
+            <tr>
+                <th class="table-dark"></th>
+                <th class="table-dark"></th>
+                <th class="table-dark"></th>
+                <th class="table-dark"></th>
+                <th class="table-dark"></th>
+                <th class="table-dark" style="text-align:right">Total:</th>
+                <th class="table-dark"></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 {% endblock %}
