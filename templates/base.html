@@ -162,6 +162,7 @@
                         <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
                         <!--            <a class="collapse-item" href="/add_billing">Billing</a>-->
                         <a class="collapse-item" href="/direct_billing">Direct Billing</a>
+                        <a class="collapse-item" href="/alter_billings">Alter Billing</a>
                         <a class="collapse-item" href="/view_billings">View all Billings</a>
                         <a class="collapse-item" href="/delete_billings">Delete Billings</a>
                     </div>
@@ -482,7 +483,7 @@
         $('select#inputState3').change(function() {
             var nodeList = $(this).children("option:selected").val();
             $.ajax({
-                url: "/process_alter_product/" + nodeList,
+                url: "/process_alter_purchased/" + nodeList,
                 type: "GET",
                 dataType: "json",
                 success: function(resp) {
@@ -495,6 +496,23 @@
                     $('input#amount').val(resp.total_amount);
                     $('input#subunit_show').val(resp.sub_unit);
                     $('input#quantity_sub_unit').val(resp.quantity_sub_unit);
+                }
+            });
+        });
+    </script><script>
+        $('select#inputState3').change(function() {
+            var nodeList = $(this).children("option:selected").val();
+            $.ajax({
+                url: "/process_alter_billing/" + nodeList,
+                type: "GET",
+                dataType: "json",
+                success: function(resp) {
+                    $('select#inputState').val(resp.ledger_id);
+                    $('input#dp2').val(resp.sell_date);
+                    $('select#inputState2').val(resp.product);
+                    $('input#qty').val(resp.quantity);
+                    $('input#rate').val(resp.rate);
+                    $('input#amount').val(resp.total_amount);
                 }
             });
         });

@@ -65,8 +65,10 @@ Star ERP -- View Sales-Purchase
                     <td>{{items.amount}}</td>
                 {% if items.material_name%}
                 <td  class="table-success" style="font-weight:bold"> Purchase </td>
-                {% elif items.product_name %}
+                {% elif items.product_name and items.amount > 0 %}
                 <td class="table-danger" style="font-weight:bold"> Sale </td>
+                {% elif items.product_name and items.amount < 0 %}
+                <td class="table-warning" style="font-weight:bold"> Cancelled </td>
                 {% elif items.amount > 0 and not items.product_name and not items.material_name %}
                 <td class="table-dark"> Debit </td>
                 {% elif items.amount < 0 and not items.product_name and not items.material_name %}

@@ -59,6 +59,8 @@ Star ERP -- View Material Movement
 
                 {% if items.txn_type == 'Purchase' %}
                 <td  class="table-success"> Purchase </td>
+                {% elif items.txn_type == 'Cancelled' %}
+                 <td class="table-warning"> Cancelled </td>
                 {% else %}
                 <td class="table-danger"> Sale </td>
                 {% endif %}

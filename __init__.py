@@ -762,17 +762,22 @@ def del_purchased_data(p_id):
             # Populate ledger names from table
             try:
                 with connection.cursor() as cursor:
-                    get_material_qty = "SELECT material_id, quantity_sub_unit, unit, total_quantity_sub_unit, amount,ledger_id FROM purchased WHERE purchased_id=%s"
+                    get_material_qty = "SELECT material_id, quantity_sub_unit, unit, quantity_sub_unit, total_amount,ledger_id FROM purchased WHERE purchased_id=%s"
                     cursor.execute(get_material_qty, p_id)
                     data = cursor.fetchone()
                     qty = data['quantity_sub_unit']
                     mat_id = data['material_id']
+                    get_material_cdate = "SELECT closing_balance FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=%s);"
+                    cursor.execute(get_material_cdate, mat_id)
+                    cdate = cursor.fetchone()
+                    final_closing = int(cdate['closing_balance']) - int(qty) #if int(cdate['closing_balance']) > int(qty) else int(qty) - int(cdate['closing_balance'])
+                    sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
+                    cursor.execute(sql_mat_mov,
+                                   (mat_id, date_time, cdate['closing_balance'], final_closing, 'Cancelled'))
                     sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
                     cursor.execute(sql_quantity, (qty, mat_id))
-                    connection.commit()
                     insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,%s,NULL,%s,'Money Received as Refund')"
                     cursor.execute(insert_sql, (date_time, data['ledger_id'], data['material_id'], data['total_amount']))
-                    connection.commit()
                     del_items = "DELETE FROM purchased WHERE purchased_id=%s"
                     cursor.execute(del_items, p_id)
                     connection.commit()
@@ -1150,7 +1155,7 @@ def view_component_details():
                 items['date_time'] = datetime.strptime(str(items['date_time']), '%Y%m%d%H%M%S').strftime('%d-%m-%Y')
                 dict_data = ast.literal_eval(items['product_spec'])
                 for material in dict_data:
-                    get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
+                    get_item_unit = "SELECT sub_unit FROM material WHERE id=%s"
                     cursor.execute(get_item_unit, material)
                     items_unit_data = cursor.fetchone()
                     value = str(ast.literal_eval(items['product_spec'])[material])+str(items_unit_data['sub_unit'])
@@ -1234,8 +1239,25 @@ def process_unit(p_id):
         return str(e)
 
 
-@app.route('/process_alter_product/<int:p_id>', methods=['GET'])
-def process_alter_product(p_id):
+@app.route('/process_alter_billing/<int:p_id>', methods=['GET'])
+def process_alter_billing(p_id):
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_unit_comments = "SELECT sell_date,ledger_id,product_id,quantity,rate,amount FROM sell where sell_id=%s"
+            cursor.execute(get_unit_comments, p_id)
+            dat = cursor.fetchall()
+            connection.close()
+            return jsonify({'sell_date': dat[0]['sell_date'], 'ledger_id': dat[0]['ledger_id'], 'quantity': dat[0]['quantity'], 'rate': dat[0]['rate'], 'total_amount': dat[0]['amount'], 'product': dat[0]['product_id']})
+    except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
+        return str(e)
+
+
+@app.route('/process_alter_purchased/<int:p_id>', methods=['GET'])
+def process_alter_purchased(p_id):
     # p_id = 12
     try:
         connection = connect_to_db()
@@ -1249,6 +1271,7 @@ def process_alter_product(p_id):
         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                           utilities.get_ip(), utilities.get_mac())
         return str(e)
+
 
 
 @app.route('/create_units')
@@ -1645,7 +1668,7 @@ def direct_billing_creation():
                             cursor.execute(get_material_cdate, item)
                             cdate = cursor.fetchone()
                             # Add Material Movement
-                            final_closing = int(cdate['closing_balance']) - int(product_data[item])
+                            final_closing = int(cdate['closing_balance']) + int(product_data[item])
                             sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
                             cursor.execute(sql_mat_mov, (cdate['mat_id'], date_time, cdate['closing_balance'],
                                                          final_closing, 'Sale'))
@@ -1710,9 +1733,9 @@ def view_billings():
                     get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product_master p ON s.product_id=p.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    for items in items_data:
-                        items['sell_date'] = datetime.strptime(str(items['sell_date']), '%d-%m-%y').strftime(
-                        '%d-%m-%Y')
+                    # for items in items_data:
+                    #     items['sell_date'] = datetime.strptime(str(items['sell_date']), '%d-%m-%yyyy').strftime(
+                    #     '%d-%m-%Y')
                     return render_template('view_billings.html', items_data=items_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
@@ -2098,9 +2121,17 @@ def del_sell_data(p_id):
                     data = cursor.fetchone()
                     new_data = product_manipulation(ast.literal_eval(data['product_spec']),1)
                     for item in new_data:
+                        qty = new_data[item]
+                        get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s))  AND mat_id=(SELECT id FROM material WHERE material_name=%s);"
+                        cursor.execute(get_material_cdate, (item,item))
+                        cdate = cursor.fetchone()
+                        final_closing = int(cdate['closing_balance']) - int(qty)
+                        sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
+                        cursor.execute(sql_mat_mov,
+                                       (cdate['mat_id'], date_time, cdate['closing_balance'], final_closing, 'Cancelled'))
                         sql_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE material_id=(SELECT id FROM material WHERE material_name=%s)"
                         cursor.execute(sql_quantity, (new_data[item], item))
-                    connection.commit()
+                        connection.commit()
                     del_items = "DELETE FROM sell WHERE sell_id=%s"
                     cursor.execute(del_items, p_id)
                     connection.commit()
@@ -2112,6 +2143,30 @@ def del_sell_data(p_id):
                     connection.commit()
                     connection.close()
                     return redirect(url_for('delete_billings'))
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+
+
+@app.route('/alteration_billings', methods=['POST'])
+def alteration_billings():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_product_qty = "SELECT pr.product_spec, s.quantity, s.amount,s.ledger_id FROM sell s INNER JOIN product_master pr ON s.product_id = pr.id WHERE sell_id=%s "
+                    cursor.execute(get_product_qty, p_id)
+                    data = cursor.fetchone()
+
+                    connection.commit()
+                    connection.close()
+                    return redirect(url_for('alter_billings'))
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
@@ -2138,7 +2193,7 @@ def delete_component_details():
                             '%d-%m-%Y')
                         dict_data = ast.literal_eval(items['product_spec'])
                         for material in dict_data:
-                            get_item_unit = "SELECT sub_unit FROM purchased WHERE material_id=%s"
+                            get_item_unit = "SELECT sub_unit FROM material WHERE id=%s"
                             cursor.execute(get_item_unit, material)
                             items_unit_data = cursor.fetchone()
                             value = str(ast.literal_eval(items['product_spec'])[material]) + str(items_unit_data['sub_unit'])
@@ -2293,25 +2348,54 @@ def show_cash_report_by_entity(p_id):
                 return str(e)
 
 
-@app.route('/delete_all_data')
-def delete_all_data():
+# @app.route('/delete_all_data')
+# def delete_all_data():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         connection = connect_to_db()
+#         if connection.open == 1:
+#             # Populate billing from table
+#             try:
+#                 with connection.cursor() as cursor:
+#                     get_items = "SELECT "
+#                     cursor.execute(get_items)
+#                     items_data = cursor.fetchall()
+#                     connection.close()
+#                     return render_template('delete_all_data.html', items_data=items_data)
+#             except Exception as e:
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return str(e)
+
+
+@app.route('/alter_billings')
+def alter_billings():
+    connection = ''
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        connection = connect_to_db()
-        if connection.open == 1:
-            # Populate billing from table
-            try:
-                with connection.cursor() as cursor:
-                    get_items = "SELECT "
-                    cursor.execute(get_items)
-                    items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('delete_all_data.html', items_data=items_data)
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_items = "SELECT sell_id from sell"
+                cursor.execute(get_items)
+                items_pur_data = cursor.fetchall()
+            with connection.cursor() as cursor:
+                get_items = "SELECT id, ledger_name from ledger"
+                cursor.execute(get_items)
+                items_ledger_data = cursor.fetchall()
+            with connection.cursor() as cursor:
+                get_items = "SELECT id,product_name from product_master"
+                cursor.execute(get_items)
+                items_products_data = cursor.fetchall()
+            return render_template('alter_billings.html', sell_data=items_pur_data, ledger_data=items_ledger_data, product_data=items_products_data)
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
+        finally:
+            connection.close()
 
 
 if __name__ == '__main__':
