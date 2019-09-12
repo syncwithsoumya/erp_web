@@ -1256,6 +1256,23 @@ def process_alter_billing(p_id):
         return str(e)
 
 
+@app.route('/process_alter_component_master/<int:p_id>', methods=['GET'])
+def process_alter_component_master(p_id):
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_unit_comments = "SELECT sell_date,ledger_id,product_id,quantity,rate,amount FROM sell where sell_id=%s"
+            cursor.execute(get_unit_comments, p_id)
+            dat = cursor.fetchall()
+            connection.close()
+            return jsonify({'sell_date': dat[0]['sell_date'], 'ledger_id': dat[0]['ledger_id'], 'quantity': dat[0]['quantity'], 'rate': dat[0]['rate'], 'total_amount': dat[0]['amount'], 'product': dat[0]['product_id']})
+    except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
+        return str(e)
+
+
 @app.route('/process_alter_purchased/<int:p_id>', methods=['GET'])
 def process_alter_purchased(p_id):
     # p_id = 12
@@ -1744,6 +1761,7 @@ def view_billings():
             finally:
                 connection.close()
 
+
 @app.route('/delete_billings')
 def delete_billings():
     if session.get('username') is None:
@@ -1961,7 +1979,7 @@ def show_ledger_tx_report():
             # Populate material names from table
             try:
                 with connection.cursor() as cursor:
-                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%y') as date_time, l.ledger_name, " \
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y') as date_time, l.ledger_name, " \
                                 "c.amount from cash c INNER join ledger l ON c.ledger_id = l.id WHERE " \
                                 "c.material_id IS NULL AND c.product_id IS NULL;"
                     cursor.execute(get_items)
@@ -2149,28 +2167,107 @@ def del_sell_data(p_id):
                 return str(e)
 
 
-@app.route('/alteration_billings', methods=['POST'])
-def alteration_billings():
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
-        connection = connect_to_db()
-        if connection.open == 1:
-            # Populate ledger names from table
-            try:
-                with connection.cursor() as cursor:
-                    get_product_qty = "SELECT pr.product_spec, s.quantity, s.amount,s.ledger_id FROM sell s INNER JOIN product_master pr ON s.product_id = pr.id WHERE sell_id=%s "
-                    cursor.execute(get_product_qty, p_id)
-                    data = cursor.fetchone()
-
-                    connection.commit()
-                    connection.close()
-                    return redirect(url_for('alter_billings'))
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
+# @app.route('/alteration_billings', methods=['POST'])
+# def alteration_billings():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+#         mac = utilities.get_mac()
+#         ip = utilities.get_ip()
+#         if request.method == 'POST':
+#             ledger_id = int(request.form['ledgers_dat'])
+#             pdate = request.form['sdate']
+#             product_id = request.form['products_dat']
+#             qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
+#             product_id = request.form['sell_ids']
+#             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
+#             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
+#             if product_id == 0:
+#                 flag = "Sell ID not selected."
+#                 flash(flag)
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return redirect(url_for('alter_billing'))
+#             elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
+#                 flag = "Invalid Data"
+#                 flash(flag)
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'alter_billing',
+#                                   str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return redirect(url_for('alter_billing'))
+#             else:
+#                 connection = connect_to_db()
+#                 with connection.cursor() as cursor:
+#                     try:
+#                         flag = 'y'
+#                         get_product_name = "SELECT product_name,product_spec FROM component_master WHERE id=%s and component_flag=%s"
+#                         cursor.execute(get_product_name, (product_id, flag))
+#                         names = cursor.fetchone()
+#                         product_data = product_manipulation(convertid2name(names['product_spec']), qty_unit)
+#
+#                         for item in product_data:
+#                             # Get Material Movement
+#                             get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s));"
+#                             cursor.execute(get_material_cdate, item)
+#                             cdate = cursor.fetchone()
+#                             # Add Material Movement
+#                             final_closing = int(cdate['closing_balance']) + int(product_data[item])
+#                             sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
+#                             cursor.execute(sql_mat_mov, (cdate['mat_id'], date_time, cdate['closing_balance'],
+#                                                          final_closing, 'Sale'))
+#                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
+#                                            "material_id=(SELECT id FROM material WHERE material_name=%s)"
+#                             cursor.execute(sql_quantity, (product_data[item], item))
+#                             # cursor.execute(sql_update_flag, item)
+#                         connection.commit()
+#                         sql = "INSERT INTO product_master(product_name,date_time,added_by,comments," \
+#                               "product_spec,link_component_flag, product_rate,ip_address,mac_id) " \
+#                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+#                         cursor.execute(sql,
+#                                        (names['product_name'], date_time, str(session['username']), 'Directly Added',
+#                                         str(product_data), product_id, rate, ip, mac))
+#                         connection.commit()
+#                         get_product_name = "SELECT MAX(id) as id FROM product_master"
+#                         cursor.execute(get_product_name, )
+#                         data_id = cursor.fetchone()
+#                         get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
+#                         cursor.execute(get_ledger_name, ledger_id)
+#                         ledger_name = cursor.fetchone()
+#                         sql = "INSERT INTO sell(sell_date,ledger_id,product_id,quantity," \
+#                               "rate, amount,added_by,ip_address,mac_id) " \
+#                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+#                         cursor.execute(sql, (
+#                         pdate, ledger_id, data_id['id'], qty_unit, rate, totamt, str(session['username']), ip, mac))
+#                         connection.commit()
+#
+#                         insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id,amount,comments) VALUES (%s, %s,NULL,%s,%s,'Money Received on Sell')"
+#                         cursor.execute(insert_sql, (date_time, ledger_id, data_id['id'], totamt))
+#                         connection.commit()
+#                         for item in product_data:
+#                             check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
+#                             cursor.execute(check_material, (item))
+#                             data_checked = cursor.fetchone()
+#                             if int(data_checked['quantity']) < int(product_data[item]):
+#                                 list_of_ofs_items.append(item)
+#                         flag = 'Successfully Sold {} to {} on {}'.format(names['product_name'],
+#                                                                          ledger_name['ledger_name'],
+#                                                                          date_time) if not any(
+#                             list_of_ofs_items) else 'Sold %s to %s on %s with Insufficient Materials - %s' % (
+#                         names['product_name'], ledger_name['ledger_name'], date_time,
+#                         ','.join(str(n) for n in list_of_ofs_items))
+#                         flash(flag)
+#                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                           utilities.get_ip(), utilities.get_mac())
+#                         return redirect(url_for('direct_billing'))
+#                     except Exception as e:
+#                         flag = "Failure with %s" % str(e)
+#                         flash(flag)
+#                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                           utilities.get_ip(), utilities.get_mac())
+#                         return redirect(url_for('direct_billing'))
+#                     finally:
+#                         connection.close()
 
 
 # delete_component_details
@@ -2390,6 +2487,114 @@ def alter_billings():
                 cursor.execute(get_items)
                 items_products_data = cursor.fetchall()
             return render_template('alter_billings.html', sell_data=items_pur_data, ledger_data=items_ledger_data, product_data=items_products_data)
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
+        finally:
+            connection.close()
+
+
+@app.route('/delete_ledger_tx')
+def delete_ledger_tx():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate material names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select c.id, DATE_FORMAT(c.date_time,'%d-%m-%Y') as date_time, l.ledger_name, " \
+                                "c.amount from cash c INNER join ledger l ON c.ledger_id = l.id WHERE " \
+                                "c.material_id IS NULL AND c.product_id IS NULL;"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    get_ledger = "SELECT id, ledger_name FROM ledger"
+                    cursor.execute(get_ledger)
+                    items_ledger_data = cursor.fetchall()
+                    return render_template('delete_ledger_transactions.html', items_data=items_data, items_ledger_data=items_ledger_data)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+            finally:
+                connection.close()
+
+
+@app.route('/del_ledger_data/<int:p_id>')
+def del_ledger_data(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    del_items = "DELETE FROM cash WHERE id=%s"
+                    cursor.execute(del_items, p_id)
+                    connection.commit()
+                    write_to_log_data(date_time, 'Deleted Cash ID-{}'.format(p_id),
+                                      str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
+                    connection.close()
+                    return redirect(url_for('delete_ledger_tx'))
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+
+
+@app.route('/process_edit_data/<int:p_id>', methods=['GET'])
+def process_edit_data(p_id):
+    connection = ''
+    # p_id = 12
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            get_mat_comments = "select DATE_FORMAT(c.date_time,'%d-%m-%Y') as date_time, c.ledger_id, abs(amount) as amount from cash c LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.id={}".format(p_id)
+            cursor.execute(get_mat_comments)
+            dat = cursor.fetchone()
+            return jsonify({'date': dat['date_time'], 'ledger_name': dat['ledger_id'],'amount': dat['amount']})
+    except Exception as e:
+        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                          utilities.get_ip(), utilities.get_mac())
+        return str(e)
+    finally:
+        connection.close()
+
+
+@app.route('/ledger_tx_modification', methods=['POST'])
+def ledger_tx_modification():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        ledger_data = None
+        receiptid = None
+        payment = None
+        amount = None
+        min = None
+        try:
+            connection = connect_to_db()
+            if request.method == 'POST':
+                ledger_id = request.form['ledger_data']
+                receiptid = request.form['receiptid']
+                date = datetime.strptime(str(request.form['min']), '%d-%m-%Y').strftime('%Y%m%d')+'000000'
+                amount = request.form['amount']
+                payment = int(request.form['payment'])
+                if not ledger_id or not receiptid or not date or not amount or not payment:
+                    flag = "Invalid Data"
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), '{}- on ledger tx update'.format(flag),
+                                      str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
+                else:
+                    with connection.cursor() as cursor:
+                        upd_items = 'UPDATE cash SET ledger_id=%s, date_time=%s, amount=%s WHERE id=%s' % (ledger_id, date, amount if payment == 1 else -amount, receiptid)
+                        cursor.execute(upd_items)
+                        connection.commit()
+                    return redirect(url_for('delete_ledger_tx'))
         except Exception as e:
             write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                               utilities.get_ip(), utilities.get_mac())

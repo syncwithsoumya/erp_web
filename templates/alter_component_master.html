@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Alter Component
+{% endblock %}
+{% block content %}
+<h3 class="h3 mb-4 text-gray-800"> Alter Component Master</h3>
+<div class="form-row" id="new_product">
+
+        <form action="/component_master_alteration" method="POST">
+            <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="inputState1">Product Name</label>
+      <select id="inputState1" name="materials_list" class="form-control">
+            <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+            <div class="form-group col-md-2">
+                <label>Product Rate</label>
+                <input type="text" class="form-control" name="prate">
+            </div>
+                <div class="form-group col-md-2">
+                <label>Product Comments</label>
+                <input type="text" class="form-control" name="pcomments">
+            </div>
+                 <div class="form-group col-md-2">
+         <label>Item-1</label>
+      <select id="inputStates1" name="item_text1" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+      </div><div class="form-group col-md-2">
+          <label>Item-1 - Quantity</label>
+            <input type="text" class="form-control" value="0" name="item1">
+    </div>
+                <div class="form-group col-md-2">
+<!--                    <label>+ to add more items</label>-->
+                <a href="#" style="margin-top: 30px;" id="show_txtboxes" class="btn btn-primary btn-circle">
+                    <i class="fas fa-plus"></i>
+                </a></div>
+<!--            <div class="form-group col-md-4">-->
+<!--                <label>Build Date</label>-->
+<!--                <input type="text"  name="pdate" class="form-control" data-date-format="dd-mm-yy" id="dp2">-->
+<!--            </div>-->
+        </div>
+  <div class="form-row">
+
+
+      <div class="form-group col-md-2">
+         <label id="item_text2">Item-2</label>
+          <select id="inputStates2" name="item_text2" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+            {% if not items_data %}
+              <option value="no_items">No Items to display</option>
+              {% else %}
+                {% for items in items_data %}
+                <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+                {% endfor %}
+              {% endif %}
+            </select>
+        </div>
+      <div class="form-group col-md-2">
+          <label id="item2_label">Item-2 - Quantity</label>
+      <input type="text" class="form-control" id="item2" value="0" name="item2">
+      </div>
+
+        <div class="form-group col-md-2">
+         <label id="item_text3">Item-3</label>
+      <select id="inputStates3" name="item_text3" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+
+    </div>
+
+      <div class="form-group col-md-2">
+          <label id="item3_label">Item-3 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item3" name="item3">
+      </div>
+      <div class="form-group col-md-2">
+         <label id="item_text4">Item-4</label>
+      <select id="inputStates4" name="item_text4" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+      <div class="form-group col-md-2">
+          <label id="item4_label">Item-4 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item4" name="item4">
+      </div>
+    <br>
+      </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+         <label id="item_text5">Item-5</label>
+      <select id="inputStates5" name="item_text5" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+
+      <div class="form-group col-md-2">
+          <label id="item5_label">Item-5 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item5" name="item5">
+      </div>
+        <div class="form-group col-md-2">
+         <label id="item_text6">Item-6</label>
+      <select id="inputStates6" name="item_text6" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+
+      <div class="form-group col-md-2">
+          <label id="item6_label">Item-6 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item6" name="item6">
+      </div>
+        <div class="form-group col-md-2">
+         <label  id="item_text7">Item-7</label>
+      <select id="inputStates7" name="item_text7" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+
+      <div class="form-group col-md-2">
+          <label id="item7_label">Item-7 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item7" name="item7">
+      </div>
+    <br>
+
+        <div class="form-group col-md-2">
+         <label  id="item_text8">Item-8</label>
+      <select id="inputStates8" name="item_text8" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+        <div class="form-group col-md-2">
+          <label id="item8_label">Item-8 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item8" name="item8">
+      </div>
+        <div class="form-group col-md-2">
+         <label  id="item_text9">Item-9</label>
+      <select id="inputStates9" name="item_text9"  class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+        <div class="form-group col-md-2">
+          <label id="item9_label">Item-9 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item9" name="item9">
+      </div>
+        <div class="form-group col-md-2">
+         <label id="item_text10">Item-10</label>
+      <select id="inputStates10" name="item_text10" class="form-control">
+          <option value="0" selected> -- Choose --</option>
+        {% if not items_data %}
+        <option value="no_items">No Items to display</option>
+      {% else %}
+        {% for items in items_data %}
+        <option value="{{ items.id }}" name="{{ items.material_name }}">{{ items.material_name }}</option>
+        {% endfor %}
+      {% endif %}
+      </select>
+    </div>
+        <div class="form-group col-md-2">
+          <label id="item10_label">Item-10 - Quantity</label>
+      <input type="text" class="form-control" value="0" id="item10" name="item10">
+      </div>
+ </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-danger">Reset</button>
+
+</form>
+    </div>
+{% endblock %}

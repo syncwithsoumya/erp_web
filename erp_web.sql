@@ -212,3 +212,12 @@ SELECT pr.product_spec,s.quantity,s.amount FROM erp_web.sell s INNER JOIN erp_we
 
 select c.id, c.date_time, l.ledger_name, material_id, product_id, amount from erp_web.cash c INNER join erp_web.ledger l ON c.ledger_id = l.id RIGHT JOIN material m ON m.id=c.material_id;
 select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y %k:%i:%s') as date_and_time from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id WHERE mv.mat_id=2;
+select * from sell;
+select * from product_qty;
+select * from material;
+SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id =6);
+SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name='drynuts')) AND mat_id=(SELECT id FROM material WHERE material_name='drynuts');
+SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s))  AND mat_id=(SELECT id FROM material WHERE material_name=%s);
+SELECT id FROM material WHERE material_name = 'drynuts';
+select * from component_master;
+select * from cash;

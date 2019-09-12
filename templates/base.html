@@ -2,378 +2,280 @@
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>{% block title %} {% endblock %}</title>
-
-    <!-- Custom fonts for this template-->
-    <link rel="icon" href="{{ url_for('static', filename='vendor/fontawesome-free/svgs/fan.svg') }}" type="image/svg+xml" sizes="48x48">
-    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <!-- Custom styles for this template-->
-    <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
-    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
-    <!--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">-->
-    <!--  	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">-->
-
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>{% block title %} {% endblock %}</title>
+	<!-- Custom fonts for this template-->
+	<link rel="icon" href="{{ url_for('static', filename='vendor/fontawesome-free/svgs/fan.svg') }}" type="image/svg+xml" sizes="48x48">
+	<link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<!-- Custom styles for this template-->
+	<link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+	<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/css/bootstrapvalidator.min.css" />
+	<!--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">-->
+	<!--  	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">-->
 </head>
 
 <body id="page-top">
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('dashboard') }}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-fan"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">FANWALA ERP</div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MENU
-            </div>
-
-            <!-- Nav Item - Ledgers Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLedgers" aria-expanded="true" aria-controls="collapseLedgers">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Ledgers Master</span>
-                </a>
-                <div id="collapseLedgers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Components:</h6>-->
-                        <a class="collapse-item" href="/create_ledger">Create Ledger</a>
-                        <a class="collapse-item" href="/delete_ledger">Delete Ledger</a>
-                        <a class="collapse-item" href="/modify_ledger">Alter Ledger</a>
-                        <a class="collapse-item" href="/view_ledger">View Ledger</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Material/Commodity Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaterial" aria-expanded="true" aria-controls="collapseMaterial">
-                    <i class="fas fa-fw fa-luggage-cart"></i>
-                    <span>Raw Materials Master</span>
-                </a>
-                <div id="collapseMaterial" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-                        <a class="collapse-item" href="/create_material">Create Material</a>
-                        <a class="collapse-item" href="/modify_material">Alter Material</a>
-                        <!--            <a class="collapse-item" href="/delete_material">Delete Material</a>-->
-                        <a class="collapse-item" href="/view_material">View all Materials</a>
-                        <a class="collapse-item" href="/show_material_inventory">View Material Stock</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item -Unit Master Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true" aria-controls="collapseUnit">
-                    <i class="fas fa-fw fa-atom"></i>
-                    <span>Units Master</span>
-                </a>
-                <div id="collapseUnit" class="collapse" aria-labelledby="headingUnit" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-                        <a class="collapse-item" href="/create_units">Add New Unit</a>
-                        <a class="collapse-item" href="/modify_units">Alter Existing Unit </a>
-                        <a class="collapse-item" href="/delete_units">Delete Existing Unit</a>
-                        <a class="collapse-item" href="/view_units">View Units</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePurchase" aria-expanded="true" aria-controls="collapsePurchase">
-                    <i class="fas fa-fw fa-shopping-cart"></i>
-                    <span>Purchase</span>
-                </a>
-                <div id="collapsePurchase" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-                        <a class="collapse-item" href="/new_purchased_db">Purchase</a>
-                        <a class="collapse-item" href="/alter_purchased_db">Modify Purchase</a>
-                        <a class="collapse-item" href="/delete_purchased_db">Delete existing Purchase</a>
-                        <a class="collapse-item" href="/view_purchased_db">View all Purchases</a>
-                    </div>
-                </div>
-            </li>
-            <!-- Nav Item - Component-Master Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecomponent" aria-expanded="true" aria-controls="collapsecomponent">
-                    <i class="fas fa-fw fa-box"></i>
-                    <span>Component Master</span>
-                </a>
-                <div id="collapsecomponent" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-                        <a class="collapse-item" href="/component_master">Component Master</a>
-                        <!--            <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>-->
-                        <a class="collapse-item" href="/view_component_details">View Component Master</a>
-                        <a class="collapse-item" href="/delete_component_details">Delete Component Master</a>
-                        <!--            <a class="collapse-item" href="/view_manufactured_details">View Manufacture</a>-->
-
-                    </div>
-                </div>
-            </li>
-            <!-- Nav Item - Build-out Collapse Menu -->
-            <!--      <li class="nav-item">-->
-            <!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBuild" aria-expanded="true" aria-controls="collapseBuild">-->
-            <!--          <i class="fas fa-fw fa-wrench"></i>-->
-            <!--          <span>Manufacture</span>-->
-            <!--        </a>-->
-            <!--        <div id="collapseBuild" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
-            <!--          <div class="bg-white py-2 collapse-inner rounded">-->
-            <!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
-            <!--&lt;!&ndash;            <a class="collapse-item" href="/component_master">Component Master</a>&ndash;&gt;-->
-            <!--            <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>-->
-            <!--&lt;!&ndash;            <a class="collapse-item" href="/view_component_details">View Component Master</a>&ndash;&gt;-->
-            <!--            <a class="collapse-item" href="/view_manufactured_details">View Manufacture</a>-->
-
-            <!--          </div>-->
-            <!--        </div>-->
-            <!--      </li>-->
-
-            <!-- Nav Item - Sell Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="true" aria-controls="collapseSell">
-                    <i class="fas fa-fw fa-shipping-fast"></i>
-                    <!--          <i class="fas fa-fw fa-plus"></i>-->
-                    <span>Billing</span>
-                </a>
-                <div id="collapseSell" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-                        <!--            <a class="collapse-item" href="/add_billing">Billing</a>-->
-                        <a class="collapse-item" href="/direct_billing">Direct Billing</a>
-                        <a class="collapse-item" href="/alter_billings">Alter Billing</a>
-                        <a class="collapse-item" href="/view_billings">View all Billings</a>
-                        <a class="collapse-item" href="/delete_billings">Delete Billings</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!-- Sidebar -->
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+			<!-- Sidebar - Brand -->
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('dashboard') }}">
+				<div class="sidebar-brand-icon rotate-n-15"> <i class="fas fa-fan"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">FANWALA ERP</div>
+			</a>
+			<!-- Divider -->
+			<hr class="sidebar-divider">
+			<!-- Heading -->
+			<div class="sidebar-heading">MENU</div>
+			<!-- Nav Item - Ledgers Collapse Menu -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLedgers" aria-expanded="true" aria-controls="collapseLedgers"> <i class="fas fa-fw fa-users"></i>
+					<span>Ledgers Master</span>
+				</a>
+				<div id="collapseLedgers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Components:</h6>--> <a class="collapse-item" href="/create_ledger">Create Ledger</a>
+						<a class="collapse-item" href="/delete_ledger">Delete Ledger</a>
+						<a class="collapse-item" href="/modify_ledger">Alter Ledger</a>
+						<a class="collapse-item" href="/view_ledger">View Ledger</a>
+					</div>
+				</div>
+			</li>
+			<!-- Nav Item -Unit Master Collapse Menu -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="true" aria-controls="collapseUnit"> <i class="fas fa-fw fa-atom"></i>
+					<span>Units Master</span>
+				</a>
+				<div id="collapseUnit" class="collapse" aria-labelledby="headingUnit" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Utilities:</h6>--> <a class="collapse-item" href="/create_units">Add New Unit</a>
+						<a class="collapse-item" href="/modify_units">Alter Existing Unit </a>
+						<a class="collapse-item" href="/delete_units">Delete Existing Unit</a>
+						<a class="collapse-item" href="/view_units">View Units</a>
+					</div>
+				</div>
+			</li>
+			<!-- Nav Item - Material/Commodity Collapse Menu -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaterial" aria-expanded="true" aria-controls="collapseMaterial"> <i class="fas fa-fw fa-luggage-cart"></i>
+					<span>Raw Materials Master</span>
+				</a>
+				<div id="collapseMaterial" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Utilities:</h6>--> <a class="collapse-item" href="/create_material">Create Material</a>
+						<a class="collapse-item" href="/modify_material">Alter Material</a>
+						<!--            <a class="collapse-item" href="/delete_material">Delete Material</a>--> <a class="collapse-item" href="/view_material">View all Materials</a>
+						<a class="collapse-item" href="/show_material_inventory">View Material Stock</a>
+					</div>
+				</div>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePurchase" aria-expanded="true" aria-controls="collapsePurchase"> <i class="fas fa-fw fa-shopping-cart"></i>
+					<span>Purchase</span>
+				</a>
+				<div id="collapsePurchase" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Utilities:</h6>--> <a class="collapse-item" href="/new_purchased_db">Purchase</a>
+						<!--                        <a class="collapse-item" href="/alter_purchased_db">Modify Purchase</a>--> <a class="collapse-item" href="/delete_purchased_db">Delete existing Purchase</a>
+						<a class="collapse-item" href="/view_purchased_db">View all Purchases</a>
+					</div>
+				</div>
+			</li>
+			<!-- Nav Item - Component-Master Collapse Menu -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsecomponent" aria-expanded="true" aria-controls="collapsecomponent"> <i class="fas fa-fw fa-box"></i>
+					<span>Component Master</span>
+				</a>
+				<div id="collapsecomponent" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Utilities:</h6>--> <a class="collapse-item" href="/component_master">Create Component Master </a>
+						<!--            <a class="collapse-item" href="/manufacture_process">Manufacture Process</a>-->
+						<!--                        <a class="collapse-item" href="/view_component_details">Alter Component Master</a>--> <a class="collapse-item" href="/view_component_details">View Component Master</a>
+						<a class="collapse-item" href="/delete_component_details">Delete Component Master</a>
+						<!--            <a class="collapse-item" href="/view_manufactured_details">View Manufacture</a>-->
+					</div>
+				</div>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="true" aria-controls="collapseSell"> <i class="fas fa-fw fa-shipping-fast"></i>
+					<!--          <i class="fas fa-fw fa-plus"></i>--> <span>Billing</span>
+				</a>
+				<div id="collapseSell" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Utilities:</h6>-->
+						<!--            <a class="collapse-item" href="/add_billing">Billing</a>--> <a class="collapse-item" href="/direct_billing">Direct Billing</a>
+						<!--                        <a class="collapse-item" href="/alter_billings">Alter Billing</a>--> <a class="collapse-item" href="/view_billings">View all Billings</a>
+						<a class="collapse-item" href="/delete_billings">Delete Billings</a>
+					</div>
+				</div>
+			</li>
+			<!-- Divider
       <hr class="sidebar-divider">-->
-            <!--<hr class="sidebar-divider d-none d-md-block">
+			<!--<hr class="sidebar-divider d-none d-md-block">
        Heading -->
-            <!--<div class="sidebar-heading">
+			<!--<div class="sidebar-heading">
         Addons
       </div>-->
-            <!-- Nav Item - Build-out Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCash" aria-expanded="true" aria-controls="collapseCash">
-                    <i class="fas fa-fw fa-rupee-sign"></i>
-                    <span>Payment</span>
-                </a>
-                <div id="collapseCash" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6>-->
-                        <a class="collapse-item" href="/pay_to_ledger">Pay to Ledger</a>
-                        <a class="collapse-item" href="/receive_from_ledger">Receive from Ledger</a>
-                        <a class="collapse-item" href="/show_ledger_tx_report">View Transactions</a>
-                        <!--            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>-->
-                        <!--              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>-->
-                    </div>
-                </div>
-            </li>
-
-            <!--        <li class="nav-item">-->
-            <!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">-->
-            <!--          <i class="fas fa-fw fa-home"></i>-->
-            <!--          <span>Inventory</span>-->
-            <!--        </a>-->
-            <!--        <div id="collapseReports" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
-            <!--          <div class="bg-white py-2 collapse-inner rounded">-->
-            <!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
-            <!--            <a class="collapse-item" href="/show_material_inventory">Material Stock</a>-->
-            <!--&lt;!&ndash;            <a class="collapse-item" href="/show_product_inventory">Finished Products</a>&ndash;&gt;-->
-            <!--          </div>-->
-            <!--        </div>-->
-            <!--      </li>-->
-            <!-- Divider -->
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-        </ul>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!--          <h5 class="font-weight-normal">Logged in as <b>{{ session['username']}}</b>  </h5>-->
-                    <!-- Topbar Navbar -->
-                    <!--          <div class="dropdown">-->
-                    <!--  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-home"></i>-->
-                    <!--    Inventory-->
-                    <!--  </button>-->
-                    <!--  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-                    <!--    <a class="dropdown-item" href="/show_material_inventory">Material Stock</a>-->
-                    <!--    <a class="dropdown-item" href="/show_product_inventory">Finished Products</a>-->
-                    <!--  </div>-->
-                    <!--</div>-->
-                    <!--          <div class="text-center d-none d-md-inline">-->
-                    <!--        <button class="rounded-circle border-0" id="sidebarToggle2"></button>-->
-                    <!--      </div>-->
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-book"></i> Reports
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <a class="dropdown-item" href="/show_cash_report">Cash Report</a>
-                            <a class="dropdown-item" href="/show_mm_report">Material Movement Report</a>
-                            <!--    <a class="dropdown-item" href="#">Purchase Report</a>-->
-                        </div>
-                    </div>
-                    <ul class="navbar-nav ml-auto">
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session['username'] }}</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/change_password">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Change Password
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <!--<h1 class="h3 mb-4 text-gray-800">Blank Page</h1>-->
-                    {% block content %} {% endblock %}
-                    <br> {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if 'Successfully' in message %}
-                    <div class="alert alert-success" role="alert">
-                        {{ message }}
-                    </div>
-                    {% elif 'Insufficient' in message %}
-                    <div class="alert alert-warning" role="alert">
-                        {{ message }}
-                    </div>
-                    {% else %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                    {% endif %} {% endfor %} {% endif %} {% endwith %}
-
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{url_for('logout')}}">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>-->
-    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!--		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>-->
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <!--		<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
+			<!-- Nav Item - Build-out Collapse Menu -->
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCash" aria-expanded="true" aria-controls="collapseCash"> <i class="fas fa-fw fa-rupee-sign"></i>
+					<span>Payment</span>
+				</a>
+				<div id="collapseCash" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<!--<h6 class="collapse-header">Custom Utilities:</h6>--> <a class="collapse-item" href="/pay_to_ledger">Pay to Ledger</a>
+						<a class="collapse-item" href="/receive_from_ledger">Receive from Ledger</a>
+						<a class="collapse-item" href="/show_ledger_tx_report">View Transactions</a>
+						<a class="collapse-item" href="/delete_ledger_tx">Modify Transactions</a>
+						<!--            <a class="collapse-item" href="utilities-other.html">View Paid Trans.</a>-->
+						<!--              <a class="collapse-item" href="utilities-other.html">View Received Trans.</a>-->
+					</div>
+				</div>
+			</li>
+			<!--        <li class="nav-item">-->
+			<!--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports" aria-expanded="true" aria-controls="collapseReports">-->
+			<!--          <i class="fas fa-fw fa-home"></i>-->
+			<!--          <span>Inventory</span>-->
+			<!--        </a>-->
+			<!--        <div id="collapseReports" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">-->
+			<!--          <div class="bg-white py-2 collapse-inner rounded">-->
+			<!--            &lt;!&ndash;<h6 class="collapse-header">Custom Utilities:</h6>&ndash;&gt;-->
+			<!--            <a class="collapse-item" href="/show_material_inventory">Material Stock</a>-->
+			<!--&lt;!&ndash;            <a class="collapse-item" href="/show_product_inventory">Finished Products</a>&ndash;&gt;-->
+			<!--          </div>-->
+			<!--        </div>-->
+			<!--      </li>-->
+			<!-- Divider -->
+			<!-- Sidebar Toggler (Sidebar) -->
+			<div class="text-center d-none d-md-inline">
+				<button class="rounded-circle border-0" id="sidebarToggle"></button>
+			</div>
+		</ul>
+		<!-- End of Sidebar -->
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+					<!-- Sidebar Toggle (Topbar) -->
+					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"> <i class="fa fa-bars"></i>
+					</button>
+					<!--          <h5 class="font-weight-normal">Logged in as <b>{{ session['username']}}</b>  </h5>-->
+					<!-- Topbar Navbar -->
+					<!--          <div class="dropdown">-->
+					<!--  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-home"></i>-->
+					<!--    Inventory-->
+					<!--  </button>-->
+					<!--  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+					<!--    <a class="dropdown-item" href="/show_material_inventory">Material Stock</a>-->
+					<!--    <a class="dropdown-item" href="/show_product_inventory">Finished Products</a>-->
+					<!--  </div>-->
+					<!--</div>-->
+					<!--          <div class="text-center d-none d-md-inline">-->
+					<!--        <button class="rounded-circle border-0" id="sidebarToggle2"></button>-->
+					<!--      </div>-->
+					<div class="dropdown">
+						<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-book"></i> Reports</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> <a class="dropdown-item" href="/show_cash_report">Cash Report</a>
+							<a class="dropdown-item" href="/show_mm_report">Material Movement Report</a>
+							<!--    <a class="dropdown-item" href="#">Purchase Report</a>-->
+						</div>
+					</div>
+					<ul class="navbar-nav ml-auto">
+						<div class="topbar-divider d-none d-sm-block"></div>
+						<!-- Nav Item - User Information -->
+						<li class="nav-item dropdown no-arrow">
+							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session['username'] }}</span>
+								<img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+							</a>
+							<!-- Dropdown - User Information -->
+							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="/change_password"> <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Change Password</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"> <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout</a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+				<!-- End of Topbar -->
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<!-- Page Heading -->
+					<!--<h1 class="h3 mb-4 text-gray-800">Blank Page</h1>-->{% block content %} {% endblock %}
+					<br>{% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %} {% if 'Successfully' in message %}
+					<div class="alert alert-success" role="alert">{{ message }}</div>{% elif 'Insufficient' in message %}
+					<div class="alert alert-warning" role="alert">{{ message }}</div>{% else %}
+					<div class="alert alert-danger" role="alert">{{ message }}</div>{% endif %} {% endfor %} {% endif %} {% endwith %}</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- End of Main Content -->
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto"> <span>Copyright &copy; Your Website 2019</span>
+					</div>
+				</div>
+			</footer>
+			<!-- End of Footer -->
+		</div>
+		<!-- End of Content Wrapper -->
+	</div>
+	<!-- End of Page Wrapper -->
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i>
+	</a>
+	<!-- Logout Modal-->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> <a class="btn btn-primary" href="{{url_for('logout')}}">Logout</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Bootstrap core JavaScript-->
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+	<!-- Core plugin JavaScript-->
+	<script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>-->
+	<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<!--		<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>-->
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<!--		<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+	<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript">
         $(document).ready(function() {
             $(".dataTables_filter").hide();
@@ -381,1027 +283,1111 @@
         });
     </script>
     <script>
-        $.fn.dataTable.ext.search.push(
-            function(settings, data, dataIndex) {
-                var min = $('#min').val() || '01-08-2019';
-                min = moment(min, "DD-MM-YYYY");
-                var max = $('#max').val() || '01-10-2019';
-                max = moment(max, "DD-MM-YYYY");
-                var createdAt = moment(data[1], "DD-MM-YYYY") || 0; // Our date column in the table
-                if (moment(createdAt, "DD-MM-YYYY", true).isValid())
-                {
-                    if (
-                        (min == "" || max == "") ||
-                        (moment(createdAt).isSameOrAfter(min) && moment(createdAt).isSameOrBefore(max))
-                        )
-                    {
-                        console.log('yes')
-                        return true;
-                    }
-                 console.log('no')
-                 return false;
-                }
-                else
-                {
-                return true
-                }
-        });
+	$.fn.dataTable.ext.search.push(
+	            function(settings, data, dataIndex) {
+	                var min = $('#min').val() || '01-08-2019';
+	                min = moment(min, "DD-MM-YYYY");
+	                var max = $('#max').val() || '01-10-2019';
+	                max = moment(max, "DD-MM-YYYY");
+	                var createdAt = moment(data[1], "DD-MM-YYYY") || 0; // Our date column in the table
+	                if (moment(createdAt, "DD-MM-YYYY", true).isValid())
+	                {
+	                    if (
+	                        (min == "" || max == "") ||
+	                        (moment(createdAt).isSameOrAfter(min) && moment(createdAt).isSameOrBefore(max))
+	                        )
+	                    {
+	                        console.log('yes')
+	                        return true;
+	                    }
+	                 console.log('no')
+	                 return false;
+	                }
+	                else
+	                {
+	                return true
+	                }
+	        });
 
-        // Re-draw the table when the a date range filter changes
-        //$('#min, #max').change(function () {
-        //              table.draw();
-        //          });
-    </script>
-    <script>
-        $('#dp2').datepicker();
-    </script>
-    <script>
-        $('#ledgermindate').datepicker({
-            format: 'dd-mm-yyyy'
-        });
-    </script>
-    <script>
-        $('#ledgermaxdate').datepicker({
-            format: 'dd-mm-yyyy'
-        });
-    </script>
-    <script>
-        $('#min').datepicker({
-            format: 'dd-mm-yyyy'
-        });
-    </script>
-    <script>
-        $('#max').datepicker({
-            format: 'dd-mm-yyyy'
-        });
-    </script>
-    <script>
-        $('select#inputState').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/process_ledger/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    $('input#popname').val(resp.data);
-                }
-            });
-        });
-    </script>
-    <script>
-        $('select#inputState1').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            var nodeListname = $(this).children("option:selected").text();
-            $.ajax({
-                url: "/process_material/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    $('input#new_name').val(nodeListname);
-                    $('input#popcomments').val(resp.comments);
-                    $('select#Unit').val(resp.unit);
-                    $('select#subUnit').val(resp.sub_unit);
-                }
-            });
-        });
-    </script>
-    <script>
-        $('select#inputState2').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/process_unit/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    $('input#unit_show').val(resp.data);
-                    $('input#subunit_show').val(resp.data2);
-                }
-            });
-        });
-    </script>
-    <script>
-        $('select#inputState3').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/process_alter_purchased/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    $('select#inputState').val(resp.ledger_id);
-                    $('input#dp2').val(resp.purchased_date);
-                    $('select#inputState2').val(resp.material_id);
-                    $('input#unit_show').val(resp.unit);
-                    $('input#qty').val(resp.quantity_unit);
-                    $('input#rate').val(resp.rate);
-                    $('input#amount').val(resp.total_amount);
-                    $('input#subunit_show').val(resp.sub_unit);
-                    $('input#quantity_sub_unit').val(resp.quantity_sub_unit);
-                }
-            });
-        });
-    </script><script>
-        $('select#inputState3').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/process_alter_billing/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    $('select#inputState').val(resp.ledger_id);
-                    $('input#dp2').val(resp.sell_date);
-                    $('select#inputState2').val(resp.product);
-                    $('input#qty').val(resp.quantity);
-                    $('input#rate').val(resp.rate);
-                    $('input#amount').val(resp.total_amount);
-                }
-            });
-        });
-    </script>
-    <script>
-        $('select#select_field').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/show_finished_products/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    //$('select#inputState').val(resp.ledger_id);
-                    $('input#pname').val(resp.product_name);
-                    //$('input#pcomments').val(resp.comments);
-                    $('input#prate').val(resp.product_rate);
-                    $('input#pcolor').val(resp.product_color);
-                    $.each(resp.spec, function(index) {
-                        $('input#item' + (index + 1)).val(this.quantity);
-                        $('input#hidden_item' + (index + 1)).val(this.quantity);
-                        $('input#item_cm' + (index + 1)).val(this.material_name);
-
-                    });
-                }
-            });
-        });
-    </script>
-    <script>
-        $('select#select_product').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/show_sell_products/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    $('input#rate').val(resp.product_rate);
-                }
-            });
-        });
-    </script>
-    <script>
-        $('input#rate').keyup(function() {
-            var qty = $('input#qty').val();
-            var rate = $('input#rate').val();
-            var amt = qty * rate;
-            $('input#amount').val(amt);
-        });
-    </script>
-    <script>
-        $('input#qty').keyup(function() {
-            var qty = $('input#qty').val();
-            var rate = $('input#rate').val();
-            var amt = qty * rate;
-            $('input#amount').val(amt);
-        });
-    </script>
-    <script>
-        $('input#pqty').keyup(function() {
-            var qty = $('input#pqty').val();
-            var temp_item1 = $('input#item1').val();
-            var hidden_qty1 = $('input#hidden_item1').val();
-            var hidden_qty2 = $('input#hidden_item2').val();
-            var hidden_qty3 = $('input#hidden_item3').val();
-            var hidden_qty4 = $('input#hidden_item4').val();
-            var hidden_qty5 = $('input#hidden_item5').val();
-            var hidden_qty6 = $('input#hidden_item6').val();
-            var hidden_qty7 = $('input#hidden_item7').val();
-            var hidden_qty8 = $('input#hidden_item8').val();
-            var temp_item2 = $('input#item2').val();
-            var temp_item3 = $('input#item3').val();
-            var temp_item4 = $('input#item4').val();
-            var temp_item5 = $('input#item5').val();
-            var temp_item6 = $('input#item6').val();
-            var temp_item7 = $('input#item7').val();
-            var temp_item8 = $('input#item8').val();
-            var item1 = jQuery("#item1").text();
-            //alert(parseInt(temp_item1));
-            var item2 = jQuery("#item2").text();
-            var item3 = jQuery("#item3").text();
-            var item4 = jQuery("#item4").text();
-            var item5 = jQuery("#item5").text();
-            var item6 = jQuery("#item6").text();
-            var item7 = jQuery("#item7").text();
-            var item8 = jQuery("#item8").text();
-            if (parseInt($('input#pqty').val()) < 1) {
-                qty = 1;
-                $('input#item1').val(temp_item1 * qty);
-                $('input#item2').val(temp_item2 * qty);
-                $('input#item3').val(temp_item3 * qty);
-                $('input#item4').val(temp_item4 * qty);
-                $('input#item5').val(temp_item5 * qty);
-                $('input#item6').val(temp_item6 * qty);
-                $('input#item7').val(temp_item7 * qty);
-                $('input#item8').val(temp_item8 * qty);
-            }
-            if (parseInt($('input#pqty').val()) >= 1) {
-                $('input#item1').val(hidden_qty1 * qty);
-                $('input#item2').val(hidden_qty2 * qty);
-                $('input#item3').val(hidden_qty3 * qty);
-                $('input#item4').val(hidden_qty4 * qty);
-                $('input#item5').val(hidden_qty5 * qty);
-                $('input#item6').val(hidden_qty6 * qty);
-                $('input#item7').val(hidden_qty7 * qty);
-                $('input#item8').val(hidden_qty8 * qty);
-            } else {
-                //alert("Null");
-                //alert(item1);
-                $('input#item1').val(hidden_qty1);
-                $('input#item2').val(hidden_qty2);
-                $('input#item3').val(hidden_qty3);
-                $('input#item4').val(hidden_qty4);
-                $('input#item5').val(hidden_qty5);
-                $('input#item6').val(hidden_qty6);
-                $('input#item7').val(hidden_qty7);
-                $('input#item8').val(hidden_qty8);
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2();
-        });
-    </script>
-    <script>
-        $(function() {
-            $("#ext_product").hide();
-            $("#select_field").on("change", function() {
-                //$("#search_product").hide();
-                $("#ext_product").show();
-                //$("#new_item").hide();
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var count = 1;
-            for (i = 2; i < 11; i++) {
-                $("#item_text" + i).hide();
-                $("#inputStates" + i).hide();
-                $("#item" + i + "_label").hide();
-                $("#item" + i).hide();
-            }
-            $("#show_txtboxes").click(function() {
-                count += 1;
-                if (count == 2) {
-                    $("#item_text2").show();
-                    $("#inputStates2").show();
-                    $("#item2_label").show();
-                    $("#item2").show();
-                }
-                if (count == 3) {
-                    $("#item_text3").show();
-                    $("#inputStates3").show();
-                    $("#item3_label").show();
-                    $("#item3").show();
-                }
-                if (count == 4) {
-                    $("#item_text4").show();
-                    $("#inputStates4").show();
-                    $("#item4_label").show();
-                    $("#item4").show();
-                }
-                if (count == 5) {
-                    $("#item_text5").show();
-                    $("#inputStates5").show();
-                    $("#item5_label").show();
-                    $("#item5").show();
-                }
-                if (count == 6) {
-                    $("#item_text6").show();
-                    $("#inputStates6").show();
-                    $("#item6_label").show();
-                    $("#item6").show();
-                }
-                if (count == 7) {
-                    $("#item_text7").show();
-                    $("#inputStates7").show();
-                    $("#item7_label").show();
-                    $("#item7").show();
-                }
-                if (count == 8) {
-                    $("#item_text8").show();
-                    $("#inputStates8").show();
-                    $("#item8_label").show();
-                    $("#item8").show();
-                }
-                if (count == 9) {
-                    $("#item_text9").show();
-                    $("#inputStates9").show();
-                    $("#item9_label").show();
-                    $("#item9").show();
-                }
-                if (count == 10) {
-                    $("#item_text10").show();
-                    $("#inputStates10").show();
-                    $("#item10_label").show();
-                    $("#item10").show();
-                }
-            });
-        });
-    </script>
-    <script>
-        $(function() {
-            $('input[name="daterange"]').daterangepicker({
-                opens: 'left'
-            }, function(start, end, label) {
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-            });
-        });
-    </script>
-    <script>
-        function validateForm() {
-            var x = document.forms["gen_mm_report"]["items_mat_data"].value;
-            if (x == "0") {
-                alert("Please select Material");
-                return false;
-            }
-        }
-    </script>
-    <script>
-        $('select#ledger_id').change(function() {
-            var nodeList = $(this).children("option:selected").val();
-            $.ajax({
-                url: "/show_ledger_credit/" + nodeList,
-                type: "GET",
-                dataType: "json",
-                success: function(resp) {
-                    var x = parseInt(resp.due);
-                    if (x >= 0) {
-                        $('input#ledger_amount').css("color", "black");
-                        $('input#ledger_amount').val(x);
-                    } else
-                        $('input#ledger_amount').css("color", "red");
-                    $('input#ledger_amount').val(x);
-                }
-            });
-        });
-    </script>
-    <script>
-        $('#but').click(function() {
-            var x = $('select#ledger_id').val();
-            y = parseInt(x);
-            var html = '';
-            var tx_type = '';
-            if (y != 0) {
-                $.ajax({
-                    url: "/show_cash_report_by_entity/" + x,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(resp) {
-                        $('#ledger_material_table tr').not(':first').not(':last').remove();
-                        $.each(resp.dat1, function() {
-                            console.log("Amount: " + this.id);
-                            console.log("Date: " + this.date_time);
-                            console.log("Ledger Name: " + this.ledger_name);
-                            console.log("Material Name: " + this.material_name);
-                            console.log("Product Name: " + this.product_name);
-                            console.log("Amount: " + this.amount);
-                            if (this.amount > 0) {
-                                tx_type = 'Purchase';
-                            } else {
-                                tx_type = 'Sale';
-                            }
-                            if (this.material_name == null) {
-                                this.material_name = "";
-                            } else {
-                                this.material_name;
-                            }
-                            if (this.product_name == null) {
-                                this.product_name = "";
-                            } else {
-                                this.product_name;
-                            }
-                            console.log(" ");
-                            html += '<tr><td>' + this.id + '</td><td>' + this.date_time + '</td><td>' + this.ledger_name + '</td><td>' + this.material_name + '</td><td>' + this.product_name + '</td><td>' + this.amount + '</td><td>' + tx_type + '</td></tr>';
-
-                        });
-                        $('#ledger_material_table tr').first().after(html);
-                    }
-                });
-            } else {
-                alert('Please select Ledger name');
-                event.stopImmediatePropagation();
-            }
-
-        });
-    </script>
-    <script>
-        $('#but_report').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Ledger_report_" + time;
-            $("#ledger_material_table").table2excel({
-                filename: file_name
-            });
-        });
-    </script>
-    <script>
-        $('#But_lm_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Ledger_Transaction_" + time;
-            $("#ledger_datatable").table2excel({
-                exclude: ".noExl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script>
-    <script>
-        $('#But_mm_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Material_Movement_" + time;
-            $("#material_datatable").table2excel({
-                exclude: ".noExl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script>
-
-    <script>
-        $('#But_ct_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Sales_Purchase_Transaction_" + time;
-            $("#cash_datatable").table2excel({
-                exclude: ".NoXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script>
-    <script>
-        $('#But_material_view_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Materials_Report_" + time;
-            $("#show_material").table2excel({
-                exclude: ".NoXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script><script>
-        $('#But_ledger_report_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Ledgers_Report_" + time;
-            $("#show_ledger").table2excel({
-                exclude: ".NoXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script><script>
-        $('#But_material_stock_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Material_Stock_Report_" + time;
-            $("#show_material_inventory").table2excel({
-                exclude: ".NoXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script><script>
-        $('#But_show_purchased_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Purchase_Report_" + time;
-            $("#show_purchased").table2excel({
-                exclude: ".NoXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script><script>
-        $('#But_component_master_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Component_Master_Report_" + time;
-            $("#show_component_master").table2excel({
-                exclude: ".NoXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script><script>
-        $('#But_billing_report_download').click(function() {
-            var dt = new Date();
-            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
-            var file_name = "Billing_Report_" + time;
-            $("#show_billing").table2excel({
-                exclude: ".noXl",
-                filename: file_name + ".xls",
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#cash_datatable').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-            $('#cash_datatable thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-
-        });
-        $('#cash_datatable').DataTable({
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api(),
-                    data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(5)
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Total over this page
-                pageTotal = api
-                    .column(5, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(5).footer()).html(
-                    pageTotal
-                );
-                $(api.column(6).footer()).html(
-                    total
-                );
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#ledger_datatable').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-            $('#ledger_datatable thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-
-        });
-        $('#ledger_datatable').DataTable({
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api(),
-                    data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(3)
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Total over this page
-                pageTotal = api
-                    .column(3, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(3).footer()).html(
-                    pageTotal
-                );
-                $(api.column(4).footer()).html(
-                    total
-                );
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#material_datatable').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#material_datatable thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-
-        });
-        $('#material_datatable').DataTable({
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api(),
-                    data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(5)
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Total over this page
-                pageTotal = api
-                    .column(5, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(5).footer()).html(
-                    pageTotal
-                );
-                $(api.column(6).footer()).html(
-                    total
-                );
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#show_ledger').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#show_ledger thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#show_material').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#show_material thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
-    </script>
-<script>
- $(document).ready(function() {
-   $('input#qty').keyup(function() {
-   console.log($('#qty').val())
-   console.log($('#unit_show').val())
-   console.log($('#subunit_show').val())
-   if ($('#unit_show').val() == $('#subunit_show').val())
-   {
-    var quantity = $('#qty').val()
-    $('#piece').val(quantity)
-    }
-    });
-    });
+	        // Re-draw the table when the a date range filter changes
+	        //$('#min, #max').change(function () {
+	        //              table.draw();
+	        //          });
 </script>
 <script>
-    $(document).ready(function() {
-            var table = $('#show_units').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#show_units thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
+	$('#dp2').datepicker();
 </script>
 <script>
-$(document).ready(function() {
-            var table = $('#show_material_inventory').DataTable();
-            $('#show_material_inventory thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
-</script><script>
-$(document).ready(function() {
-            var table = $('#show_purchased').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#show_purchased thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-
-        });
-        $('#show_purchased').DataTable({
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api(),
-                    data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(4)
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Total over this page
-                pageTotal = api
-                    .column(4, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(4).footer()).html(
-                    pageTotal
-                );
-                $(api.column(5).footer()).html(
-                    total
-                );
-            }
-        });
-</script><script>
-$(document).ready(function() {
-            var table = $('#delete_purchased').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-            $('#delete_purchased thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
-</script><script>
-$(document).ready(function() {
-            var table = $('#show_component_master').DataTable();
-
-            $('#show_component_master thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
+	$('#ledgermindate').datepicker({
+	            format: 'dd-mm-yyyy'
+	        });
 </script>
 <script>
-    $(document).ready(function() {
-            var table = $('#show_component_master').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#show_component_master thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
-</script><script>
-    $(document).ready(function() {
-            var table = $('#delete_component_master').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#delete_component_master thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
-</script><script>
-      $(document).ready(function() {
-            var table = $('#show_billing').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-
-            $('#show_billing thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-
-        });
-        $('#show_billing').DataTable({
-            "footerCallback": function(row, data, start, end, display) {
-                var api = this.api(),
-                    data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function(i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                        i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(6)
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Total over this page
-                pageTotal = api
-                    .column(6, {
-                        page: 'current'
-                    })
-                    .data()
-                    .reduce(function(a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-                // Update footer
-                $(api.column(6).footer()).html(
-                    pageTotal
-                );
-                //$(api.column(7).footer()).html(
-                 //   total
-                //);
-            }
-        });
+	$('#ledgermaxdate').datepicker({
+	            format: 'dd-mm-yyyy'
+	        });
 </script>
 <script>
-    $(document).ready(function() {
-            var table = $('#delete_billing').DataTable();
-            $('#min, #max').change(function() {
-                table.draw();
-            });
+	$('#min').datepicker({
+	            format: 'dd-mm-yyyy'
+	        });
+</script>
+<script>
+	$('#max').datepicker({
+	            format: 'dd-mm-yyyy'
+	        });
+</script>
+<script>
+	$('select#inputState').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/process_ledger/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    $('input#popname').val(resp.data);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('select#inputState1').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            var nodeListname = $(this).children("option:selected").text();
+	            $.ajax({
+	                url: "/process_material/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    $('input#new_name').val(nodeListname);
+	                    $('input#popcomments').val(resp.comments);
+	                    $('select#Unit').val(resp.unit);
+	                    $('select#subUnit').val(resp.sub_unit);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('select#inputState2').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/process_unit/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    $('input#unit_show').val(resp.data);
+	                    $('input#subunit_show').val(resp.data2);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('select#inputState3').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/process_alter_purchased/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    $('select#inputState').val(resp.ledger_id);
+	                    $('input#dp2').val(resp.purchased_date);
+	                    $('select#inputState2').val(resp.material_id);
+	                    $('input#unit_show').val(resp.unit);
+	                    $('input#qty').val(resp.quantity_unit);
+	                    $('input#rate').val(resp.rate);
+	                    $('input#amount').val(resp.total_amount);
+	                    $('input#subunit_show').val(resp.sub_unit);
+	                    $('input#quantity_sub_unit').val(resp.quantity_sub_unit);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('select#inputState3').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/process_alter_billing/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    $('select#inputState').val(resp.ledger_id);
+	                    $('input#dp2').val(resp.sell_date);
+	                    $('select#inputState2').val(resp.product);
+	                    $('input#qty').val(resp.quantity);
+	                    $('input#rate').val(resp.rate);
+	                    $('input#amount').val(resp.total_amount);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('select#select_field').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/show_finished_products/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    //$('select#inputState').val(resp.ledger_id);
+	                    $('input#pname').val(resp.product_name);
+	                    //$('input#pcomments').val(resp.comments);
+	                    $('input#prate').val(resp.product_rate);
+	                    $('input#pcolor').val(resp.product_color);
+	                    $.each(resp.spec, function(index) {
+	                        $('input#item' + (index + 1)).val(this.quantity);
+	                        $('input#hidden_item' + (index + 1)).val(this.quantity);
+	                        $('input#item_cm' + (index + 1)).val(this.material_name);
 
-            $('#delete_billing thead tr:eq(1) th').each(function(i) {
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function() {
-                        table.column(i)
-                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
-                            .draw();
-                    });
-                table.column(i).data().unique().sort().each(function(d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            });
-        });
+	                    });
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('select#select_product').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/show_sell_products/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    $('input#rate').val(resp.product_rate);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('input#rate').keyup(function() {
+	            var qty = $('input#qty').val();
+	            var rate = $('input#rate').val();
+	            var amt = qty * rate;
+	            $('input#amount').val(amt);
+	        });
+</script>
+<script>
+	$('input#qty').keyup(function() {
+	            var qty = $('input#qty').val();
+	            var rate = $('input#rate').val();
+	            var amt = qty * rate;
+	            $('input#amount').val(amt);
+	        });
+</script>
+<script>
+	$('input#pqty').keyup(function() {
+	            var qty = $('input#pqty').val();
+	            var temp_item1 = $('input#item1').val();
+	            var hidden_qty1 = $('input#hidden_item1').val();
+	            var hidden_qty2 = $('input#hidden_item2').val();
+	            var hidden_qty3 = $('input#hidden_item3').val();
+	            var hidden_qty4 = $('input#hidden_item4').val();
+	            var hidden_qty5 = $('input#hidden_item5').val();
+	            var hidden_qty6 = $('input#hidden_item6').val();
+	            var hidden_qty7 = $('input#hidden_item7').val();
+	            var hidden_qty8 = $('input#hidden_item8').val();
+	            var temp_item2 = $('input#item2').val();
+	            var temp_item3 = $('input#item3').val();
+	            var temp_item4 = $('input#item4').val();
+	            var temp_item5 = $('input#item5').val();
+	            var temp_item6 = $('input#item6').val();
+	            var temp_item7 = $('input#item7').val();
+	            var temp_item8 = $('input#item8').val();
+	            var item1 = jQuery("#item1").text();
+	            //alert(parseInt(temp_item1));
+	            var item2 = jQuery("#item2").text();
+	            var item3 = jQuery("#item3").text();
+	            var item4 = jQuery("#item4").text();
+	            var item5 = jQuery("#item5").text();
+	            var item6 = jQuery("#item6").text();
+	            var item7 = jQuery("#item7").text();
+	            var item8 = jQuery("#item8").text();
+	            if (parseInt($('input#pqty').val()) < 1) {
+	                qty = 1;
+	                $('input#item1').val(temp_item1 * qty);
+	                $('input#item2').val(temp_item2 * qty);
+	                $('input#item3').val(temp_item3 * qty);
+	                $('input#item4').val(temp_item4 * qty);
+	                $('input#item5').val(temp_item5 * qty);
+	                $('input#item6').val(temp_item6 * qty);
+	                $('input#item7').val(temp_item7 * qty);
+	                $('input#item8').val(temp_item8 * qty);
+	            }
+	            if (parseInt($('input#pqty').val()) >= 1) {
+	                $('input#item1').val(hidden_qty1 * qty);
+	                $('input#item2').val(hidden_qty2 * qty);
+	                $('input#item3').val(hidden_qty3 * qty);
+	                $('input#item4').val(hidden_qty4 * qty);
+	                $('input#item5').val(hidden_qty5 * qty);
+	                $('input#item6').val(hidden_qty6 * qty);
+	                $('input#item7').val(hidden_qty7 * qty);
+	                $('input#item8').val(hidden_qty8 * qty);
+	            } else {
+	                //alert("Null");
+	                //alert(item1);
+	                $('input#item1').val(hidden_qty1);
+	                $('input#item2').val(hidden_qty2);
+	                $('input#item3').val(hidden_qty3);
+	                $('input#item4').val(hidden_qty4);
+	                $('input#item5').val(hidden_qty5);
+	                $('input#item6').val(hidden_qty6);
+	                $('input#item7').val(hidden_qty7);
+	                $('input#item8').val(hidden_qty8);
+	            }
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            $('.js-example-basic-single').select2();
+	        });
+</script>
+<script>
+	$(function() {
+	            $("#ext_product").hide();
+	            $("#select_field").on("change", function() {
+	                //$("#search_product").hide();
+	                $("#ext_product").show();
+	                //$("#new_item").hide();
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var count = 1;
+	            for (i = 2; i < 11; i++) {
+	                $("#item_text" + i).hide();
+	                $("#inputStates" + i).hide();
+	                $("#item" + i + "_label").hide();
+	                $("#item" + i).hide();
+	            }
+	            $("#show_txtboxes").click(function() {
+	                count += 1;
+	                if (count == 2) {
+	                    $("#item_text2").show();
+	                    $("#inputStates2").show();
+	                    $("#item2_label").show();
+	                    $("#item2").show();
+	                }
+	                if (count == 3) {
+	                    $("#item_text3").show();
+	                    $("#inputStates3").show();
+	                    $("#item3_label").show();
+	                    $("#item3").show();
+	                }
+	                if (count == 4) {
+	                    $("#item_text4").show();
+	                    $("#inputStates4").show();
+	                    $("#item4_label").show();
+	                    $("#item4").show();
+	                }
+	                if (count == 5) {
+	                    $("#item_text5").show();
+	                    $("#inputStates5").show();
+	                    $("#item5_label").show();
+	                    $("#item5").show();
+	                }
+	                if (count == 6) {
+	                    $("#item_text6").show();
+	                    $("#inputStates6").show();
+	                    $("#item6_label").show();
+	                    $("#item6").show();
+	                }
+	                if (count == 7) {
+	                    $("#item_text7").show();
+	                    $("#inputStates7").show();
+	                    $("#item7_label").show();
+	                    $("#item7").show();
+	                }
+	                if (count == 8) {
+	                    $("#item_text8").show();
+	                    $("#inputStates8").show();
+	                    $("#item8_label").show();
+	                    $("#item8").show();
+	                }
+	                if (count == 9) {
+	                    $("#item_text9").show();
+	                    $("#inputStates9").show();
+	                    $("#item9_label").show();
+	                    $("#item9").show();
+	                }
+	                if (count == 10) {
+	                    $("#item_text10").show();
+	                    $("#inputStates10").show();
+	                    $("#item10_label").show();
+	                    $("#item10").show();
+	                }
+	            });
+	        });
+</script>
+<script>
+	$(function() {
+	            $('input[name="daterange"]').daterangepicker({
+	                opens: 'left'
+	            }, function(start, end, label) {
+	                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+	            });
+	        });
+</script>
+<script>
+	function validateForm() {
+	            var x = document.forms["gen_mm_report"]["items_mat_data"].value;
+	            if (x == "0") {
+	                alert("Please select Material");
+	                return false;
+	            }
+	        }
+</script>
+<script>
+	$('select#ledger_id').change(function() {
+	            var nodeList = $(this).children("option:selected").val();
+	            $.ajax({
+	                url: "/show_ledger_credit/" + nodeList,
+	                type: "GET",
+	                dataType: "json",
+	                success: function(resp) {
+	                    var x = parseInt(resp.due);
+	                    if (x >= 0) {
+	                        $('input#ledger_amount').css("color", "black");
+	                        $('input#ledger_amount').val(x);
+	                    } else
+	                        $('input#ledger_amount').css("color", "red");
+	                    $('input#ledger_amount').val(x);
+	                }
+	            });
+	        });
+</script>
+<script>
+	$('#but').click(function() {
+	            var x = $('select#ledger_id').val();
+	            y = parseInt(x);
+	            var html = '';
+	            var tx_type = '';
+	            if (y != 0) {
+	                $.ajax({
+	                    url: "/show_cash_report_by_entity/" + x,
+	                    type: "GET",
+	                    dataType: "json",
+	                    success: function(resp) {
+	                        $('#ledger_material_table tr').not(':first').not(':last').remove();
+	                        $.each(resp.dat1, function() {
+	                            console.log("Amount: " + this.id);
+	                            console.log("Date: " + this.date_time);
+	                            console.log("Ledger Name: " + this.ledger_name);
+	                            console.log("Material Name: " + this.material_name);
+	                            console.log("Product Name: " + this.product_name);
+	                            console.log("Amount: " + this.amount);
+	                            if (this.amount > 0) {
+	                                tx_type = 'Purchase';
+	                            } else {
+	                                tx_type = 'Sale';
+	                            }
+	                            if (this.material_name == null) {
+	                                this.material_name = "";
+	                            } else {
+	                                this.material_name;
+	                            }
+	                            if (this.product_name == null) {
+	                                this.product_name = "";
+	                            } else {
+	                                this.product_name;
+	                            }
+	                            console.log(" ");
+	                            html += '<tr><td>' + this.id + '</td><td>' + this.date_time + '</td><td>' + this.ledger_name + '</td><td>' + this.material_name + '</td><td>' + this.product_name + '</td><td>' + this.amount + '</td><td>' + tx_type + '</td></tr>';
+
+	                        });
+	                        $('#ledger_material_table tr').first().after(html);
+	                    }
+	                });
+	            } else {
+	                alert('Please select Ledger name');
+	                event.stopImmediatePropagation();
+	            }
+
+	        });
+</script>
+<script>
+	$('#but_report').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Ledger_report_" + time;
+	            $("#ledger_material_table").table2excel({
+	                filename: file_name
+	            });
+	        });
+</script>
+<script>
+	$('#But_lm_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Ledger_Transaction_" + time;
+	            $("#ledger_datatable").table2excel({
+	                exclude: ".noExl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_mm_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Material_Movement_" + time;
+	            $("#material_datatable").table2excel({
+	                exclude: ".noExl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_ct_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Sales_Purchase_Transaction_" + time;
+	            $("#cash_datatable").table2excel({
+	                exclude: ".NoXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_material_view_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Materials_Report_" + time;
+	            $("#show_material").table2excel({
+	                exclude: ".NoXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_ledger_report_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Ledgers_Report_" + time;
+	            $("#show_ledger").table2excel({
+	                exclude: ".NoXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_material_stock_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Material_Stock_Report_" + time;
+	            $("#show_material_inventory").table2excel({
+	                exclude: ".NoXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_show_purchased_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Purchase_Report_" + time;
+	            $("#show_purchased").table2excel({
+	                exclude: ".NoXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_component_master_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Component_Master_Report_" + time;
+	            $("#show_component_master").table2excel({
+	                exclude: ".NoXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$('#But_billing_report_download').click(function() {
+	            var dt = new Date();
+	            var time = dt.getFullYear() + "" + dt.getMonth() + "" + dt.getDate() + "" + dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+	            var file_name = "Billing_Report_" + time;
+	            $("#show_billing").table2excel({
+	                exclude: ".noXl",
+	                filename: file_name + ".xls",
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#cash_datatable').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+	            $('#cash_datatable thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+
+	        });
+	        $('#cash_datatable').DataTable({
+	            "footerCallback": function(row, data, start, end, display) {
+	                var api = this.api(),
+	                    data;
+
+	                // Remove the formatting to get integer data for summation
+	                var intVal = function(i) {
+	                    return typeof i === 'string' ?
+	                        i.replace(/[\$,]/g, '') * 1 :
+	                        typeof i === 'number' ?
+	                        i : 0;
+	                };
+
+	                // Total over all pages
+	                total = api
+	                    .column(5)
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Total over this page
+	                pageTotal = api
+	                    .column(5, {
+	                        page: 'current'
+	                    })
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Update footer
+	                $(api.column(5).footer()).html(
+	                    pageTotal
+	                );
+	                $(api.column(6).footer()).html(
+	                    total
+	                );
+	            }
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#ledger_datatable').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+	            $('#ledger_datatable thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+
+	        });
+	        $('#ledger_datatable').DataTable({
+	            "footerCallback": function(row, data, start, end, display) {
+	                var api = this.api(),
+	                    data;
+
+	                // Remove the formatting to get integer data for summation
+	                var intVal = function(i) {
+	                    return typeof i === 'string' ?
+	                        i.replace(/[\$,]/g, '') * 1 :
+	                        typeof i === 'number' ?
+	                        i : 0;
+	                };
+
+	                // Total over all pages
+	                total = api
+	                    .column(3)
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Total over this page
+	                pageTotal = api
+	                    .column(3, {
+	                        page: 'current'
+	                    })
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Update footer
+	                $(api.column(3).footer()).html(
+	                    pageTotal
+	                );
+	                $(api.column(4).footer()).html(
+	                    total
+	                );
+	            }
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#material_datatable').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#material_datatable thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+
+	        });
+	        $('#material_datatable').DataTable({
+	            "footerCallback": function(row, data, start, end, display) {
+	                var api = this.api(),
+	                    data;
+
+	                // Remove the formatting to get integer data for summation
+	                var intVal = function(i) {
+	                    return typeof i === 'string' ?
+	                        i.replace(/[\$,]/g, '') * 1 :
+	                        typeof i === 'number' ?
+	                        i : 0;
+	                };
+
+	                // Total over all pages
+	                total = api
+	                    .column(5)
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Total over this page
+	                pageTotal = api
+	                    .column(5, {
+	                        page: 'current'
+	                    })
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Update footer
+	                $(api.column(5).footer()).html(
+	                    pageTotal
+	                );
+	                $(api.column(6).footer()).html(
+	                    total
+	                );
+	            }
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_ledger').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#show_ledger thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_material').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#show_material thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	   $('input#qty').keyup(function() {
+	   console.log($('#qty').val())
+	   console.log($('#unit_show').val())
+	   console.log($('#subunit_show').val())
+	   if ($('#unit_show').val() == $('#subunit_show').val())
+	   {
+	    var quantity = $('#qty').val()
+	    $('#piece').val(quantity)
+	    }
+	    });
+	    });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_units').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#show_units thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_material_inventory').DataTable();
+	            $('#show_material_inventory thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_purchased').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#show_purchased thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+
+	        });
+	        $('#show_purchased').DataTable({
+	            "footerCallback": function(row, data, start, end, display) {
+	                var api = this.api(),
+	                    data;
+
+	                // Remove the formatting to get integer data for summation
+	                var intVal = function(i) {
+	                    return typeof i === 'string' ?
+	                        i.replace(/[\$,]/g, '') * 1 :
+	                        typeof i === 'number' ?
+	                        i : 0;
+	                };
+
+	                // Total over all pages
+	                total = api
+	                    .column(4)
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Total over this page
+	                pageTotal = api
+	                    .column(4, {
+	                        page: 'current'
+	                    })
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Update footer
+	                $(api.column(4).footer()).html(
+	                    pageTotal
+	                );
+	                $(api.column(5).footer()).html(
+	                    total
+	                );
+	            }
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#delete_purchased').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+	            $('#delete_purchased thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_component_master').DataTable();
+
+	            $('#show_component_master thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_component_master').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#show_component_master thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#delete_component_master').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#delete_component_master thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#show_billing').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#show_billing thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+
+	        });
+	        $('#show_billing').DataTable({
+	            "footerCallback": function(row, data, start, end, display) {
+	                var api = this.api(),
+	                    data;
+
+	                // Remove the formatting to get integer data for summation
+	                var intVal = function(i) {
+	                    return typeof i === 'string' ?
+	                        i.replace(/[\$,]/g, '') * 1 :
+	                        typeof i === 'number' ?
+	                        i : 0;
+	                };
+
+	                // Total over all pages
+	                total = api
+	                    .column(6)
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Total over this page
+	                pageTotal = api
+	                    .column(6, {
+	                        page: 'current'
+	                    })
+	                    .data()
+	                    .reduce(function(a, b) {
+	                        return intVal(a) + intVal(b);
+	                    }, 0);
+
+	                // Update footer
+	                $(api.column(6).footer()).html(
+	                    pageTotal
+	                );
+	                //$(api.column(7).footer()).html(
+	                 //   total
+	                //);
+	            }
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#delete_billing').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#delete_billing thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$(document).ready(function() {
+	            var table = $('#del_ledger_datatable').DataTable();
+	            $('#min, #max').change(function() {
+	                table.draw();
+	            });
+
+	            $('#del_ledger_datatable thead tr:eq(1) th').each(function(i) {
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo($(this).empty())
+	                    .on('change', function() {
+	                        table.column(i)
+	                            .search($(this).val() ? "^" + $(this).val() + "$" : "", true, false, true)
+	                            .draw();
+	                    });
+	                table.column(i).data().unique().sort().each(function(d, j) {
+	                    select.append('<option value="' + d + '">' + d + '</option>')
+	                });
+	            });
+	        });
+</script>
+<script>
+	$('#exampleModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever')
+	  var modal = $(this)
+	  $.ajax({
+	                  url: "/process_edit_data/" + recipient,
+	                  type: "GET",
+	                  dataType: "json",
+	                  success: function(resp) {
+	                            modal.find('.modal-body input#receiptid').val(recipient)
+	                            modal.find('.modal-body input#min').val(resp.date)
+	                            modal.find('.modal-body select#inputState').val(resp.ledger_name)
+	                            modal.find('.modal-body input#amount').val(resp.amount)
+	                           }
+	                           })
+	})
+</script>
+<script>
+	$('#editForm').on('submit', function(e) {
+	    var min = $('#min');
+	    var inputState = $('#inputState');
+	    var amount = $('#amount');
+	    var payment = $('#payment');
+	    console.log(amount.val())
+
+	    if ((!min.val()) || (inputState.val()=="0") || (!amount.val()) || (payment.val()=="0"))
+	    {
+	        alert('Some Values are missing')
+	        e.preventDefault();
+	    }
+	    if (amount.val() < 0)
+	    {
+	        alert('Amount is less than zero')
+	        e.preventDefault();
+	    }
+
+	})
+</script>
+<script>
+	$(window).on('shown.bs.modal', function() {
+	    var amount = $('#amount');
+	    var payment = $('#payment');
+	    if (amount.val() > 0)
+	    {
+	        payment.val("1")
+	    }
+	    else
+	    {
+	        payment.val("2")
+	    }
+	})
 </script>
 </body>
 

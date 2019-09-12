@@ -9,7 +9,7 @@ Star ERP -- Delete Purchased
     <table id="delete_purchased" class="table table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th class="table-dark">Purchased_ID</th>
+                <th class="table-dark">ID</th>
                 <th class="table-dark">Date</th>
                 <th class="table-dark">Ledger Name</th>
                 <th class="table-dark">Quantity(Unit)</th>
@@ -19,7 +19,7 @@ Star ERP -- Delete Purchased
 <!--                <th class="table-dark">Added By</th>-->
                 <th class="table-dark">Action</th>
             </tr><tr>
-                <th class="table-primary">Purchased_ID</th>
+                <th class="table-primary">ID</th>
                 <th class="table-primary">Purchased_Date</th>
                 <th class="table-primary">Ledger Name</th>
                 <th class="table-primary">Quantity(Unit)</th>
@@ -43,7 +43,7 @@ Star ERP -- Delete Purchased
                     <td style="color:blue">{{items.quantity_sub_unit ~ items.sub_unit}}</td>
                     <td>{{items.material_name}}</td>
 <!--                    <td>{{items.added_by}}</td>-->
-                <td><a href="/del_purchased_data/{{items.purchased_id}}" id="del"><button class="btn btn-primary">Delete</button></a></td>
+                <td><a href="/del_purchased_data/{{items.purchased_id}}" class="btn btn-danger">Delete</a></td>
             </tr>
          {% endfor %}
         </tbody>
