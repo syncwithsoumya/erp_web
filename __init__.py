@@ -446,17 +446,16 @@ def material_modification():
             mat_comments = request.form['new_comments']
             unit_list = request.form['unit_list']
             sub_unit_list = request.form['sub_unit_list']
-        if material_name == "" and mat_comments == "":
-            flag = 'Invalid Data. Please try again.'
-            flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_material', str(session['username']),
-                              utilities.get_ip(), utilities.get_mac())
-            return redirect(url_for('modify_material'))
-        elif unit_list == "0" or sub_unit_list == "0":
-            flag = 'Please select the unit or sub-unit'
-            flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
-                              utilities.get_ip(), utilities.get_mac())
+            if material_name == "" and mat_comments == "":
+                flag = 'Invalid Data. Please try again.'
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_material', str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+            elif unit_list == "0" or sub_unit_list == "0":
+                flag = 'Please select the unit or sub-unit'
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
             return redirect(url_for('modify_material'))
         else:
             try:
@@ -634,7 +633,7 @@ def alter_purchased_db():
             connection.close()
 
 
-@app.route('/new_purchased', methods =['POST', 'GET'])
+@app.route('/new_purchased', methods=['POST'])
 def new_purchased():
     if session.get('username') is None:
         return redirect(url_for('login'))
@@ -644,16 +643,16 @@ def new_purchased():
         ip = utilities.get_ip()
         if request.method == 'POST':
             ledger_id = int(request.form['ledgers_dat'])
-            pdate = datetime.strptime(request.form['pdate'],'%d-%m-%Y').strftime('%d-%m-%Y'),
-            qty_unit = int(request.form['qtykg'])
+            pdate = datetime.strptime(request.form['pdate'],'%d-%m-%Y').strftime('%d-%m-%Y') if str(request.form['pdate']) != "" else ""
+            qty_unit = int(request.form['qtykg']) if str(request.form['qtykg']) != "" else ""
             unit = request.form['unit']
             subunit = request.form['subunit']
             material = request.form['materials_dat']
-            qty_sub_unit = int(request.form['piece'])
+            qty_sub_unit = int(request.form['piece']) if str(request.form['piece']) != "" else ""
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
 
-            if qty_unit == "" or pdate == "" or material == "" or qty_sub_unit == "":
+            if qty_unit == "" or pdate == "" or int(material) == 0 or qty_sub_unit == "" or pdate == "" or ledger_id == 0 or totamt==0 or rate==0:
                 flag = "Invalid Data"
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db', str(session['username']),
@@ -1308,22 +1307,30 @@ def unit_creation():
         if request.method == 'POST':
             connection = connect_to_db()
             unit = request.form['unitname']
-            if connection.open == 1:
-                # Add Unit to DB
-                try:
-                    with connection.cursor() as cursor:
-                        get_items = "INSERT INTO units(date_time, unit) VALUES(%s,%s)"
-                        cursor.execute(get_items, (date_time,unit))
-                        connection.commit()
-                        flag = 'Successfully Added the new {} unit'.format(unit)
-                        flash(flag)
-                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+            unit = unit.replace(' ','')
+            if len(unit) <= 0:
+                flag = 'Invalid Unit'
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('create_units'))
+            else:
+                if connection.open == 1:
+                    # Add Unit to DB
+                    try:
+                        with connection.cursor() as cursor:
+                            get_items = "INSERT INTO units(date_time, unit) VALUES(%s,%s)"
+                            cursor.execute(get_items, (date_time,unit))
+                            connection.commit()
+                            flag = 'Successfully Added the new {} unit'.format(unit)
+                            flash(flag)
+                            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                              utilities.get_ip(), utilities.get_mac())
+                            return redirect(url_for('create_units'))
+                    except Exception as e:
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                           utilities.get_ip(), utilities.get_mac())
-                        return redirect(url_for('create_units'))
-                except Exception as e:
-                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                      utilities.get_ip(), utilities.get_mac())
-                    return str(e)
+                        return str(e)
 
 
 @app.route('/modify_units')
@@ -1352,40 +1359,38 @@ def unit_modification():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        unit_name = None
-        unit_id = None
         connection = connect_to_db()
         if request.method == 'POST':
             unit_id = request.form['units_list']
-            unit_name = request.form['new_name']
-        if unit_id == "0" and unit_name == "":
-            flag = 'Invalid Data. Please try again.'
-            flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_units', str(session['username']),
-                              utilities.get_ip(), utilities.get_mac())
-            return redirect(url_for('modify_units'))
-        if connection.open == 1:
-            # Populate ledger names from table
-            try:
-                with connection.cursor() as cursor:
-                    select_item = 'SELECT unit FROM units WHERE id=%s'
-                    cursor.execute(select_item, unit_id)
-                    item = cursor.fetchone()
-                    if unit_name and unit_id != "0":
-                        upd_items = 'UPDATE units SET unit="%s" WHERE id=%s' % (unit_name, unit_id)
-                        cursor.execute(upd_items)
-                        connection.commit()
-                        flag = "Successfully Updated - {} to {} at {}".format(item['unit'], unit_name, datetime.now())
-                        flash(flag)
-                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
-                                          utilities.get_ip(), utilities.get_mac())
-                        return redirect(url_for('modify_units'))
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+            unit_name = str(request.form['new_name']).replace(' ','')
+            if unit_id == "0" and len(unit_name) <= 0:
+                flag = 'Invalid Data. Please try again.'
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_units', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
-                return str(e)
-            finally:
-                connection.close()
+                return redirect(url_for('modify_units'))
+            else:
+                # Populate ledger names from table
+                try:
+                    with connection.cursor() as cursor:
+                        select_item = 'SELECT unit FROM units WHERE id=%s'
+                        cursor.execute(select_item, unit_id)
+                        item = cursor.fetchone()
+                        if unit_name and unit_id != "0":
+                            upd_items = 'UPDATE units SET unit="%s" WHERE id=%s' % (unit_name, unit_id)
+                            cursor.execute(upd_items)
+                            connection.commit()
+                            flag = "Successfully Updated - {} to {} at {}".format(item['unit'], unit_name, datetime.now())
+                            flash(flag)
+                            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                              utilities.get_ip(), utilities.get_mac())
+                            return redirect(url_for('modify_units'))
+                except Exception as e:
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                      utilities.get_ip(), utilities.get_mac())
+                    return str(e)
+                finally:
+                    connection.close()
 
 
 @app.route('/delete_units')
@@ -1469,51 +1474,55 @@ def view_units():
 
 @app.route('/show_finished_products/<int:p_id>', methods=['GET'])
 def show_finished_products(p_id):
-    # p_id = 12
-    try:
-        connection = connect_to_db()
-        with connection.cursor() as cursor:
-            get_unit_comments = "SELECT  product_name, comments, product_rate , product_spec FROM product where id=%s"
-            cursor.execute(get_unit_comments, p_id)
-            dat = cursor.fetchone()
-            materials_used = dat['product_spec']
-            materials_used = ast.literal_eval(materials_used)
-            count = str(len(list(materials_used.keys())) * '%s,')[:-1]
-            get_material_name = "SELECT id, material_name FROM material WHERE id IN " + "("+count+")"
-            cursor.execute(get_material_name, tuple(materials_used.keys()))
-            get_all = cursor.fetchall()
-            connection.close()
-            leng = len(get_all)
-            for i in range(0, leng):
-                id = get_all[i]['id']
-                mat_quantity = materials_used[id]
-                get_all[i]['quantity'] = mat_quantity
-            return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_rate': dat['product_rate'], 'spec': get_all})
-    except Exception as e:
-        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                          utilities.get_ip(), utilities.get_mac())
-        return str(e)
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_unit_comments = "SELECT  product_name, comments, product_rate , product_spec FROM product where id=%s"
+                cursor.execute(get_unit_comments, p_id)
+                dat = cursor.fetchone()
+                materials_used = dat['product_spec']
+                materials_used = ast.literal_eval(materials_used)
+                count = str(len(list(materials_used.keys())) * '%s,')[:-1]
+                get_material_name = "SELECT id, material_name FROM material WHERE id IN " + "("+count+")"
+                cursor.execute(get_material_name, tuple(materials_used.keys()))
+                get_all = cursor.fetchall()
+                connection.close()
+                leng = len(get_all)
+                for i in range(0, leng):
+                    id = get_all[i]['id']
+                    mat_quantity = materials_used[id]
+                    get_all[i]['quantity'] = mat_quantity
+                return jsonify({'product_name': dat['product_name'], 'comments': dat['comments'], 'product_rate': dat['product_rate'], 'spec': get_all})
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
 
 
 @app.route('/show_sell_products/<int:p_id>', methods=['GET'])
 def show_sell_products(p_id):
-    # p_id = 12
-    try:
-        connection = connect_to_db()
-        with connection.cursor() as cursor:
-            get_product_rate = "SELECT id, product_rate,product_name FROM component_master where id=%s"
-            cursor.execute(get_product_rate, p_id)
-            dat = cursor.fetchone()
-            # get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
-            # cursor.execute(get_product_qty, dat['product_name'])
-            # get_all = cursor.fetchone()
-            connection.close()
-            # return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
-            return jsonify({'id': dat['id'], 'product_rate': dat['product_rate']})
-    except Exception as e:
-        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                          utilities.get_ip(), utilities.get_mac())
-        return str(e)
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_product_rate = "SELECT id, product_rate,product_name FROM component_master where id=%s"
+                cursor.execute(get_product_rate, p_id)
+                dat = cursor.fetchone()
+                # get_product_qty = "SELECT quantity FROM product_qty WHERE product_name=%s"
+                # cursor.execute(get_product_qty, dat['product_name'])
+                # get_all = cursor.fetchone()
+                connection.close()
+                # return jsonify({'id': dat['id'], 'product_rate': dat['product_rate'], 'quantity': get_all['quantity']})
+                return jsonify({'id': dat['id'], 'product_rate': dat['product_rate']})
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
 
 
 @app.route('/add_billing')
@@ -2582,8 +2591,8 @@ def ledger_tx_modification():
                 ledger_id = request.form['ledger_data']
                 receiptid = request.form['receiptid']
                 date = datetime.strptime(str(request.form['min']), '%d-%m-%Y').strftime('%Y%m%d')+'000000'
-                amount = request.form['amount']
-                payment = int(request.form['payment'])
+                amount = int(request.form['amount'])
+                payment = request.form['payment']
                 if not ledger_id or not receiptid or not date or not amount or not payment:
                     flag = "Invalid Data"
                     write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), '{}- on ledger tx update'.format(flag),
@@ -2591,7 +2600,7 @@ def ledger_tx_modification():
                                       utilities.get_ip(), utilities.get_mac())
                 else:
                     with connection.cursor() as cursor:
-                        upd_items = 'UPDATE cash SET ledger_id=%s, date_time=%s, amount=%s WHERE id=%s' % (ledger_id, date, amount if payment == 1 else -amount, receiptid)
+                        upd_items = 'UPDATE cash SET ledger_id=%s, date_time=%s, amount=%s WHERE id=%s' % (ledger_id, date, amount if payment == "1" else -amount, receiptid)
                         cursor.execute(upd_items)
                         connection.commit()
                     return redirect(url_for('delete_ledger_tx'))
