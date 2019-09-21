@@ -658,6 +658,13 @@ def new_purchased():
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('new_purchased_db'))
+            elif rate <= 0:
+                flag = "Rate is negative.. Try again!"
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db',
+                                  str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('new_purchased_db'))
             else:
                 connection = connect_to_db()
                 with connection.cursor() as cursor:
@@ -1579,75 +1586,81 @@ def direct_billing():
             connection.close()
 
 
-@app.route('/billing_creation', methods=['POST', 'GET'])
-def billing_creation():
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
-        mac = utilities.get_mac()
-        ip = utilities.get_ip()
-        if request.method == 'POST':
-            ledger_id = int(request.form['ledgers_dat'])
-            pdate = request.form['pdate']
-            qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
-            product_id = request.form['products_dat']
-            totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
-            rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
-            if ledger_id == 0:
-                flag = "Ledger not selected."
-                flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return redirect(url_for('add_billing'))
-            elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
-                flag = "Invalid Data"
-                flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'add_billing', str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return redirect(url_for('add_billing'))
-            else:
-                connection = connect_to_db()
-                with connection.cursor() as cursor:
-                    try:
-                        get_product_name = "SELECT product_name FROM product WHERE id=%s"
-                        cursor.execute(get_product_name, product_id)
-                        names = cursor.fetchone()
-                        get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
-                        cursor.execute(get_ledger_name, ledger_id)
-                        ledger_name = cursor.fetchone()
-                        sql = "INSERT INTO sell(sell_date,ledger_id,product_id,quantity," \
-                              "rate, amount,added_by,ip_address,mac_id) " \
-                              "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        cursor.execute(sql, (pdate, ledger_id, product_id, qty_unit, rate, totamt, str(session['username']), ip, mac))
-                        connection.commit()
-                        check_products = "SELECT id,quantity FROM product_qty WHERE product_name=%s"
-                        cursor.execute(check_products, names['product_name'])
-                        data = cursor.fetchone()
-                        if int(data['quantity']) < qty_unit:
-                            flag = "Insufficient Quantity. Please manufacture..."
-                            flash(flag)
-                            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
-                                              str(session['username']),
-                                              utilities.get_ip(), utilities.get_mac())
-                            return redirect(url_for('add_billing'))
-                        else:
-                            sql_quantity = "UPDATE product_qty SET quantity = quantity - %s WHERE product_name=%s and id=%s"
-                            cursor.execute(sql_quantity, (qty_unit, names['product_name'], str(data['id'])))
-                            connection.commit()
-                        flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time)
-                        flash(flag)
-                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
-                                          utilities.get_ip(), utilities.get_mac())
-                        return redirect(url_for('add_billing'))
-                    except Exception as e:
-                        flag = "Failure with %s" % str(e)
-                        flash(flag)
-                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
-                                          utilities.get_ip(), utilities.get_mac())
-                        return redirect(url_for('add_billing'))
-                    finally:
-                        connection.close()
+# @app.route('/billing_creation', methods=['POST', 'GET'])
+# def billing_creation():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+#         mac = utilities.get_mac()
+#         ip = utilities.get_ip()
+#         if request.method == 'POST':
+#             ledger_id = int(request.form['ledgers_dat'])
+#             pdate = request.form['pdate']
+#             qty_unit = int(request.form['qtykg']) if request.form['qtykg'] != "" else 0
+#             product_id = request.form['products_dat']
+#             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
+#             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
+#             if ledger_id == 0:
+#                 flag = "Ledger not selected."
+#                 flash(flag)
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return redirect(url_for('add_billing'))
+#             elif rate <= 0 or totamt <= 0:
+#                 flag = "Rate or Amount is either zero or less than zero.."
+#                 flash(flag)
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return redirect(url_for('add_billing'))
+#             elif qty_unit == 0 or pdate == "" or product_id == "" or totamt == 0:
+#                 flag = "Invalid Data"
+#                 flash(flag)
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'add_billing', str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return redirect(url_for('add_billing'))
+#             else:
+#                 connection = connect_to_db()
+#                 with connection.cursor() as cursor:
+#                     try:
+#                         get_product_name = "SELECT product_name FROM product WHERE id=%s"
+#                         cursor.execute(get_product_name, product_id)
+#                         names = cursor.fetchone()
+#                         get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
+#                         cursor.execute(get_ledger_name, ledger_id)
+#                         ledger_name = cursor.fetchone()
+#                         sql = "INSERT INTO sell(sell_date,ledger_id,product_id,quantity," \
+#                               "rate, amount,added_by,ip_address,mac_id) " \
+#                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+#                         cursor.execute(sql, (pdate, ledger_id, product_id, qty_unit, rate, totamt, str(session['username']), ip, mac))
+#                         connection.commit()
+#                         check_products = "SELECT id,quantity FROM product_qty WHERE product_name=%s"
+#                         cursor.execute(check_products, names['product_name'])
+#                         data = cursor.fetchone()
+#                         if int(data['quantity']) < qty_unit:
+#                             flag = "Insufficient Quantity. Please manufacture..."
+#                             flash(flag)
+#                             write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
+#                                               str(session['username']),
+#                                               utilities.get_ip(), utilities.get_mac())
+#                             return redirect(url_for('add_billing'))
+#                         else:
+#                             sql_quantity = "UPDATE product_qty SET quantity = quantity - %s WHERE product_name=%s and id=%s"
+#                             cursor.execute(sql_quantity, (qty_unit, names['product_name'], str(data['id'])))
+#                             connection.commit()
+#                         flag = 'Successfully Sold {} to {} on {}' .format(names['product_name'], ledger_name['ledger_name'], date_time)
+#                         flash(flag)
+#                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                           utilities.get_ip(), utilities.get_mac())
+#                         return redirect(url_for('add_billing'))
+#                     except Exception as e:
+#                         flag = "Failure with %s" % str(e)
+#                         flash(flag)
+#                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+#                                           utilities.get_ip(), utilities.get_mac())
+#                         return redirect(url_for('add_billing'))
+#                     finally:
+#                         connection.close()
 
 
 @app.route('/direct_billing_creation', methods=['POST'])
@@ -1668,6 +1681,12 @@ def direct_billing_creation():
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
             if ledger_id == 0:
                 flag = "Ledger not selected."
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('direct_billing'))
+            elif rate <= 0 or totamt <= 0:
+                flag = "Rate or Amount is either zero or less than zero.."
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
