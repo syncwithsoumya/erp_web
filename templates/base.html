@@ -86,9 +86,9 @@
 				</a>
 				<div id="collapsePurchase" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
-						<!--<h6 class="collapse-header">Custom Utilities:</h6>--> <a class="collapse-item" href="/new_purchased_db">Purchase</a>
-						<!--                        <a class="collapse-item" href="/alter_purchased_db">Modify Purchase</a>--> <a class="collapse-item" href="/delete_purchased_db">Delete existing Purchase</a>
-						<a class="collapse-item" href="/view_purchased_db">View all Purchases</a>
+						<a class="collapse-item" href="/new_purchased_db">Purchase</a>
+						<a class="collapse-item" href="/delete_purchased_db">Modify Purchase</a>
+						<a class="collapse-item" href="/view_purchased_db">View Purchases</a>
 					</div>
 				</div>
 			</li>
@@ -189,7 +189,7 @@
 					<div class="dropdown">
 						<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-book"></i> Reports</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> <a class="dropdown-item" href="/show_cash_report">Cash Report</a>
-							<a class="dropdown-item" href="/show_mm_report">Material Movement Report</a>
+							<a class="dropdown-item" href="/show_material_movement">Material Movement Report</a>
 							<!--    <a class="dropdown-item" href="#">Purchase Report</a>-->
 						</div>
 					</div>
@@ -1132,6 +1132,17 @@
 	                        return intVal(a) + intVal(b);
 	                    }, 0);
 
+	                 qtytotal = api
+	                    .column(5, {
+	                        page: 'current'
+	                    })
+	                    .data()
+	                    .reduce(function(a, b) {
+
+	                    	console.log(String(a).split(" ")[0])
+	                        return intVal(String(a).split(" ")[0]) + intVal(String(b).split(" ")[0]);
+	                    }, 0);
+
 	                // Total over this page
 	                pageTotal = api
 	                    .column(4, {
@@ -1147,7 +1158,7 @@
 	                    pageTotal
 	                );
 	                $(api.column(5).footer()).html(
-	                    total
+	                    qtytotal
 	                );
 	            }
 	        });
@@ -1349,6 +1360,30 @@
 	                            modal.find('.modal-body input#receiptid').val(recipient)
 	                            modal.find('.modal-body input#min').val(resp.date)
 	                            modal.find('.modal-body select#inputState').val(resp.ledger_name)
+	                            modal.find('.modal-body input#amount').val(resp.amount)
+	                           }
+	                           })
+	})
+</script>
+	<script>
+	$('#ModifyPurchaseModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever')
+	  var modal = $(this)
+	  $.ajax({
+	                  url: "/process_edit_purchase_data/" + recipient,
+	                  type: "GET",
+	                  dataType: "json",
+	                  success: function(resp) {
+	                            modal.find('.modal-body input#purchaseid').val(recipient)
+	                            modal.find('.modal-body input#min').val(resp.purchased_date)
+	                            modal.find('.modal-body select#inputState').val(resp.ledger_id)
+	                            modal.find('.modal-body select#materials').val(resp.material_id)
+	                            modal.find('.modal-body input#quantity').val(resp.quantity_unit)
+	                            modal.find('.modal-body input#quantityunit').val(resp.unit)
+	                            modal.find('.modal-body input#subquantity').val(resp.quantity_sub_unit)
+	                            modal.find('.modal-body input#subquantityunit').val(resp.sub_unit)
+	                            modal.find('.modal-body input#rate').val(resp.rate)
 	                            modal.find('.modal-body input#amount').val(resp.amount)
 	                           }
 	                           })

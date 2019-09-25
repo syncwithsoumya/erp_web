@@ -52,9 +52,10 @@ Star ERP -- View Purchased
                     <td>{{items.purchased_id}}</td>
                     <td>{{items.purchased_date}}</td>
                     <td>{{items.ledger_name}}</td>
-                    <td style="color:black">{{items.quantity_unit ~ items.unit}}</td>
+                    <td style="color:black">{{items.quantity_unit ~' ' ~ items.unit}}</td>
                     <td>{{items.total_amount}}</td>
-                    <td style="color:blue">{{items.quantity_sub_unit ~ items.sub_unit}}</td>
+                    <td style="color:blue">{{items.quantity_sub_unit ~ ' ' ~ items.sub_unit}}</td>
+<!--                    <td style="color:blue">{{items.quantity_sub_unit}}</td>-->
 <!--                    <td>{{items.sub_unit}}</td>-->
                     <td>{{items.material_name}}</td>
             </tr>

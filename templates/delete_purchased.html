@@ -4,7 +4,82 @@ Star ERP -- Delete Purchased
 {% endblock %}
 {% block content %}
 
-<h1 class="h3 mb-4 text-gray-800">Delete Purchased Details</h1>
+<h1 class="h3 mb-4 text-gray-800">Purchased Details - Modification</h1>
+<div class="modal fade" id="ModifyPurchaseModal" tabindex="-1" role="dialog" aria-labelledby="ModifyPurchaseModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModifyPurchaseModalLabel">Edit Purchase</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="/ledger_tx_modification" id="editForm" method="post">
+                    <div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="purchaseid" class="col-md-6 control-label">Puchase ID:</label>
+						<input type="text" class="form-control" name="purchaseid" readonly id="purchaseid">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="pdate" class="col-md-6 control-label">Date</label>
+						<input type="text" class="form-control" name="pdate" readonly placeholder="01-08-2019" id="pdate">
+					</div>
+                    </div>
+                    <div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputState">Ledger Name</label>
+						<select id="inputState" name="ledger_data" class="form-control">
+							<option value="0" selected>-- Choose --</option>{% if not items_ledger_data %}
+							<option value="no_items">No Items to display</option>{% else %} {% for items in items_ledger_data %}
+							<option value="{{ items.id }}" name="{{ items.id }}">{{ items.ledger_name }}</option>{% endfor %} {% endif %}</select>
+					</div>
+                    <div class="form-group col-md-6">
+						<label for="materials">Material Name</label>
+						<select id="materials" name="material_data" class="form-control">
+							<option value="0" selected>-- Choose --</option>{% if not items_material_data %}
+							<option value="no_items">No Items to display</option>{% else %} {% for items in items_material_data %}
+							<option value="{{ items.id }}" name="{{ items.id }}">{{ items.material_name }}</option>{% endfor %} {% endif %}</select>
+					</div>
+                    </div>
+                    <div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="quantity">Quantity</label>
+						<input type="text" class="form-control" name="quantity" id="quantity">
+					</div>
+                    <div class="form-group col-md-6">
+                        <label for="quantityunit">Unit</label>
+                        <input type="text" class="form-control" readonly name="quantityunit" id="quantityunit">
+					</div>
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group col-md-6">
+						<label for="subquantity">Sub-Quantity</label>
+						<input type="text" class="form-control" name="subquantity" id="subquantity">
+					</div>
+                        <div class="form-group col-md-6">
+						<label for="subquantityunit">Unit</label>
+						<input type="text" class="form-control" readonly name="subquantityunit" id="subquantityunit">
+					</div>
+                        </div>
+                    <div class="form-row">
+                    <div class="form-group col-md-6">
+						<label for="rate" class="col-md-3 control-label">Rate</label>
+						<input type="text" class="form-control" name="rate" id="rate">
+					</div>
+                    <div class="form-group col-md-6">
+						<label for="amount" class="col-md-3 control-label">Amount</label>
+						<input type="text" readonly class="form-control" name="amount" id="amount">
+					</div>
+                    </div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Save Changes</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="table-responsive">
     <table id="delete_purchased" class="table table-bordered" style="width:100%">
         <thead>
@@ -38,12 +113,13 @@ Star ERP -- Delete Purchased
                     <td>{{items.purchased_id}}</td>
                     <td>{{items.purchased_date}}</td>
                     <td>{{items.ledger_name}}</td>
-                    <td style="color:black">{{items.quantity_unit ~ items.unit}}</td>
+                    <td style="color:black">{{items.quantity_unit ~ ' ' ~ items.unit}}</td>
                     <td>{{items.total_amount}}</td>
-                    <td style="color:blue">{{items.quantity_sub_unit ~ items.sub_unit}}</td>
+                    <td style="color:blue">{{items.quantity_sub_unit ~ ' ' ~ items.sub_unit}}</td>
                     <td>{{items.material_name}}</td>
 <!--                    <td>{{items.added_by}}</td>-->
-                <td><a href="/del_purchased_data/{{items.purchased_id}}" class="btn btn-danger">Delete</a></td>
+                <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModifyPurchaseModal" data-whatever="{{items.purchased_id}}">Edit</button>
+                    <a href="/del_purchased_data/{{items.purchased_id}}" class="btn btn-danger">Delete</a></td>
             </tr>
          {% endfor %}
         </tbody>

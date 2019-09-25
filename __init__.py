@@ -431,7 +431,7 @@ def material_deletion():
                 connection.close()
 
 
-@app.route('/material_modification', methods=['POST', 'GET'])
+@app.route('/material_modification', methods=['POST'])
 def material_modification():
     if session.get('username') is None:
         return redirect(url_for('login'))
@@ -451,37 +451,38 @@ def material_modification():
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_material', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('modify_material'))
             elif unit_list == "0" or sub_unit_list == "0":
                 flag = 'Please select the unit or sub-unit'
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
-            return redirect(url_for('modify_material'))
-        else:
-            try:
-                with connection.cursor() as cursor:
-                    select_item = 'SELECT material_name FROM material WHERE id=%s'
-                    cursor.execute(select_item, material_id)
-                    item = cursor.fetchone()
-                    if mat_comments and material_id and material_name == "":
-                        upd_items = 'UPDATE material SET comments="%s",unit="%s", sub_unit="%s" WHERE id=%s' % (mat_comments,unit_list, sub_unit_list, material_id)
-                    elif material_name and material_id:
-                        upd_items = 'UPDATE material SET material_name="%s",unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, material_id)
-                    else:
-                        upd_items = 'UPDATE material SET material_name="%s", comments="%s", unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, mat_comments, material_id)
-                    cursor.execute(upd_items)
-                    connection.commit()
-                    flag = "Successfully Updated - {} to {} at {}".format(item['material_name'], material_name, datetime.now())
-                    flash(flag)
-                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                return redirect(url_for('modify_material'))
+            else:
+                try:
+                    with connection.cursor() as cursor:
+                        select_item = 'SELECT material_name FROM material WHERE id=%s'
+                        cursor.execute(select_item, material_id)
+                        item = cursor.fetchone()
+                        if mat_comments and material_id and material_name == "":
+                            upd_items = 'UPDATE material SET comments="%s",unit="%s", sub_unit="%s" WHERE id=%s' % (mat_comments,unit_list, sub_unit_list, material_id)
+                        elif material_name and material_id:
+                            upd_items = 'UPDATE material SET material_name="%s",unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, material_id)
+                        else:
+                            upd_items = 'UPDATE material SET material_name="%s", comments="%s", unit="%s", sub_unit="%s" WHERE id=%s' % (material_name, unit_list, sub_unit_list, mat_comments, material_id)
+                        cursor.execute(upd_items)
+                        connection.commit()
+                        flag = "Successfully Updated - {} to {} at {}".format(item['material_name'], material_name, datetime.now())
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
+                        return redirect(url_for('modify_material'))
+                except Exception as e:
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                       utilities.get_ip(), utilities.get_mac())
-                    return redirect(url_for('modify_material'))
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
-            finally:
-                connection.close()
+                    return str(e)
+                finally:
+                    connection.close()
 
 
 @app.route('/modify_material')
@@ -652,13 +653,13 @@ def new_purchased():
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
 
-            if qty_unit == "" or pdate == "" or int(material) == 0 or qty_sub_unit == "" or pdate == "" or ledger_id == 0 or totamt==0 or rate==0:
+            if qty_unit == "" or pdate == "" or int(material) == 0 or qty_sub_unit == "" or pdate == "" or ledger_id == 0:
                 flag = "Invalid Data"
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return redirect(url_for('new_purchased_db'))
-            elif rate <= 0:
+            elif rate < 0:
                 flag = "Rate is negative.. Try again!"
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db',
@@ -676,28 +677,31 @@ def new_purchased():
                         cursor.execute(sql, (pdate, ledger_id, unit, subunit, qty_unit, qty_sub_unit, rate, totamt,
                                              material, str(session['username']), ip, mac))
                         connection.commit()
+                        get_purchased_id = "SELECT MAX(purchased_id) as purchase_id FROM purchased"
+                        cursor.execute(get_purchased_id)
+                        purchased_data = cursor.fetchone()
                         insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,%s,NULL,%s,'Money Spent on Raw Material Purchase')"
                         cursor.execute(insert_sql, (date_time, ledger_id, material, amount))
                         connection.commit()
-                        get_material_purchased = "SELECT id FROM material_qty WHERE material_id=%s"
-                        cursor.execute(get_material_purchased, material)
-                        data = cursor.fetchone()
-                        get_material_cdate = "SELECT closing_balance FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=%s);"
-                        cursor.execute(get_material_cdate, material)
-                        cdate = cursor.fetchone()
-                        if data is None:
-                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
-                            cursor.execute(sql_mat_mov, (material, date_time,"0",qty_sub_unit,'Purchase'))
-                            sql_quantity = "INSERT INTO material_qty(material_id,quantity) VALUES(%s,%s)"
-                            cursor.execute(sql_quantity, (material, qty_sub_unit))
-                            connection.commit()
-                        else:
-                            final_closing = int(cdate['closing_balance']) + int(qty_sub_unit)
-                            sql_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE material_id=%s and id=%s"
-                            cursor.execute(sql_quantity, (qty_sub_unit, material, str(data['id'])))
-                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
-                            cursor.execute(sql_mat_mov, (material, date_time, cdate['closing_balance'], final_closing, 'Purchase'))
-                            connection.commit()
+                        # get_material_purchased = "SELECT id FROM material_qty WHERE material_id=%s"
+                        # cursor.execute(get_material_purchased, material)
+                        # data = cursor.fetchone()
+                        # get_material_cdate = "SELECT diff FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=%s) AND txn_type not in (%s,%s);"
+                        # cursor.execute(get_material_cdate, (material,'Deleted','Altered'))
+                        # cdate = cursor.fetchone()
+                        # if data is None:
+                        sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,amount,txn_type,purchase_id,sell_id) VALUES(%s,%s,%s,%s,%s,%s)"
+                        cursor.execute(sql_mat_mov, (material, date_time, qty_sub_unit, 'Purchase', purchased_data['purchase_id'], 0))
+                        sql_quantity = "INSERT INTO material_qty(material_id,quantity) VALUES(%s,%s)"
+                        cursor.execute(sql_quantity, (material, qty_sub_unit))
+                        connection.commit()
+                        # else:
+                        #     # final_closing = int(cdate['diff']) + int(qty_sub_unit)
+                        #     sql_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE material_id=%s and id=%s"
+                        #     cursor.execute(sql_quantity, (qty_sub_unit, material, str(data['id'])))
+                        #     sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type,diff,purchase_id,sell_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+                        #     cursor.execute(sql_mat_mov, (material, date_time, cdate['diff'], int(qty_sub_unit), 'Purchase', int(final_closing), purchased_data['purchase_id'],0))
+                        #     connection.commit()
                         flag = 'Successfully Added the Purchased data on {}' .format(date_time)
                         flash(flag)
                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
@@ -711,6 +715,7 @@ def new_purchased():
                         return redirect(url_for('new_purchased_db'))
                     finally:
                         connection.close()
+
 
 
 @app.route('/view_purchased_db')
@@ -748,7 +753,13 @@ def delete_purchased_db():
                     get_items = "SELECT p.purchased_id, p.purchased_date, l.ledger_name, p.quantity_unit, p.total_amount, p.quantity_sub_unit, p.sub_unit,p.unit, m.material_name FROM purchased p INNER JOIN ledger l ON p.ledger_id = l.id INNER JOIN material m ON p.material_id = m.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    return render_template('delete_purchased.html', items_data=items_data)
+                    get_ledger = "SELECT id, ledger_name FROM ledger"
+                    cursor.execute(get_ledger)
+                    items_ledger_data = cursor.fetchall()
+                    get_materials = "SELECT id, material_name FROM material"
+                    cursor.execute(get_materials)
+                    items_materials_data = cursor.fetchall()
+                    return render_template('delete_purchased.html', items_data=items_data, items_ledger_data=items_ledger_data,items_material_data=items_materials_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
@@ -773,19 +784,15 @@ def del_purchased_data(p_id):
                     data = cursor.fetchone()
                     qty = data['quantity_sub_unit']
                     mat_id = data['material_id']
-                    get_material_cdate = "SELECT closing_balance FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=%s);"
-                    cursor.execute(get_material_cdate, mat_id)
-                    cdate = cursor.fetchone()
-                    final_closing = int(cdate['closing_balance']) - int(qty) #if int(cdate['closing_balance']) > int(qty) else int(qty) - int(cdate['closing_balance'])
-                    sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
-                    cursor.execute(sql_mat_mov,
-                                   (mat_id, date_time, cdate['closing_balance'], final_closing, 'Cancelled'))
                     sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE material_id=%s"
                     cursor.execute(sql_quantity, (qty, mat_id))
                     insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,%s,NULL,%s,'Money Received as Refund')"
                     cursor.execute(insert_sql, (date_time, data['ledger_id'], data['material_id'], data['total_amount']))
                     del_items = "DELETE FROM purchased WHERE purchased_id=%s"
                     cursor.execute(del_items, p_id)
+                    connection.commit()
+                    del_items_material_movements = "DELETE FROM material_movement WHERE purchase_id=%s"
+                    cursor.execute(del_items_material_movements, p_id)
                     connection.commit()
                     write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), 'Deleted Purchase ID-{}'.format(p_id),
                                       str(session['username']),
@@ -873,7 +880,7 @@ def component_master_creation():
         ip = utilities.get_ip()
         if request.method == 'POST':
             product_name = request.form['pname']
-            product_rate = request.form['prate']
+            product_rate = 1 if str(request.form['prate']) == "" else int(request.form['prate'])
             product_comments = request.form['pcomments']
             product_color = ''
             # product_date = request.form['pdate']
@@ -900,13 +907,17 @@ def component_master_creation():
             item8 = int(request.form['item8'])
             item9 = int(request.form['item9'])
             item10 = int(request.form['item10'])
-            # if item1 == 0 or item2 == 0: #  or item3==0 or item4==0 or item5==0 or item6==0 or item7==0 or item8==0:
-            #     flag = "Minimum 2 Item's quantity is expected ..."
-            #     flash(flag)
-            #     return redirect(url_for('component_master'))
+
             if item1 == 0 and item2 == 0 and item3 == 0 and item4 == 0 and item5 == 0 and item6 == 0 and item7 == 0 \
-                    and item8 == 0 and item9 == 0 and item10 == 0:
+                    and item8 == 0 and item9 == 0 and item10 == 0 and product_rate == 0:
                 flag = "Minimum 1 Item's quantity is expected ..."
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('component_master'))
+            elif item1 < 0 and item2 < 0 and item3 < 0 and item4 < 0 and item5 < 0 and item6 < 0 and item7 < 0 \
+                    and item8 < 0 and item9 < 0 and item10 < 0 and product_rate < 0:
+                flag = "Quantity can't be less than 1"
                 flash(flag)
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
@@ -2374,28 +2385,28 @@ def del_component_master_data(p_id):
                 connection.close()
 
 
-@app.route('/show_mm_report')
-def show_mm_report():
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        connection = connect_to_db()
-        if connection.open == 1:
-            # Populate material names from table
-            try:
-                with connection.cursor() as cursor:
-                    # get_materials = "SELECT id, material_name FROM material"
-                    # cursor.execute(get_materials)
-                    # items_mat_data = cursor.fetchall()
-                    get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y') as date_and_time, (mv.closing_balance-mv.opening_balance) as diff from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
-                    cursor.execute(get_items)
-                    items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('show_material_movement.html', items_data=items_data,)
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
+# @app.route('/show_mm_report')
+# def show_mm_report():
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         connection = connect_to_db()
+#         if connection.open == 1:
+#             # Populate material names from table
+#             try:
+#                 with connection.cursor() as cursor:
+#                     # get_materials = "SELECT id, material_name FROM material"
+#                     # cursor.execute(get_materials)
+#                     # items_mat_data = cursor.fetchall()
+#                     get_items = "select mv.id,m.material_name,mv.opening_balance, mv.closing_balance, mv.txn_type, DATE_FORMAT(mv.txn_date,'%d-%m-%Y') as date_and_time, diff from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id;"
+#                     cursor.execute(get_items)
+#                     items_data = cursor.fetchall()
+#                     connection.close()
+#                     return render_template('show_material_movement.html', items_data=items_data,)
+#             except Exception as e:
+#                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+#                                   utilities.get_ip(), utilities.get_mac())
+#                 return str(e)
 
 
 @app.route('/download_mm_report_as_csv', methods=['POST'])
@@ -2577,21 +2588,46 @@ def del_ledger_data(p_id):
 
 @app.route('/process_edit_data/<int:p_id>', methods=['GET'])
 def process_edit_data(p_id):
-    connection = ''
-    # p_id = 12
-    try:
-        connection = connect_to_db()
-        with connection.cursor() as cursor:
-            get_mat_comments = "select DATE_FORMAT(c.date_time,'%d-%m-%Y') as date_time, c.ledger_id, abs(amount) as amount from cash c LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.id={}".format(p_id)
-            cursor.execute(get_mat_comments)
-            dat = cursor.fetchone()
-            return jsonify({'date': dat['date_time'], 'ledger_name': dat['ledger_id'],'amount': dat['amount']})
-    except Exception as e:
-        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                          utilities.get_ip(), utilities.get_mac())
-        return str(e)
-    finally:
-        connection.close()
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = ''
+        # p_id = 12
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_mat_comments = "select DATE_FORMAT(c.date_time,'%d-%m-%Y') as date_time, c.ledger_id, abs(amount) as amount from cash c LEFT JOIN material m ON m.id=c.material_id LEFT JOIN product_master pr ON pr.id=c.product_id WHERE c.id={}".format(p_id)
+                cursor.execute(get_mat_comments)
+                dat = cursor.fetchone()
+                return jsonify({'date': dat['date_time'], 'ledger_name': dat['ledger_id'],'amount': dat['amount']})
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
+        finally:
+            connection.close()
+
+
+@app.route('/process_edit_purchase_data/<int:p_id>', methods=['GET'])
+def process_edit_purchase_data(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = ''
+        # p_id = 12
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_purchase_data = "SELECT p.purchased_id, p.purchased_date, p.ledger_id, p.quantity_unit, p.total_amount, p.quantity_sub_unit, p.sub_unit,p.unit, p.material_id, p.rate FROM purchased p WHERE purchased_id={}".format(p_id)
+                cursor.execute(get_purchase_data)
+                dat = cursor.fetchone()
+                return jsonify({'id': dat['purchased_id'], 'purchased_date': dat['purchased_date'], 'ledger_id': dat['ledger_id'], 'quantity_unit': dat['quantity_unit'], 'total_amount': dat['total_amount'], 'quantity_sub_unit': dat['quantity_sub_unit'], 'sub_unit': dat['sub_unit'], 'unit': dat['unit'],'material_id': dat['material_id'],'rate': dat['rate']})
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
+        finally:
+            connection.close()
 
 
 @app.route('/ledger_tx_modification', methods=['POST'])
@@ -2629,6 +2665,80 @@ def ledger_tx_modification():
             return str(e)
         finally:
             connection.close()
+
+
+@app.route('/show_material_movement', methods=['GET'])
+def show_material_movement():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "select mv.id,m.material_name,mv.amount, mv.txn_type, mv.txn_date as date_and_time, purchase_id, sell_id from material_movement mv LEFT JOIN material m ON m.id=mv.mat_id ORDER BY date_and_time ASC"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    data = {'dat1': items_data}
+                    all_data = arranged_dict_for_material_movement(data)
+                    a = frame_material_moment(all_data)
+                    return render_template('show_material_movement.html', items_data=a)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+
+
+def arranged_dict_for_material_movement(data):
+    phrase = dict()
+    data_level_one = data['dat1']
+    leng = len(data_level_one)
+    for item in range(0, leng, 1):
+        item_name = str(data_level_one[item]['material_name'])
+        if item_name not in phrase.keys():
+            phrase[item_name] = {data_level_one[item]['date_and_time']: [data_level_one[item]['amount'],
+                                                                         data_level_one[item]['id']]}
+        else:
+            phrase[item_name].update({data_level_one[item]['date_and_time']: [data_level_one[item]['amount'],
+                                                                              data_level_one[item]['id']]})
+    return phrase
+
+
+def frame_material_moment(data):
+    data_level_one = sorted(list(data))
+    record = list()
+    open_bal = 0
+    for item in data_level_one:
+        dates = data[item]
+        date_list = list(dates)
+        for rec_date in date_list:
+
+            idx = date_list.index(rec_date)
+            if idx == 0:
+                # record['date'] = rec_date
+                # record['material_name'] = item
+                # record['opening_balance'] = '0'
+                # record['closing_balance'] = dates[rec_date]
+                date_only = str(rec_date[:-6])
+                rec_date_old = datetime.strptime(date_only, '%Y%m%d').strftime("%d-%m-%Y")
+                record.append({'date_and_time': rec_date_old, 'material_name': item, 'opening_balance': 0,
+                               'closing_balance': int(dates[rec_date][0]) - 0, 'id': dates[rec_date][1],
+                               'diff': int(dates[rec_date][0]) - 0,
+                               'txn_type': 'Purchase' if int(dates[rec_date][0]) > 0 else 'Sale'})
+            else:
+                for i in range(0, len(record)):
+                    open_bal = record[i]['closing_balance']
+                opening_balance = open_bal
+                closing_balance = int(dates[rec_date][0]) + opening_balance
+                date_only = str(rec_date[:-6])
+                rec_date_old = datetime.strptime(date_only, '%Y%m%d').strftime("%d-%m-%Y")
+                record.append({'date_and_time': rec_date_old, 'material_name': item, 'opening_balance': opening_balance,
+                               'closing_balance': closing_balance, 'id': dates[rec_date][1],
+                               'diff': closing_balance - opening_balance,
+                               'txn_type': 'Purchase' if int(dates[rec_date][0]) > 0 else 'Sale'})
+    return record
 
 
 if __name__ == '__main__':
