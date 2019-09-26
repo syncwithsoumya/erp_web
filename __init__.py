@@ -350,7 +350,7 @@ def material_creation():
                         cursor.execute(get_material_id)
                         mat_id = cursor.fetchone()
                         sql_insert_mat_qty = "INSERT INTO material_qty(material_id,quantity) VALUES (%s,%s)"
-                        cursor.execute(sql_insert_mat_qty, (mat_id['material_id']))
+                        cursor.execute(sql_insert_mat_qty, (mat_id['material_id'],'0'))
                         connection.commit()
                         flag = 'Successfully Added Material - {} at {}' .format(material_name, date_time)
                         flash(flag)
@@ -1753,6 +1753,7 @@ def direct_billing_creation():
             product_id = request.form['products_dat']
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
+            new_date = datetime.strptime(pdate,'%d-%m-%Y').strftime('%Y%m%d') + str(datetime.now().strftime('%H%M%S'))
             if ledger_id == 0:
                 flag = "Ledger not selected."
                 flash(flag)
@@ -1780,22 +1781,6 @@ def direct_billing_creation():
                         cursor.execute(get_product_name, (product_id, flag))
                         names = cursor.fetchone()
                         product_data = product_manipulation(convertid2name(names['product_spec']), qty_unit)
-
-                        for item in product_data:
-                            # Get Material Movement
-                            get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s));"
-                            cursor.execute(get_material_cdate, item)
-                            cdate = cursor.fetchone()
-                            # Add Material Movement
-                            final_closing = int(cdate['closing_balance']) + int(product_data[item])
-                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,opening_balance,closing_balance,txn_type) VALUES(%s,%s,%s,%s,%s)"
-                            cursor.execute(sql_mat_mov, (cdate['mat_id'], date_time, cdate['closing_balance'],
-                                                         final_closing, 'Sale'))
-                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
-                                           "material_id=(SELECT id FROM material WHERE material_name=%s)"
-                            cursor.execute(sql_quantity, (product_data[item], item))
-                            # cursor.execute(sql_update_flag, item)
-                        connection.commit()
                         sql = "INSERT INTO product_master(product_name,date_time,added_by,comments," \
                               "product_spec,link_component_flag, product_rate,ip_address,mac_id) " \
                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
@@ -1814,10 +1799,31 @@ def direct_billing_creation():
                               "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                         cursor.execute(sql, (pdate, ledger_id, data_id['id'], qty_unit, rate, totamt, str(session['username']), ip, mac))
                         connection.commit()
-
+                        get_sell_id = "SELECT MAX(sell_id) as id FROM sell"
+                        cursor.execute(get_sell_id)
+                        data_id = cursor.fetchone()
+                        for item in product_data:
+                            # Get Material Movement
+                            # get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s));"
+                            # cursor.execute(get_material_cdate, item)
+                            # cdate = cursor.fetchone()
+                            # Add Material Movement
+                            # final_closing = int(cdate['closing_balance']) + int(product_data[item])
+                            get_mat_id = "SELECT id FROM material WHERE material_name=%s"
+                            cursor.execute(get_mat_id, item)
+                            mat_id = cursor.fetchone()
+                            sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,amount,txn_type,purchase_id,sell_id) VALUES(%s,%s,%s,%s,%s,%s)"
+                            cursor.execute(sql_mat_mov, (mat_id['id'], new_date, -product_data[item],
+                                                         'Sale','0', data_id['id']))
+                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
+                                           "material_id=(SELECT id FROM material WHERE material_name=%s)"
+                            cursor.execute(sql_quantity, (product_data[item], item))
+                            # cursor.execute(sql_update_flag, item)
+                        connection.commit()
                         insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id,amount,comments) VALUES (%s, %s,NULL,%s,%s,'Money Received on Sell')"
                         cursor.execute(insert_sql, (date_time, ledger_id, data_id['id'], totamt))
                         connection.commit()
+
                         for item in product_data:
                             check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
                             cursor.execute(check_material, (item))
@@ -1877,12 +1883,18 @@ def delete_billings():
                     get_items = "SELECT sell_id,sell_date,l.ledger_name,p.product_name,quantity,rate,amount, s.added_by,s.ip_address,s.mac_id FROM sell s INNER join ledger l ON s.ledger_id = l.id INNER JOIN product_master p ON s.product_id=p.id"
                     cursor.execute(get_items)
                     items_data = cursor.fetchall()
-                    connection.close()
-                    return render_template('delete_sell_items.html', items_data=items_data)
+                with connection.cursor() as cursor:
+                    get_ledgers = "SELECT id,ledger_name FROM ledger"
+                    cursor.execute(get_ledgers)
+                    ledger_data = cursor.fetchall()
+
+                    return render_template('delete_sell_items.html', items_data=items_data, ledger_data=ledger_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
                 return str(e)
+            finally:
+                connection.close()
 
 
 # @app.route('/show_product_inventory')
@@ -2685,6 +2697,28 @@ def process_edit_purchase_data(p_id):
                 cursor.execute(get_purchase_data)
                 dat = cursor.fetchone()
                 return jsonify({'id': dat['purchased_id'], 'purchased_date': dat['purchased_date'], 'ledger_id': dat['ledger_id'], 'quantity_unit': dat['quantity_unit'], 'total_amount': dat['total_amount'], 'quantity_sub_unit': dat['quantity_sub_unit'], 'sub_unit': dat['sub_unit'], 'unit': dat['unit'],'material_id': dat['material_id'],'rate': dat['rate']})
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
+        finally:
+            connection.close()
+
+
+@app.route('/process_edit_sell_data/<int:p_id>', methods=['GET'])
+def process_edit_sell_data(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = ''
+        # p_id = 12
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_sell_data = "SELECT sell_id,sell_date,ledger_id,p.product_name,quantity,rate,amount FROM sell s  INNER JOIN product_master p ON s.product_id=p.id WHERE sell_id={}".format(p_id)
+                cursor.execute(get_sell_data)
+                dat = cursor.fetchone()
+                return jsonify({'sell_id': dat['sell_id'], 'sell_date': dat['sell_date'], 'ledger_name': dat['ledger_id'], 'product_name': dat['product_name'], 'quantity': dat['quantity'], 'rate': dat['rate'], 'amount': dat['amount']})
         except Exception as e:
             write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                               utilities.get_ip(), utilities.get_mac())

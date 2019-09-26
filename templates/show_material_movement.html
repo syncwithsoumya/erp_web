@@ -55,14 +55,10 @@ Star ERP -- View Material Movement
                     <td>{{items.material_name}}</td>
                     <td>{{items.opening_balance}}</td>
                     <td>{{items.closing_balance}}</td>
+                    <td>{{items.diff}}</td>
                 {% if items.txn_type == 'Purchase' %}
-                <td>{{items.diff}}</td>
                 <td  class="table-success"> Purchase </td>
-                {% elif items.txn_type == 'Cancelled' %}
-                <td>{{items.diff}}</td>
-                 <td class="table-warning"> Cancelled </td>
                 {% else %}
-                <td>{{'-' ~ items.diff if items.txn_type == 'Sale' else items.diff}}</td>
                 <td class="table-danger"> Sale </td>
                 {% endif %}
             </tr>

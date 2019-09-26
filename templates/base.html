@@ -1389,6 +1389,27 @@
 	                           })
 	})
 </script>
+	<script>
+	$('#ModifySellModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever')
+	  var modal = $(this)
+	  $.ajax({
+	                  url: "/process_edit_sell_data/" + recipient,
+	                  type: "GET",
+	                  dataType: "json",
+	                  success: function(resp) {
+	                            modal.find('.modal-body input#sellid').val(recipient)
+	                            modal.find('.modal-body input#pdate').val(resp.sell_date)
+	                            modal.find('.modal-body select#inputState').val(resp.ledger_name)
+	                            modal.find('.modal-body input#product_name').val(resp.product_name)
+	                            modal.find('.modal-body input#quantity').val(resp.quantity)
+	                            modal.find('.modal-body input#prate').val(resp.rate)
+	                            modal.find('.modal-body input#amount').val(resp.amount)
+	                           }
+	                           })
+	})
+</script>
 <script>
 	$('#editForm').on('submit', function(e) {
 	    var min = $('#min');

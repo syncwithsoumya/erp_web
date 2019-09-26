@@ -3,48 +3,111 @@
 Star ERP -- View Billings
 {% endblock %}
 {% block content %}
-
 <h1 class="h3 mb-4 text-gray-800">View Billing Details</h1>
+<div class="modal fade" id="ModifySellModal" tabindex="-1" role="dialog" aria-labelledby="ModifySellModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="ModifySellModalLabel">Edit Sell</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form action="/alter_purchased" id="SellForm" method="post">
+               <div class="form-row">
+                  <div class="form-group col-md-6">
+                     <label for="sellid" class="col-md-6 control-label">Sell ID:</label>
+                     <input type="text" class="form-control" name="sellid" readonly id="sellid">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="pdate" class="col-md-6 control-label">Date</label>
+                     <input type="text" class="form-control" name="pdate" readonly placeholder="01-08-2019" id="pdate">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-md-12">
+                     <label>Ledger Name</label>
+                     <select id="inputState" name="ledgers_dat" class="form-control">
+                        <option value="0" selected> -- Choose -- </option>
+                        {% if not ledger_data %}
+                        <option value="no_items">No Items to display</option>
+                        {% else %}
+                        {% for items in ledger_data %}
+                        <option value="{{ items.id }}" name="{{ items.id }}">{{ items.ledger_name }}</option>
+                        {% endfor %}
+                        {% endif %}
+                     </select>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-md-6">
+                     <label>Product Name</label>
+                     <input type="text" class="form-control" readonly name="product_name" id="product_name">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="quantity">Quantity</label>
+                     <input type="text" class="form-control" name="quantity" id="quantity">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-md-6">
+                     <label for="prate" class="col-md-3 control-label">Rate</label>
+                     <input type="text" class="form-control" name="rate" id="prate">
+                  </div>
+                  <div class="form-group col-md-6">
+                     <label for="amount" class="col-md-3 control-label">Amount</label>
+                     <input type="text" readonly class="form-control" name="amount" id="amount">
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
 <div class="table-responsive">
-    <table id="delete_billing" class="table table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th class="table-dark">Sell_ID</th>
-                <th class="table-dark">Sell_Date</th>
-                <th class="table-dark">Ledger Name</th>
-                <th class="table-dark">Product_Name</th>
-                <th class="table-dark">Quantity</th>
-                <th class="table-dark">Rate</th>
-                <th class="table-dark">Amount</th>
-                <th class="table-dark">Action</th>
-            </tr><tr>
-                <th class="table-primary">Sell_ID</th>
-                <th class="table-primary">Sell_Date</th>
-                <th class="table-primary">Ledger Name</th>
-                <th class="table-primary">Product_Name</th>
-                <th class="table-primary">Quantity</th>
-                <th class="table-primary">Rate</th>
-                <th class="table-primary">Amount</th>
-                <th class="table-primary">Action</th>
-            </tr>
-        </thead>
-
-        <tbody>
-        {% for items in items_data %}
-            <tr>
-
-                    <td>{{items.sell_id}}</td>
-                    <td>{{items.sell_date}}</td>
-                    <td>{{items.ledger_name}}</td>
-                    <td>{{items.product_name}}</td>
-                    <td>{{items.quantity}}</td>
-                    <td>{{items.rate}}</td>
-                    <td>{{items.amount}}</td>
-                <td><a href="/del_sell_data/{{items.sell_id}}" class="btn btn-danger">Delete</a></td>
-            </tr>
+   <table id="delete_billing" class="table table-bordered" style="width:100%">
+      <thead>
+         <tr>
+            <th class="table-dark">Sell_ID</th>
+            <th class="table-dark">Sell_Date</th>
+            <th class="table-dark">Ledger Name</th>
+            <th class="table-dark">Product_Name</th>
+            <th class="table-dark">Quantity</th>
+            <th class="table-dark">Rate</th>
+            <th class="table-dark">Amount</th>
+            <th class="table-dark">Action</th>
+         </tr>
+         <tr>
+            <th class="table-primary">Sell_ID</th>
+            <th class="table-primary">Sell_Date</th>
+            <th class="table-primary">Ledger Name</th>
+            <th class="table-primary">Product_Name</th>
+            <th class="table-primary">Quantity</th>
+            <th class="table-primary">Rate</th>
+            <th class="table-primary">Amount</th>
+            <th class="table-primary">Action</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% for items in items_data %}
+         <tr>
+            <td>{{items.sell_id}}</td>
+            <td>{{items.sell_date}}</td>
+            <td>{{items.ledger_name}}</td>
+            <td>{{items.product_name}}</td>
+            <td>{{items.quantity}}</td>
+            <td>{{items.rate}}</td>
+            <td>{{items.amount}}</td>
+            <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModifySellModal" data-whatever="{{items.sell_id}}">Edit</button>
+               <a href="/del_sell_data/{{items.sell_id}}" class="btn btn-danger">Delete</a>
+            </td>
+         </tr>
          {% endfor %}
-        </tbody>
-
-    </table>
+      </tbody>
+   </table>
 </div>
 {% endblock %}
