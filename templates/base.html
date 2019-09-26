@@ -1376,15 +1376,15 @@
 	                  dataType: "json",
 	                  success: function(resp) {
 	                            modal.find('.modal-body input#purchaseid').val(recipient)
-	                            modal.find('.modal-body input#min').val(resp.purchased_date)
+	                            modal.find('.modal-body input#pdate').val(resp.purchased_date)
 	                            modal.find('.modal-body select#inputState').val(resp.ledger_id)
 	                            modal.find('.modal-body select#materials').val(resp.material_id)
 	                            modal.find('.modal-body input#quantity').val(resp.quantity_unit)
 	                            modal.find('.modal-body input#quantityunit').val(resp.unit)
 	                            modal.find('.modal-body input#subquantity').val(resp.quantity_sub_unit)
 	                            modal.find('.modal-body input#subquantityunit').val(resp.sub_unit)
-	                            modal.find('.modal-body input#rate').val(resp.rate)
-	                            modal.find('.modal-body input#amount').val(resp.amount)
+	                            modal.find('.modal-body input#prate').val(resp.rate)
+	                            modal.find('.modal-body input#amount').val(resp.total_amount)
 	                           }
 	                           })
 	})
@@ -1410,6 +1410,41 @@
 
 	})
 </script>
+	<script>
+	$('#PurchaseForm').on('submit', function(e) {
+	    var pdate = $('#pdate');
+	    var inputState = $('#inputState');
+	    var materials = $('#materials');
+	    var quantity = $('#quantity');
+	    var quantityunit = $('#quantityunit');
+	    var subquantity = $('#subquantity');
+	    var subquantityunit = $('#subquantityunit');
+	    var rate = $('#prate');
+	    var amount = $('#amount');
+		if (rate.val() == "")
+		{
+			rate = 0
+		}
+		else
+		{
+			rate = rate.val()
+		}
+
+	    console.log(rate)
+
+	    if ((pdate.val()=="") || (inputState.val()=="0") || (materials.val()=="") || (quantity.val()=="") || (quantityunit.val()=="") || (subquantity.val()=="") || (subquantityunit.val()=="") || (rate<0))
+	    {
+	        alert('Some Values are missing')
+	        e.preventDefault();
+	    }
+	    if (amount.val() < 0)
+	    {
+	        alert('Amount is less than zero')
+	        e.preventDefault();
+	    }
+
+	})
+</script>
 <script>
 	$(window).on('shown.bs.modal', function() {
 	    var amount = $('#amount');
@@ -1423,6 +1458,14 @@
 	        payment.val("2")
 	    }
 	})
+</script>
+	<script>
+	$('input#prate').keyup(function() {
+	            var qty = $('input#subquantity').val();
+	            var rate = $('input#prate').val();
+	            var amt = qty * rate;
+	            $('input#amount').val(amt);
+	        });
 </script>
 </body>
 

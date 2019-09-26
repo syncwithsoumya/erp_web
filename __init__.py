@@ -346,6 +346,12 @@ def material_creation():
                         sql = "INSERT INTO material(material_name,unit,sub_unit,usage_flag,date_time,added_by,comments,ip_address,mac_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                         cursor.execute(sql, (material_name, unit, subunit, '0', date_time, str(session['username']), comments, ip, mac))
                         connection.commit()
+                        get_material_id = "SELECT MAX(id) as material_id FROM material"
+                        cursor.execute(get_material_id)
+                        mat_id = cursor.fetchone()
+                        sql_insert_mat_qty = "INSERT INTO material_qty(material_id,quantity) VALUES (%s,%s)"
+                        cursor.execute(sql_insert_mat_qty, (mat_id['material_id']))
+                        connection.commit()
                         flag = 'Successfully Added Material - {} at {}' .format(material_name, date_time)
                         flash(flag)
                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag,
@@ -605,33 +611,33 @@ def new_purchased_db():
             connection.close()
 
 
-@app.route('/alter_purchased_db')
-def alter_purchased_db():
-    connection = ''
-    if session.get('username') is None:
-        return redirect(url_for('login'))
-    else:
-        try:
-            connection = connect_to_db()
-            with connection.cursor() as cursor:
-                get_items = "SELECT purchased_id from purchased"
-                cursor.execute(get_items)
-                items_pur_data = cursor.fetchall()
-            with connection.cursor() as cursor:
-                get_items = "SELECT id, ledger_name from ledger"
-                cursor.execute(get_items)
-                items_ledger_data = cursor.fetchall()
-            with connection.cursor() as cursor:
-                get_items = "SELECT id,material_name from material"
-                cursor.execute(get_items)
-                items_material_data = cursor.fetchall()
-            return render_template('alter_purchased.html', purchase_data=items_pur_data, ledger_data=items_ledger_data, material_data=items_material_data)
-        except Exception as e:
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                              utilities.get_ip(), utilities.get_mac())
-            return str(e)
-        finally:
-            connection.close()
+# @app.route('/alter_purchased_db')
+# def alter_purchased_db():
+#     connection = ''
+#     if session.get('username') is None:
+#         return redirect(url_for('login'))
+#     else:
+#         try:
+#             connection = connect_to_db()
+#             with connection.cursor() as cursor:
+#                 get_items = "SELECT purchased_id from purchased"
+#                 cursor.execute(get_items)
+#                 items_pur_data = cursor.fetchall()
+#             with connection.cursor() as cursor:
+#                 get_items = "SELECT id, ledger_name from ledger"
+#                 cursor.execute(get_items)
+#                 items_ledger_data = cursor.fetchall()
+#             with connection.cursor() as cursor:
+#                 get_items = "SELECT id,material_name from material"
+#                 cursor.execute(get_items)
+#                 items_material_data = cursor.fetchall()
+#             return render_template('alter_purchased.html', purchase_data=items_pur_data, ledger_data=items_ledger_data, material_data=items_material_data)
+#         except Exception as e:
+#             write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+#                               utilities.get_ip(), utilities.get_mac())
+#             return str(e)
+#         finally:
+#             connection.close()
 
 
 @app.route('/new_purchased', methods=['POST'])
@@ -652,7 +658,7 @@ def new_purchased():
             qty_sub_unit = int(request.form['piece']) if str(request.form['piece']) != "" else ""
             totamt = int(request.form['totamt']) if request.form['totamt'] != "" else 0
             rate = int(request.form['recamt']) if request.form['recamt'] != "" else 0
-
+            mv_date = datetime.strptime(request.form['pdate'],'%d-%m-%Y').strftime('%Y%m%d') + str(datetime.now().strftime('%H%M%S'))
             if qty_unit == "" or pdate == "" or int(material) == 0 or qty_sub_unit == "" or pdate == "" or ledger_id == 0:
                 flag = "Invalid Data"
                 flash(flag)
@@ -680,8 +686,8 @@ def new_purchased():
                         get_purchased_id = "SELECT MAX(purchased_id) as purchase_id FROM purchased"
                         cursor.execute(get_purchased_id)
                         purchased_data = cursor.fetchone()
-                        insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments) VALUES (%s, %s,%s,NULL,%s,'Money Spent on Raw Material Purchase')"
-                        cursor.execute(insert_sql, (date_time, ledger_id, material, amount))
+                        insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id, amount,comments,purchased_id) VALUES (%s, %s,%s,NULL,%s,'Money Spent on Raw Material Purchase',%s)"
+                        cursor.execute(insert_sql, (mv_date, ledger_id, material, amount, purchased_data['purchase_id']))
                         connection.commit()
                         # get_material_purchased = "SELECT id FROM material_qty WHERE material_id=%s"
                         # cursor.execute(get_material_purchased, material)
@@ -691,9 +697,9 @@ def new_purchased():
                         # cdate = cursor.fetchone()
                         # if data is None:
                         sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,amount,txn_type,purchase_id,sell_id) VALUES(%s,%s,%s,%s,%s,%s)"
-                        cursor.execute(sql_mat_mov, (material, date_time, qty_sub_unit, 'Purchase', purchased_data['purchase_id'], 0))
-                        sql_quantity = "INSERT INTO material_qty(material_id,quantity) VALUES(%s,%s)"
-                        cursor.execute(sql_quantity, (material, qty_sub_unit))
+                        cursor.execute(sql_mat_mov, (material, mv_date, qty_sub_unit, 'Purchase', purchased_data['purchase_id'], 0))
+                        sql_quantity = "UPDATE material_qty SET quantity=quantity + %s WHERE material_id=%s"
+                        cursor.execute(sql_quantity, (qty_sub_unit, material))
                         connection.commit()
                         # else:
                         #     # final_closing = int(cdate['diff']) + int(qty_sub_unit)
@@ -716,6 +722,64 @@ def new_purchased():
                     finally:
                         connection.close()
 
+
+@app.route('/alter_purchased', methods=['POST'])
+def alter_purchased():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        mac = utilities.get_mac()
+        ip = utilities.get_ip()
+        if request.method == 'POST':
+            purchased_id = request.form['purchaseid']
+            # pdate = datetime.strptime(request.form['pdate'], '%d-%m-%Y').strftime('%d-%m-%Y') if str(
+            #     request.form['pdate']) != "" else ""
+            ledger_id = int(request.form['ledger_data'])
+            material_id = int(request.form['material_data'])
+            qty_unit = int(request.form['quantity']) if str(request.form['quantity']) != "" else ""
+            unit = request.form['quantityunit']
+            subunit = request.form['subquantityunit']
+            qty_sub_unit = int(request.form['subquantity']) if str(request.form['subquantity']) != "" else ""
+            totamt = int(request.form['amount']) if request.form['amount'] != "" else 0
+            rate = int(request.form['rate'])
+            if rate < 0:
+                flag = "Rate is negative.. Try again!"
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'new_purchased_db',
+                                  str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for(''))
+            else:
+                connection = connect_to_db()
+                with connection.cursor() as cursor:
+                    try:
+                        amount = -totamt
+                        sql = "UPDATE purchased SET ledger_id=%s,unit=%s,sub_unit=%s,quantity_unit=%s,quantity_sub_unit=%s,rate=%s,total_amount=%s,material_id=%s,added_by=%s WHERE purchased_id=%s"
+                        cursor.execute(sql, (ledger_id, unit, subunit, qty_unit, qty_sub_unit, rate, totamt,
+                                             material_id, str(session['username']), purchased_id))
+                        connection.commit()
+                        insert_sql = "UPDATE cash SET ledger_id=%s, material_id=%s, amount=%s WHERE purchased_id=%s"
+                        cursor.execute(insert_sql, (ledger_id, material_id, amount, purchased_id))
+                        connection.commit()
+                        sql_mat_mov = "UPDATE material_movement SET mat_id=%s,amount=%s WHERE purchase_id=%s"
+                        cursor.execute(sql_mat_mov, (material_id, qty_sub_unit, purchased_id))
+                        sql_quantity = "UPDATE material_qty SET quantity=quantity + %s WHERE material_id=%s"
+                        cursor.execute(sql_quantity, (qty_sub_unit, material_id))
+                        connection.commit()
+                        flag = 'Successfully Added the Purchased data on {}' .format(date_time)
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
+                        return redirect(url_for('delete_purchased_db'))
+                    except Exception as e:
+                        flag = "Failure with %s" % e
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
+                        return redirect(url_for('delete_purchased_db'))
+                    finally:
+                        connection.close()
 
 
 @app.route('/view_purchased_db')
@@ -1305,7 +1369,6 @@ def process_alter_purchased(p_id):
         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                           utilities.get_ip(), utilities.get_mac())
         return str(e)
-
 
 
 @app.route('/create_units')
