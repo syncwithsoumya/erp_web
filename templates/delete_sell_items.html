@@ -13,7 +13,7 @@ Star ERP -- View Billings
             </button>
          </div>
          <div class="modal-body">
-            <form action="/alter_purchased" id="SellForm" method="post">
+            <form action="/alter_direct_billing" id="SellForm" method="post">
                <div class="form-row">
                   <div class="form-group col-md-6">
                      <label for="sellid" class="col-md-6 control-label">Sell ID:</label>
@@ -45,14 +45,17 @@ Star ERP -- View Billings
                      <input type="text" class="form-control" readonly name="product_name" id="product_name">
                   </div>
                   <div class="form-group col-md-6">
-                     <label for="quantity">Quantity</label>
-                     <input type="text" class="form-control" name="quantity" id="quantity">
+                     <label for="squantity">Quantity</label>
+                     <input type="text" class="form-control" name="quantity" id="squantity">
                   </div>
+
+                     <input type="hidden" class="form-control" name="orgquantity" id="orgquantity">
+
                </div>
                <div class="form-row">
                   <div class="form-group col-md-6">
-                     <label for="prate" class="col-md-3 control-label">Rate</label>
-                     <input type="text" class="form-control" name="rate" id="prate">
+                     <label for="srate" class="col-md-3 control-label">Rate</label>
+                     <input type="text" class="form-control" name="rate" id="srate">
                   </div>
                   <div class="form-group col-md-6">
                      <label for="amount" class="col-md-3 control-label">Amount</label>

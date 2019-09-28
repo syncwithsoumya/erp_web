@@ -1801,7 +1801,7 @@ def direct_billing_creation():
                         connection.commit()
                         get_sell_id = "SELECT MAX(sell_id) as id FROM sell"
                         cursor.execute(get_sell_id)
-                        data_id = cursor.fetchone()
+                        sell_data_id = cursor.fetchone()
                         for item in product_data:
                             # Get Material Movement
                             # get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s));"
@@ -1814,14 +1814,14 @@ def direct_billing_creation():
                             mat_id = cursor.fetchone()
                             sql_mat_mov = "INSERT INTO material_movement(mat_id,txn_date,amount,txn_type,purchase_id,sell_id) VALUES(%s,%s,%s,%s,%s,%s)"
                             cursor.execute(sql_mat_mov, (mat_id['id'], new_date, -product_data[item],
-                                                         'Sale','0', data_id['id']))
+                                                         'Sale','0', sell_data_id['id']))
                             sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
                                            "material_id=(SELECT id FROM material WHERE material_name=%s)"
                             cursor.execute(sql_quantity, (product_data[item], item))
                             # cursor.execute(sql_update_flag, item)
                         connection.commit()
-                        insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id,amount,comments) VALUES (%s, %s,NULL,%s,%s,'Money Received on Sell')"
-                        cursor.execute(insert_sql, (date_time, ledger_id, data_id['id'], totamt))
+                        insert_sql = "INSERT INTO cash(date_time,ledger_id, material_id, product_id,amount,comments,sell_id) VALUES (%s, %s,NULL,%s,%s,'Money Received on Sell',%s)"
+                        cursor.execute(insert_sql, (date_time, ledger_id, data_id['id'], totamt,sell_data_id['id']))
                         connection.commit()
 
                         for item in product_data:
@@ -1841,6 +1841,114 @@ def direct_billing_creation():
                         write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
                                           utilities.get_ip(), utilities.get_mac())
                         return redirect(url_for('direct_billing'))
+                    finally:
+                        connection.close()
+
+
+@app.route('/alter_direct_billing', methods=['POST'])
+def alter_direct_billing():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        date_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
+        mac = utilities.get_mac()
+        ip = utilities.get_ip()
+        list_of_ofs_items = list()
+        if request.method == 'POST':
+            sell_id = request.form['sellid']
+            ledger_id = int(request.form['ledgers_dat'])
+            pdate = request.form['pdate']
+            product_name = request.form['product_name']
+            quantity = request.form['quantity']
+            orgquantity = request.form['orgquantity']
+            totamt = int(request.form['amount'])
+            rate = int(request.form['rate'])
+            new_date = datetime.strptime(pdate, '%d-%m-%Y').strftime('%Y%m%d') + str(datetime.now().strftime('%H%M%S'))
+            if ledger_id == 0:
+                flag = "Ledger not selected."
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('direct_billing'))
+            elif int(quantity) <=0 or rate < 0 or totamt < 0:
+                flag = "Rate or Amount is either zero or less than zero.."
+                flash(flag)
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return redirect(url_for('delete_billings'))
+            else:
+                connection = connect_to_db()
+                with connection.cursor() as cursor:
+                    try:
+                        if rate > 0:
+                            sql_update_product_master = "UPDATE product_master SET product_rate=%s WHERE product_name=%s"
+                            cursor.execute(sql_update_product_master, (rate, product_name))
+                            connection.commit()
+                        get_product_id = "SELECT id FROM component_master WHERE product_name=%s"
+                        cursor.execute(get_product_id,product_name)
+                        product_id = cursor.fetchone()
+                        flag = 'y'
+                        get_product_name = "SELECT product_spec FROM component_master WHERE id=%s"
+                        cursor.execute(get_product_name, (product_id['id']))
+                        names = cursor.fetchone()
+                        product_data = product_manipulation(convertid2name(names['product_spec']), quantity)
+                        product_data_revert = product_manipulation(convertid2name(names['product_spec']), orgquantity)
+                        get_ledger_name = "SELECT ledger_name FROM ledger WHERE id=%s"
+                        cursor.execute(get_ledger_name, ledger_id)
+                        ledger_name = cursor.fetchone()
+                        sql = "UPDATE sell SET ledger_id=%s,product_id=%s,quantity=%s,rate=%s, " \
+                              "amount=%s WHERE sell_id=%s"
+                        cursor.execute(sql, (ledger_id, product_id['id'], quantity, rate, totamt, sell_id))
+                        connection.commit()
+                        # get_sell_id = "SELECT MAX(sell_id) as id FROM sell"
+                        # cursor.execute(get_sell_id)
+                        # data_id = cursor.fetchone()
+                        for item in product_data_revert:
+                            sql_add_quantity = "UPDATE material_qty SET quantity = quantity + %s WHERE " \
+                                               "material_id=(SELECT id FROM material WHERE material_name=%s)"
+                            cursor.execute(sql_add_quantity, (product_data_revert[item], item))
+                            connection.commit()
+                        for item in product_data:
+                            # Get Material Movement
+                            # get_material_cdate = "SELECT closing_balance,mat_id FROM material_movement WHERE txn_date = (SELECT MAX(txn_date) FROM material_movement WHERE mat_id=(SELECT id FROM material WHERE material_name=%s));"
+                            # cursor.execute(get_material_cdate, item)
+                            # cdate = cursor.fetchone()
+                            # Add Material Movement
+                            # final_closing = int(cdate['closing_balance']) + int(product_data[item])
+
+                            get_mat_id = "SELECT id FROM material WHERE material_name=%s"
+                            cursor.execute(get_mat_id, item)
+                            mat_id = cursor.fetchone()
+                            sql_mat_mov = "UPDATE material_movement SET txn_date=%s,amount=%s,txn_type=%s," \
+                                          "purchase_id=%s WHERE sell_id=%s and mat_id=%s"
+                            cursor.execute(sql_mat_mov, (new_date, -product_data[item],
+                                                         'Sale','0', sell_id,mat_id['id']))
+                            sql_quantity = "UPDATE material_qty SET quantity = quantity - %s WHERE " \
+                                           "material_id=(SELECT id FROM material WHERE material_name=%s)"
+                            cursor.execute(sql_quantity, (product_data[item], item))
+                            # cursor.execute(sql_update_flag, item)
+                        connection.commit()
+                        update_sql = "UPDATE cash SET date_time=%s,ledger_id=%s, amount=%s WHERE sell_id=%s"
+                        cursor.execute(update_sql, (date_time, ledger_id, totamt, sell_id))
+                        connection.commit()
+
+                        for item in product_data:
+                            check_material = "SELECT quantity FROM material_qty WHERE material_id=(SELECT id from material WHERE material_name=%s)"
+                            cursor.execute(check_material, (item))
+                            data_checked = cursor.fetchone()
+                            if int(data_checked['quantity']) < int(product_data[item]):
+                                list_of_ofs_items.append(item)
+                        flag = 'Successfully Sold {} to {} on {}' .format(product_name, ledger_name['ledger_name'], date_time) if not any(list_of_ofs_items) else 'Sold %s to %s on %s with Insufficient Materials - %s' % (product_name,ledger_name['ledger_name'],date_time,','.join(str(n) for n in list_of_ofs_items))
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
+                        return redirect(url_for('delete_billings'))
+                    except Exception as e:
+                        flag = "Failure with %s" % str(e)
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
+                        return redirect(url_for('delete_billings'))
                     finally:
                         connection.close()
 

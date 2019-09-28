@@ -1,0 +1,11 @@
+drop table units;
+drop table material;
+drop table ledger;
+drop table product_master;
+drop table component_master;
+drop table product_qty;
+drop table cash;
+drop table purchased;
+drop table sell;
+drop table material_qty;
+drop table material_movement;

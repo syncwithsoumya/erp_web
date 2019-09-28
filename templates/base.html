@@ -1403,8 +1403,9 @@
 	                            modal.find('.modal-body input#pdate').val(resp.sell_date)
 	                            modal.find('.modal-body select#inputState').val(resp.ledger_name)
 	                            modal.find('.modal-body input#product_name').val(resp.product_name)
-	                            modal.find('.modal-body input#quantity').val(resp.quantity)
-	                            modal.find('.modal-body input#prate').val(resp.rate)
+	                            modal.find('.modal-body input#squantity').val(resp.quantity)
+	                            modal.find('.modal-body input#orgquantity').val(resp.quantity)
+	                            modal.find('.modal-body input#srate').val(resp.rate)
 	                            modal.find('.modal-body input#amount').val(resp.amount)
 	                           }
 	                           })
@@ -1466,6 +1467,41 @@
 
 	})
 </script>
+	<script>
+	$('#SellForm').on('submit', function(e) {
+	    var pdate = $('#pdate');
+	    var inputState = $('#inputState');
+	    var materials = $('#materials');
+	    var quantity = $('#quantity');
+	    var quantityunit = $('#quantityunit');
+	    var subquantity = $('#subquantity');
+	    var subquantityunit = $('#subquantityunit');
+	    var rate = $('#prate');
+	    var amount = $('#amount');
+		if (rate.val() == "")
+		{
+			rate = 0
+		}
+		else
+		{
+			rate = rate.val()
+		}
+
+	    console.log(rate)
+
+	    if ((pdate.val()=="") || (inputState.val()=="0") || (materials.val()=="") || (quantity.val()=="") || (quantityunit.val()=="") || (subquantity.val()=="") || (subquantityunit.val()=="") || (rate<0))
+	    {
+	        alert('Some Values are missing')
+	        e.preventDefault();
+	    }
+	    if (amount.val() < 0)
+	    {
+	        alert('Amount is less than zero')
+	        e.preventDefault();
+	    }
+
+	})
+</script>
 <script>
 	$(window).on('shown.bs.modal', function() {
 	    var amount = $('#amount');
@@ -1479,9 +1515,33 @@
 	        payment.val("2")
 	    }
 	})
-</script>
+</script>s
 	<script>
 	$('input#prate').keyup(function() {
+	            var qty = $('input#quantity').val();
+	            var rate = $('input#prate').val();
+	            var amt = qty * rate;
+	            $('input#amount').val(amt);
+	        });
+</script>
+	<script>
+	$('input#srate').keyup(function() {
+	            var qty = $('input#squantity').val();
+	            var rate = $('input#srate').val();
+	            var amt = qty * rate;
+	            $('input#amount').val(amt);
+	        });
+</script>
+<script>
+	$('input#squantity').keyup(function() {
+	            var qty = $('input#squantity').val();
+	            var rate = $('input#srate').val();
+	            var amt = qty * rate;
+	            $('input#amount').val(amt);
+	        });
+</script>
+<script>
+	$('input#subquantity').keyup(function() {
 	            var qty = $('input#subquantity').val();
 	            var rate = $('input#prate').val();
 	            var amt = qty * rate;
