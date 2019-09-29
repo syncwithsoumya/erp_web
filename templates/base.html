@@ -45,9 +45,8 @@
 				</a>
 				<div id="collapseLedgers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
-						<!--<h6 class="collapse-header">Custom Components:</h6>--> <a class="collapse-item" href="/create_ledger">Create Ledger</a>
-						<a class="collapse-item" href="/delete_ledger">Delete Ledger</a>
-						<a class="collapse-item" href="/modify_ledger">Alter Ledger</a>
+						<a class="collapse-item" href="/create_ledger">Create Ledger</a>
+						<a class="collapse-item" href="/modify_ledgers">Modify Ledger</a>
 						<a class="collapse-item" href="/view_ledger">View Ledger</a>
 					</div>
 				</div>
@@ -1410,6 +1409,24 @@
 	                           })
 	})
 </script>
+    <script>
+	$('#ModifyLedgerModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever')
+	  var modal = $(this)
+	  $.ajax({
+	                  url: "/process_edit_ledger_data/" + recipient,
+	                  type: "GET",
+	                  dataType: "json",
+	                  success: function(resp) {
+	                            modal.find('.modal-body input#Ledgerid').val(recipient)
+	                            modal.find('.modal-body input#Ledgercreationdate').val(resp.creation_date)
+	                            modal.find('.modal-body input#Ledgername').val(resp.ledger_name)
+	                            modal.find('.modal-body input#Ledgernewname').val(resp.ledger_name)
+	                           }
+	                           })
+	})
+</script>
 <script>
 	$('#editForm').on('submit', function(e) {
 	    var min = $('#min');
@@ -1514,7 +1531,7 @@
 	        payment.val("2")
 	    }
 	})
-</script>s
+</script>
 	<script>
 	$('input#prate').keyup(function() {
 	            var qty = $('input#quantity').val();

@@ -241,55 +241,43 @@ def modify_ledger():
                 return str(e)
 
 
-@app.route('/ledger_modification', methods=['POST', 'GET'])
+@app.route('/ledger_modification', methods=['POST'])
 def ledger_modification():
     if session.get('username') is None:
         return redirect(url_for('login'))
     else:
-        ledger_name = None
-        ledger_id = None
-        comments = None
         connection = connect_to_db()
         if request.method == 'POST':
-            ledger_id = request.form['ledgers_list']
-            ledger_name = request.form['new_name']
-            comments = request.form['new_comments']
-        if ledger_name == "" and comments == "":
-            flag = 'Invalid Data. Please try again.'
-            flash(flag)
-            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_ledger', str(session['username']),
-                              utilities.get_ip(), utilities.get_mac())
-            return redirect(url_for('modify_ledger'))
-        if connection.open == 1:
-            # Populate ledger names from table
-            if ledger_id == "0":
-                flag = 'Please select Ledger'
+            # ledger_id = request.form['ledgers_list']
+            ledger_id = request.form['Ledgerid']
+            ledger_oldname = request.form['Ledgername']
+            ledger_name = request.form['Ledgernewname']
+            # comments = request.form['new_comments']
+            if ledger_name == "":
+                flag = 'Invalid Data. Please try again.'
                 flash(flag)
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag + 'modify_ledger', str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
-                return redirect(url_for('modify_ledger'))
-            try:
-                with connection.cursor() as cursor:
-                    if comments and ledger_id and ledger_name:
+                return redirect(url_for('modify_ledgers'))
+            if connection.open == 1:
+                # Populate ledger names from table
+                try:
+                    with connection.cursor() as cursor:
                         del_items = 'UPDATE ledger SET ledger_name="%s", comments="%s" WHERE id=%s' % (
-                            ledger_name, comments, ledger_id)
-                    elif ledger_name and ledger_id:
-                        del_items = 'UPDATE ledger SET ledger_name="%s" WHERE id=%s' % (ledger_name, ledger_id)
-                    else:
-                        del_items = 'UPDATE ledger SET comments="%s" WHERE id=%s' % (comments, ledger_id)
-                    cursor.execute(del_items)
-                    connection.commit()
-                    connection.close()
-                    flag = "Successfully Updated - {} to - {} at {}".format(ledger_id, ledger_name, datetime.now())
-                    flash(flag)
-                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                ledger_name, 'New Ledger', ledger_id)
+                        cursor.execute(del_items)
+                        connection.commit()
+                        connection.close()
+                        flag = "Successfully Updated - {} to - {} at {}".format(ledger_oldname, ledger_name, datetime.now())
+                        flash(flag)
+                        write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), flag, str(session['username']),
+                                          utilities.get_ip(), utilities.get_mac())
+                        return redirect(url_for('modify_ledgers'))
+                        # return render_template('delete_ledger.html', items_data=items_data)
+                except Exception as e:
+                    write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                       utilities.get_ip(), utilities.get_mac())
-                    return redirect(url_for('modify_ledger'))
-                    # return render_template('delete_ledger.html', items_data=items_data)
-            except Exception as e:
-                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
-                                  utilities.get_ip(), utilities.get_mac())
-                return str(e)
+                    return str(e)
 
 
 @app.route('/view_ledger')
@@ -307,6 +295,27 @@ def view_ledger():
                     items_data = cursor.fetchall()
                     connection.close()
                     return render_template('view_ledger.html', items_data=items_data)
+            except Exception as e:
+                write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                                  utilities.get_ip(), utilities.get_mac())
+                return str(e)
+
+
+@app.route('/modify_ledgers')
+def modify_ledgers():
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = connect_to_db()
+        if connection.open == 1:
+            # Populate ledger names from table
+            try:
+                with connection.cursor() as cursor:
+                    get_items = "SELECT id, ledger_name, DATE_FORMAT(date_time,'%d-%m-%Y') as date_time, added_by, comments FROM ledger"
+                    cursor.execute(get_items)
+                    items_data = cursor.fetchall()
+                    connection.close()
+                    return render_template('delete_ledgers.html', items_data=items_data)
             except Exception as e:
                 write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                                   utilities.get_ip(), utilities.get_mac())
@@ -2827,6 +2836,29 @@ def process_edit_sell_data(p_id):
                 cursor.execute(get_sell_data)
                 dat = cursor.fetchone()
                 return jsonify({'sell_id': dat['sell_id'], 'sell_date': dat['sell_date'], 'ledger_name': dat['ledger_id'], 'product_name': dat['product_name'], 'quantity': dat['quantity'], 'rate': dat['rate'], 'amount': dat['amount']})
+        except Exception as e:
+            write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
+                              utilities.get_ip(), utilities.get_mac())
+            return str(e)
+        finally:
+            connection.close()
+
+
+@app.route('/process_edit_ledger_data/<int:p_id>', methods=['GET'])
+def process_edit_ledger_data(p_id):
+    if session.get('username') is None:
+        return redirect(url_for('login'))
+    else:
+        connection = ''
+        # p_id = 12
+        try:
+            connection = connect_to_db()
+            with connection.cursor() as cursor:
+                get_sell_data = "SELECT id, ledger_name, DATE_FORMAT(date_time,'%d-%m-%Y') as date_time, added_by, comments FROM ledger WHERE id={}".format(p_id)
+                cursor.execute(get_sell_data)
+                dat = cursor.fetchone()
+                return jsonify({'ledger_id': dat['id'], 'creation_date': dat['date_time'],
+                                'ledger_name': dat['ledger_name']})
         except Exception as e:
             write_to_log_data(str(datetime.now().strftime("%Y%m%d%H%M%S")), str(e), str(session['username']),
                               utilities.get_ip(), utilities.get_mac())

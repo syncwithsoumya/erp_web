@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}
+Star ERP -- Delete Ledgers
+{% endblock %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Modify Ledgers</h1>
+<div class="modal fade" id="ModifyLedgerModal" tabindex="-1" role="dialog" aria-labelledby="ModifyLedgerModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModifyLedgerModalLabel">Edit Ledger</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="/ledger_modification" id="LedgerForm" method="post">
+                    <div class="form-row">
+					<div class="form-group col-md-6">
+                     <label for="Ledgerid">Ledger ID:</label>
+						<input type="text" class="form-control" name="Ledgerid" readonly id="Ledgerid">
+					</div>
+                        <div class="form-group col-md-6">
+                     <label for="Ledgercreationdate">Creation Date:</label>
+						<input type="text" class="form-control" name="Ledgercreationdate" readonly id="Ledgercreationdate">
+					</div>
+                    </div>
+                    <div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="Ledgername">Ledger Name:</label>
+						<input type="text" class="form-control" name="Ledgername" readonly id="Ledgername">
+					</div>
+					<div class="form-group col-md-6">
+
+						<label for="Ledgernewname">New Ledger Name:</label>
+						<input type="text" class="form-control" name="Ledgernewname" id="Ledgernewname">
+
+                    </div>
+                    </div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Save Changes</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="table-responsive">
+    <table id="show_ledger" class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="table-dark">ID</th>
+                <th class="table-dark">Creation Date</th>
+                <th class="table-dark">Ledger Name</th>
+                <th class="table-dark">Action</th>
+<!--                <th class="table-dark">Added_By</th>-->
+<!--                <th class="table-dark">Comments</th>-->
+            </tr>
+            <tr class="NoXl">
+                <th class="table-primary">ID</th>
+                <th class="table-primary">Date Time</th>
+                <th class="table-primary">Ledger Name</th>
+                <th class="table-primary">Action</th>
+<!--                <th class="table-primary">Added_By</th>-->
+<!--                <th class="table-primary">Comments</th>-->
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for items in items_data %}
+            <tr>
+
+                    <td>{{items.id}}</td>
+                    <td>{{items.date_time}}</td>
+                    <td>{{items.ledger_name}}</td>
+                    <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModifyLedgerModal" data-whatever="{{items.id}}">Edit</button>
+                   </td>
+<!--                    <td>{{items.added_by}}</td>-->
+<!--                    <td>{{items.comments}}</td>-->
+
+            </tr>
+         {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% endblock %}
